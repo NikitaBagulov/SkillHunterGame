@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5fli7abglehw"]
+
+[ext_resource type="PackedScene" uid="uid://mgqybyf8qot5" path="res://Scenes/Entities/Player/player.tscn" id="1_i75f7"]
+[ext_resource type="PackedScene" uid="uid://b7h0lppkldu4c" path="res://Scenes/Entities/Enemy/enemy.tscn" id="2_2bhkt"]
+[ext_resource type="PackedScene" uid="uid://6cuumd0272vp" path="res://Scenes/UI/GameUI/game_ui.tscn" id="3_kyaox"]
+[ext_resource type="PackedScene" uid="uid://co4nrj3ot5bs3" path="res://Scenes/Components/CameraComponent/camera_component.tscn" id="4_dwh3b"]
+
+[node name="World" type="Node2D"]
+
+[node name="GameUI" parent="." instance=ExtResource("3_kyaox")]
+visible = false
+
+[node name="Player" parent="." instance=ExtResource("1_i75f7")]
+position = Vector2(497, 479)
+
+[node name="PlayerController" parent="Player" index="0" node_paths=PackedStringArray("camera")]
+speed = 100.0
+camera = NodePath("../../CameraComponent")
+
+[node name="Enemy" parent="." instance=ExtResource("2_2bhkt")]
+position = Vector2(1193, 497)
+
+[node name="AIController" parent="Enemy" index="0" node_paths=PackedStringArray("body")]
+body = NodePath("..")
+
+[node name="CameraComponent" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_dwh3b")]
+target = NodePath("../Player")
+
+[editable path="GameUI"]
+[editable path="Player"]
+[editable path="Player/PlayerController"]
+[editable path="Player/AnimationComponent"]
+[editable path="Enemy"]
