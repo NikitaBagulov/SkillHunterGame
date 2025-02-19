@@ -1,3 +1,10 @@
-[gd_scene format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=2 format=3 uid="uid://dplwduvtiv1sp"]
+
+[ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
 
 [node name="Playgroung" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_0jjx0")]
+position = Vector2(78, 46)
+
+[editable path="Player"]

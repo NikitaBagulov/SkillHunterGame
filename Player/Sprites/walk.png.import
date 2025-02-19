@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yykkolctpnpq"
-path="res://.godot/imported/death.png-0169b791383e464bd8128bab3fe93a8c.ctex"
+uid="uid://b6qdvx0xeager"
+path="res://.godot/imported/walk.png-0a80a28eb5f7c70ff17b2b775ba72851.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Hana Caraka - Base Character [sample]/death.png"
-dest_files=["res://.godot/imported/death.png-0169b791383e464bd8128bab3fe93a8c.ctex"]
+source_file="res://Player/Sprites/walk.png"
+dest_files=["res://.godot/imported/walk.png-0a80a28eb5f7c70ff17b2b775ba72851.ctex"]
 
 [params]
 

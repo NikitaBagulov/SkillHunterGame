@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6qdvx0xeager"
-path="res://.godot/imported/walk.png-422402749003d2404538c05f6513db37.ctex"
+uid="uid://d0osxa3swmug4"
+path="res://.godot/imported/run.png-b8b2bbe20acadf1fd25b8ed6fa81e05e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Hana Caraka - Base Character [sample]/walk.png"
-dest_files=["res://.godot/imported/walk.png-422402749003d2404538c05f6513db37.ctex"]
+source_file="res://Player/Sprites/run.png"
+dest_files=["res://.godot/imported/run.png-b8b2bbe20acadf1fd25b8ed6fa81e05e.ctex"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://0onu2gcaeedp"
-path="res://.godot/imported/hurt.png-183c66cf17f0a18d59a6b526f119fd56.ctex"
+path="res://.godot/imported/hurt.png-e96a39bc922cc3ae199ac680a07063da.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Hana Caraka - Base Character [sample]/hurt.png"
-dest_files=["res://.godot/imported/hurt.png-183c66cf17f0a18d59a6b526f119fd56.ctex"]
+source_file="res://Player/Sprites/hurt.png"
+dest_files=["res://.godot/imported/hurt.png-e96a39bc922cc3ae199ac680a07063da.ctex"]
 
 [params]
 

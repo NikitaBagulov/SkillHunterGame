@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cymu6joiwcwfg"
-path="res://.godot/imported/idle.png-f3f115c3fb06bccfffd7c13c7d509e99.ctex"
+uid="uid://yykkolctpnpq"
+path="res://.godot/imported/death.png-1433e909b2d960fc62ff6d62a66f28f2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Hana Caraka - Base Character [sample]/idle.png"
-dest_files=["res://.godot/imported/idle.png-f3f115c3fb06bccfffd7c13c7d509e99.ctex"]
+source_file="res://Player/Sprites/death.png"
+dest_files=["res://.godot/imported/death.png-1433e909b2d960fc62ff6d62a66f28f2.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0osxa3swmug4"
-path="res://.godot/imported/run.png-8e9ab1bb6fd97952c60efbaff6d916c2.ctex"
+uid="uid://cymu6joiwcwfg"
+path="res://.godot/imported/idle.png-2bfc905b9930f2e295e2f3b3b50ac2bc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Hana Caraka - Base Character [sample]/run.png"
-dest_files=["res://.godot/imported/run.png-8e9ab1bb6fd97952c60efbaff6d916c2.ctex"]
+source_file="res://Player/Sprites/idle.png"
+dest_files=["res://.godot/imported/idle.png-2bfc905b9930f2e295e2f3b3b50ac2bc.ctex"]
 
 [params]
 
