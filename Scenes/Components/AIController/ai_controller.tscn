@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dyx11hlbri41"]
-
-[ext_resource type="Script" path="res://Scenes/Components/AIController/ai_controller.gd" id="1_0gx2m"]
-
-[node name="AIController" type="Node"]
-script = ExtResource("1_0gx2m")
-speed = 400.0
-patrol_radius = 1000.0
-pause_duration = 1.0
