@@ -47,6 +47,8 @@ func set_direction() -> bool:
 	
 	
 func update_animation(state: String) -> void:
+	if state == "attack":
+		print("Attack")
 	animation_player.play(state + "_" + animation_direction())
 	pass
 	
