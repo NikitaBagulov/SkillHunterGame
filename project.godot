@@ -15,6 +15,10 @@ config/version="0.0.1"
 run/main_scene="res://playgroung.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
+[autoload]
+
+LevelManager="*res://00_Globals/GlobalLevelManager.gd"
+
 [display]
 
 window/size/viewport_width=480

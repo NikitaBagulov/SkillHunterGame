@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=31 format=3 uid="uid://bx7k3yspke326"]
 
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bd3xqybsw6sir" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_attack.png" id="8_1ea5k"]
 [ext_resource type="Texture2D" uid="uid://b7cutro482vp4" path="res://Player/Sprites/Pack Content/Side animations/spr_player_right_attack.png" id="9_s5yta"]
 [ext_resource type="Texture2D" uid="uid://cw8wuvfyvhxbm" path="res://Player/Sprites/Pack Content/Back animations/spr_player_back_attack.png" id="10_2swlx"]
+[ext_resource type="Script" path="res://Player/Scenes/player_camera.gd" id="12_rocud"]
 [ext_resource type="Script" path="res://Player/Scripts/state_attack.gd" id="14_ya0hw"]
 [ext_resource type="Script" path="res://Player/Scripts/player_interaction_host.gd" id="15_4a10s"]
 [ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="15_jvqnq"]
@@ -683,6 +684,12 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
+limit_left = -500
+limit_top = -300
+limit_right = 500
+limit_bottom = 300
+editor_draw_limits = true
+script = ExtResource("12_rocud")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_17lg5")
