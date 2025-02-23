@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=30 format=3 uid="uid://bx7k3yspke326"]
 
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
@@ -14,9 +14,14 @@
 [ext_resource type="Texture2D" uid="uid://b7cutro482vp4" path="res://Player/Sprites/Pack Content/Side animations/spr_player_right_attack.png" id="9_s5yta"]
 [ext_resource type="Texture2D" uid="uid://cw8wuvfyvhxbm" path="res://Player/Sprites/Pack Content/Back animations/spr_player_back_attack.png" id="10_2swlx"]
 [ext_resource type="Script" path="res://Player/Scripts/state_attack.gd" id="14_ya0hw"]
+[ext_resource type="Script" path="res://Player/Scripts/player_interaction_host.gd" id="15_4a10s"]
+[ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="15_jvqnq"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_i276v"]
-radius = 10.2026
+[sub_resource type="CircleShape2D" id="CircleShape2D_8sy26"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v050q"]
+radius = 4.375
 
 [sub_resource type="Animation" id="Animation_xgl54"]
 length = 0.001
@@ -67,6 +72,30 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 9)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_bhw7a"]
@@ -120,6 +149,30 @@ tracks/3/keys = {
 "update": 0,
 "values": [1]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-11, -1), Vector2(-2, 10), Vector2(2, 13), Vector2(0, 9)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.266667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(3.56, 3.6), Vector2(2.70667, 2.73334), Vector2(1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_37d1c"]
 resource_name = "attack_side"
@@ -131,7 +184,7 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.166667, 0.233333, 0.266667, 0.4),
+"times": PackedFloat32Array(0, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [0, 1, 2, 3, 4, 5, 6]
@@ -171,6 +224,30 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.166667, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 9), Vector2(10, 5), Vector2(13, 6), Vector2(10, 5), Vector2(-9, 1), Vector2(0, 9)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.166667, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.00001, 0.999995), Vector2(3.64676, 1.2), Vector2(4.48676, 1), Vector2(1, 1), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_k1tum"]
@@ -223,6 +300,30 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.166667, 0.233333, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(13, 14), Vector2(-1, -3), Vector2(-3, -8), Vector2(0, -1), Vector2(0, 8)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.166667, 0.233333, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(3.8, 3.6), Vector2(3.37862, 2.40993), Vector2(1.92, 1.8), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_m1lhc"]
@@ -558,15 +659,23 @@ wall_min_slide_angle = 0.174533
 script = ExtResource("1_83mit")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 11)
-scale = Vector2(0.790627, 0.17589)
-shape = SubResource("CircleShape2D_i276v")
+position = Vector2(0, 9)
+shape = SubResource("CircleShape2D_8sy26")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_xbkxk")
 hframes = 12
 frame = 4
 region_rect = Rect2(240, 80, 80, 80)
+
+[node name="AttackHurtBox" parent="Sprite2D" instance=ExtResource("15_jvqnq")]
+unique_name_in_owner = true
+position = Vector2(0, 9)
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/AttackHurtBox"]
+shape = SubResource("CircleShape2D_v050q")
+debug_color = Color(0.892804, 0.0499779, 9.62615e-08, 0.42)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -586,3 +695,6 @@ script = ExtResource("6_48nr7")
 
 [node name="Attack" type="Node" parent="StateMachine"]
 script = ExtResource("14_ya0hw")
+
+[node name="Interactions" type="Node2D" parent="."]
+script = ExtResource("15_4a10s")

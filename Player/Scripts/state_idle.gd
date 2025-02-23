@@ -28,8 +28,6 @@ func physics(_delta: float) -> State:
 	return null
 	
 func handle_input(_event: InputEvent) -> State:
-	print("Обрабатываю ввод, событие:", _event.as_text())
 	if _event.is_action_pressed("attack"):
-		print("ATTACK")
 		return attack
 	return null

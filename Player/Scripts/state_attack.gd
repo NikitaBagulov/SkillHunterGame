@@ -8,6 +8,7 @@ var attacking: bool = false
 @onready var animation_player: AnimationPlayer = $"../../AnimationPlayer"
 @onready var idle: State = $"../Idle"
 @onready var walk: State = $"../Walk"
+@onready var hurt_box: HurtBox = %AttackHurtBox
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,11 +23,18 @@ func enter() -> void:
 	player.update_animation("attack")
 	animation_player.animation_finished.connect(end_attack)
 	attacking = true
+	
+	await  get_tree().create_timer(0.075).timeout
+	hurt_box.monitoring = true
+	
 	pass
 	
 func exit() -> void:
 	animation_player.animation_finished.disconnect(end_attack)
 	attacking = false
+	
+	hurt_box.monitoring = false
+	
 	pass
 	
 func process(_delta: float) -> State:

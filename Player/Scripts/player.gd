@@ -8,6 +8,9 @@ class_name Player extends CharacterBody2D
 var cardinal_direction: Vector2 = Vector2.DOWN
 var direction: Vector2 = Vector2.ZERO
 
+const DIRECTIONS = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, Vector2.UP]
+
+signal DirectionChanged(new_direction: Vector2)
 
 func _ready():
 	state_machine.initialize(self)
@@ -28,18 +31,18 @@ func _physics_process(delta):
 	move_and_slide()
 
 func set_direction() -> bool:
-	var new_direction: Vector2 = cardinal_direction
+	
 	
 	if direction == Vector2.ZERO:
 		return false
-	if direction.y == 0:
-		new_direction = Vector2.LEFT if direction.x < 0 else Vector2.RIGHT
-	elif direction.x == 0:
-		new_direction = Vector2.UP if direction.y < 0 else Vector2.DOWN
+	
+	var direction_id: int = int(round(direction).angle() / TAU * DIRECTIONS.size())
+	var new_direction = DIRECTIONS[direction_id]	
 		
 	if new_direction == cardinal_direction:
 		return false
 		
+	DirectionChanged.emit(new_direction)	
 	cardinal_direction = new_direction
 	sprite.scale.x = -1 if cardinal_direction == Vector2.LEFT else 1
 	
@@ -47,8 +50,6 @@ func set_direction() -> bool:
 	
 	
 func update_animation(state: String) -> void:
-	if state == "attack":
-		print("Attack")
 	animation_player.play(state + "_" + animation_direction())
 	pass
 	
