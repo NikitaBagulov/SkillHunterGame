@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://hoismocbk86k"]
+
+[ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_8bxfm"]
+[ext_resource type="Script" path="res://Items/Scripts/item_data.gd" id="1_bsyxm"]
+[ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_gcq02"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0mk44"]
+atlas = ExtResource("2_gcq02")
+region = Rect2(0, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_bsyxm")
+name = "Кристалл"
+description = "Очень дорогой!"
+texture = SubResource("AtlasTexture_0mk44")
+effects = Array[ExtResource("1_8bxfm")]([])

@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://bt10avxvpwkde"]
+
+[ext_resource type="Script" path="res://Items/Item_pickup/item_pickup.gd" id="1_m046g"]
+[ext_resource type="AudioStream" uid="uid://bv7d4bvk2l45r" path="res://Items/Item_pickup/item_pickup.wav" id="2_8x7ld"]
+[ext_resource type="Texture2D" uid="uid://crkew6pdof7xt" path="res://Enemies/Slime/Shadow.png" id="3_qow73"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3106n"]
+
+[sub_resource type="Animation" id="Animation_y7ruj"]
+resource_name = "default"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.75, 0.85, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -6), Vector2(0, 0), Vector2(0, -3), Vector2(0, 0), Vector2(0, -1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8ocom"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5e743"]
+_data = {
+"RESET": SubResource("Animation_8ocom"),
+"default": SubResource("Animation_y7ruj")
+}
+
+[node name="ItemPickup" type="Node2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_m046g")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_3106n")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_8x7ld")
+
+[node name="ShadowSprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.470588)
+position = Vector2(0, 8)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_qow73")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5e743")
+}
+autoplay = "default"

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3 uid="uid://dsxrg0fp328b6"]
+
+[ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_utx8t"]
+[ext_resource type="Script" path="res://Items/Item_effect/item_effect_heal.gd" id="2_baygn"]
+[ext_resource type="Script" path="res://Items/Scripts/item_data.gd" id="2_mqx1b"]
+[ext_resource type="AudioStream" uid="uid://bknig1ufuakyu" path="res://Items/Item_effect/Sounds/hp-up.wav" id="3_quv48"]
+[ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="5_lxsnq"]
+
+[sub_resource type="Resource" id="Resource_vvh2o"]
+script = ExtResource("2_baygn")
+heal_amount = 1
+sound = ExtResource("3_quv48")
+use_description = ""
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wisum"]
+atlas = ExtResource("5_lxsnq")
+region = Rect2(192, 0, 32, 32)
+
+[resource]
+script = ExtResource("2_mqx1b")
+name = "Яблочко"
+description = "Вкуснятина! "
+texture = SubResource("AtlasTexture_wisum")
+effects = Array[ExtResource("1_utx8t")]([SubResource("Resource_vvh2o")])
