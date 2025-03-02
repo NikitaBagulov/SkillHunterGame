@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://big86vbpt0csl"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://big86vbpt0csl"]
 
 [ext_resource type="Script" path="res://Items/Scripts/item_data.gd" id="1_sen50"]
+[ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_uwciw"]
 [ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_s4tem"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a8php"]
@@ -12,3 +13,4 @@ script = ExtResource("1_sen50")
 name = "Камень"
 description = "Удивительный камушек!"
 texture = SubResource("AtlasTexture_a8php")
+effects = Array[ExtResource("1_uwciw")]([])

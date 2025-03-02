@@ -11,7 +11,7 @@ func _ready():
 	_update_texture()
 	if Engine.is_editor_hint():
 		return
-	area_2d.body_entered.connect(_on_body_entered)
+	area_2d.body_entered.connect(_on_body_entered)			
 		
 func _on_body_entered(body) -> void:
 	if body is Player:

@@ -3,10 +3,13 @@ class_name Player extends CharacterBody2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var effect_animation_player: AnimationPlayer = $EffectAnimationPlayer
+@onready var abilities: PlayerAbilities = $Abilities
 
 @onready var sprite: Sprite2D = $Sprite2D 
 @onready var state_machine: PlayerStateMachine = $StateMachine
 @onready var hit_box: HitBox = $HitBox
+@onready var audio: AudioStreamPlayer2D = $Audio/AudioStreamPlayer2D
+
 
 var cardinal_direction: Vector2 = Vector2.DOWN
 var direction: Vector2 = Vector2.ZERO
@@ -22,7 +25,8 @@ var max_HP: int = 6
 
 
 func _ready():
-	PlayerManager.player = self
+	PlayerManager.set_player(self)
+	abilities.player = self
 	state_machine.initialize(self)
 	hit_box.Damaged.connect(_take_damage)
 	update_hp(99)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=12 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
 [ext_resource type="PackedScene" uid="uid://b6blyw1et3p07" path="res://Tile Maps/grass.tscn" id="2_klgk0"]
@@ -9,6 +9,8 @@
 [ext_resource type="Resource" uid="uid://dhkuedwtsl10l" path="res://Items/potion.tres" id="7_3kupm"]
 [ext_resource type="Resource" uid="uid://hoismocbk86k" path="res://Items/gem.tres" id="7_n8e7g"]
 [ext_resource type="PackedScene" uid="uid://c8hv2oxtho7xx" path="res://Interactebles/TreasureChest/TreasureChest.tscn" id="8_46kmp"]
+[ext_resource type="Resource" uid="uid://big86vbpt0csl" path="res://Items/stone.tres" id="10_862ce"]
+[ext_resource type="PackedScene" uid="uid://dv7010105eerr" path="res://Enemies/Goblin/goblin.tscn" id="11_tkreu"]
 
 [node name="Playgroung" type="Node2D"]
 y_sort_enabled = true
@@ -28,13 +30,35 @@ position = Vector2(134, 98)
 [node name="Slime" parent="." instance=ExtResource("5_n6v0a")]
 position = Vector2(-51, 134)
 
+[node name="Slime2" parent="." instance=ExtResource("5_n6v0a")]
+position = Vector2(189, 160)
+
 [node name="ItemPickup" parent="." instance=ExtResource("6_irg8q")]
-position = Vector2(95, 91)
+position = Vector2(107, 78)
 item_data = ExtResource("7_3kupm")
 
 [node name="TreasureChest" parent="." instance=ExtResource("8_46kmp")]
 position = Vector2(15, 66)
 item_data = ExtResource("7_n8e7g")
 quantity = 10
+
+[node name="TreasureChest2" parent="." instance=ExtResource("8_46kmp")]
+position = Vector2(36, 66)
+item_data = ExtResource("10_862ce")
+quantity = 10
+
+[node name="ItemPickup2" parent="." instance=ExtResource("6_irg8q")]
+position = Vector2(107, 89)
+item_data = ExtResource("7_3kupm")
+
+[node name="ItemPickup3" parent="." instance=ExtResource("6_irg8q")]
+position = Vector2(107, 101)
+item_data = ExtResource("7_3kupm")
+
+[node name="Goblin" parent="." instance=ExtResource("11_tkreu")]
+position = Vector2(65, 150)
+
+[node name="Goblin2" parent="." instance=ExtResource("11_tkreu")]
+position = Vector2(-38, 60)
 
 [editable path="Player"]

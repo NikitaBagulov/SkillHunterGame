@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=47 format=3 uid="uid://bx7k3yspke326"]
 
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
@@ -21,6 +21,8 @@
 [ext_resource type="Script" path="res://Player/Scripts/state_stun.gd" id="17_1mfyy"]
 [ext_resource type="PackedScene" uid="uid://bgt7thfgw0ugh" path="res://GeneralNodes/HitBox/hit_box.tscn" id="18_hihgb"]
 [ext_resource type="AudioStream" uid="uid://b28vo48gqqkkw" path="res://Player/Sprites/hit_player.wav" id="19_ho8js"]
+[ext_resource type="Script" path="res://Player/Scripts/Abilities/abilities.gd" id="22_7epog"]
+[ext_resource type="PackedScene" uid="uid://bl6xxjegdtc3b" path="res://GeneralNodes/ItemMagnet/ItemMagnet.tscn" id="23_scpv6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sy26"]
 radius = 5.0
@@ -982,6 +984,9 @@ _data = {
 "default": SubResource("Animation_o3h1t")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ui8hx"]
+radius = 25.0
+
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 16
 motion_mode = 1
@@ -1065,3 +1070,16 @@ libraries = {
 [node name="Audio" type="Node2D" parent="."]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
+max_polyphony = 6
+
+[node name="Abilities" type="Node" parent="."]
+script = ExtResource("22_7epog")
+
+[node name="ItemMagnet" parent="." instance=ExtResource("23_scpv6")]
+position = Vector2(0, 4)
+magnet_strength = 0.1
+play_magnet_audio = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemMagnet"]
+shape = SubResource("CircleShape2D_ui8hx")
+debug_color = Color(0.849198, 0.000908324, 0.901895, 0.42)
