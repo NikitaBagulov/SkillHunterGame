@@ -786,6 +786,7 @@ drops = Array[ExtResource("13_lgnvl")]([SubResource("Resource_hi8dh")])
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(0, -5)
+bus = &"SFX"
 
 [node name="DestroyEffectSprite" type="Sprite2D" parent="."]
 visible = false

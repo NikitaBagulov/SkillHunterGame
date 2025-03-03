@@ -1,19 +1,23 @@
-[gd_scene load_steps=12 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=14 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
+[ext_resource type="Script" path="res://playgroung.gd" id="1_o0ui3"]
 [ext_resource type="PackedScene" uid="uid://b6blyw1et3p07" path="res://Tile Maps/grass.tscn" id="2_klgk0"]
 [ext_resource type="PackedScene" uid="uid://cir6uck3jdmuv" path="res://Tile Maps/dirt.tscn" id="3_xw3sh"]
 [ext_resource type="PackedScene" uid="uid://co1o4d8wybl3v" path="res://Props/Plants/plant.tscn" id="4_8bwkk"]
 [ext_resource type="PackedScene" uid="uid://dg0f2lqhqjp6y" path="res://Enemies/Slime/slime.tscn" id="5_n6v0a"]
-[ext_resource type="PackedScene" uid="uid://bt10avxvpwkde" path="res://Items/Item_pickup/ItemPickup.tscn" id="6_irg8q"]
+[ext_resource type="PackedScene" uid="uid://bt10avxvpwkde" path="res://GeneralNodes/Item_pickup/ItemPickup.tscn" id="6_irg8q"]
 [ext_resource type="Resource" uid="uid://dhkuedwtsl10l" path="res://Items/potion.tres" id="7_3kupm"]
 [ext_resource type="Resource" uid="uid://hoismocbk86k" path="res://Items/gem.tres" id="7_n8e7g"]
 [ext_resource type="PackedScene" uid="uid://c8hv2oxtho7xx" path="res://Interactebles/TreasureChest/TreasureChest.tscn" id="8_46kmp"]
 [ext_resource type="Resource" uid="uid://big86vbpt0csl" path="res://Items/stone.tres" id="10_862ce"]
 [ext_resource type="PackedScene" uid="uid://dv7010105eerr" path="res://Enemies/Goblin/goblin.tscn" id="11_tkreu"]
+[ext_resource type="AudioStream" uid="uid://dn1w11jt052pf" path="res://Music/example_music_01.ogg" id="12_70887"]
 
 [node name="Playgroung" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_o0ui3")
+music = ExtResource("12_70887")
 
 [node name="Player" parent="." instance=ExtResource("1_0jjx0")]
 position = Vector2(78, 46)
