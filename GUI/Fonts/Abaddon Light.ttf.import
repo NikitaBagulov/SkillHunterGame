@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b57u6mc3t3o6a"
-path="res://.godot/imported/Abaddon Bold.ttf-35e93d55c5afb2eff14db67f5df768db.fontdata"
+uid="uid://bck648qyomn54"
+path="res://.godot/imported/Abaddon Light.ttf-83fa2274aaef92c25dcf16f92a143d18.fontdata"
 
 [deps]
 
-source_file="res://npc_and_dialog/fonts/Abaddon Bold.ttf"
-dest_files=["res://.godot/imported/Abaddon Bold.ttf-35e93d55c5afb2eff14db67f5df768db.fontdata"]
+source_file="res://GUI/Fonts/Abaddon Light.ttf"
+dest_files=["res://.godot/imported/Abaddon Light.ttf-83fa2274aaef92c25dcf16f92a143d18.fontdata"]
 
 [params]
 

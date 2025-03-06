@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xe7d01r4msxt"
-path="res://.godot/imported/dialog_interactable.png-e57b68112a21931def8fadc5c6a83156.ctex"
+uid="uid://dp5polg4vf36w"
+path="res://.godot/imported/chat_bubble.svg-04c1db2ce0ce8f9f4ae55f34b41f3e12.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://npc_and_dialog/sprites/dialog_interactable.png"
-dest_files=["res://.godot/imported/dialog_interactable.png-e57b68112a21931def8fadc5c6a83156.ctex"]
+source_file="res://GUI/Dialog/Icons/chat_bubble.svg"
+dest_files=["res://.godot/imported/chat_bubble.svg-04c1db2ce0ce8f9f4ae55f34b41f3e12.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=20 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
 [ext_resource type="Script" path="res://playgroung.gd" id="1_o0ui3"]
@@ -16,6 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://fcpnjvpvt2w6" path="res://NPC/npc.tscn" id="14_kmd6v"]
 [ext_resource type="Resource" uid="uid://b6u0vc3ecsfif" path="res://NPC/00_NPCs/npc_01.tres" id="15_2enee"]
 [ext_resource type="PackedScene" uid="uid://bxo3oftj1jgxd" path="res://NPC/Scenes/npc_behavior_patrol.tscn" id="16_nfin8"]
+[ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="17_w8qeo"]
+[ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="18_jcnne"]
+[ext_resource type="Resource" uid="uid://c5f4eqv7qy2kn" path="res://NPC/00_NPCs/hero.tres" id="19_42mgt"]
 
 [node name="Playgroung" type="Node2D"]
 y_sort_enabled = true
@@ -82,5 +85,21 @@ modulate = Color(0, 1, 0, 1)
 position = Vector2(156, -12)
 wait_time = 1.0
 
+[node name="DialogInteraction" parent="NPC" instance=ExtResource("17_w8qeo")]
+enabled = true
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("18_jcnne")
+text = "Привет, [b]Герой[/b], это ты?"
+npc_info = ExtResource("15_2enee")
+
+[node name="DialogText2" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("18_jcnne")
+text = "Да, это я!"
+npc_info = ExtResource("19_42mgt")
+
+[node name="DialogText3" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("18_jcnne")
+text = "Круто!"
+
 [editable path="Player"]
-[editable path="NPC"]

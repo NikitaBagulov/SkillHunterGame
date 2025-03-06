@@ -3,7 +3,7 @@ extends Node
 const PLAYER= preload("res://Player/Scenes/player.tscn")
 const INVENTORY_DATA: InventoryData = preload("res://GUI/Inventory/player_inventory.tres")
 
-signal interact_pressed()
+signal interact_pressed
 signal player_assigned(player: Player) # New signal
 
 var player: Player 

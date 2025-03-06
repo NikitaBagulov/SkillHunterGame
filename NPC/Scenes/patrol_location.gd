@@ -33,4 +33,8 @@ func update_line(next_location: Vector2) -> void:
 		
 func _update_wait_time_label() -> void:
 	if Engine.is_editor_hint():
-		$Sprite2D/Label2.text = "wait: " + str(snappedf(wait_time, 0.1)) + "s"
+		var label = $Sprite2D/Label2 as Label
+		if label:
+			label.text = "wait: " + str(snappedf(wait_time, 0.1)) + "s"
+		else:
+			print("Предупреждение: Label2 не найден под Sprite2D")
