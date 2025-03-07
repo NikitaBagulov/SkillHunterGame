@@ -21,7 +21,7 @@ func clear_inventory() -> void:
 		child.queue_free()
 		
 func update_inventory(i: int = 0) -> void:
-	print(data.slots.size())
+	clear_inventory()
 	for slot in data.slots:
 		
 		var new_slot = INVENTORY_SLOT.instantiate()

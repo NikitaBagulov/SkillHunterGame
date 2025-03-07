@@ -23,8 +23,11 @@ func _ready():
 			dialog_items.append(child)
 
 func player_interact() -> void:
-	print("Success")
 	player_interacted.emit()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	DialogSystem.show_dialog(dialog_items)
+	DialogSystem.finished.connect(_on_dialog_finished)
 	pass
 
 func _on_area_enter(_area: Area2D) -> void:
@@ -39,7 +42,11 @@ func _on_area_exit(_area: Area2D) -> void:
 	animation_player.play("hide")
 	PlayerManager.interact_pressed.disconnect(player_interact)
 	pass
-			
+
+func _on_dialog_finished() -> void:
+	DialogSystem.finished.disconnect(player_interact)
+	finished.emit()
+
 func _check_configuration_warnings() -> PackedStringArray:
 	if !_check_for_dialog_items():
 		return ["Requires at leasts one DialogItem node."]

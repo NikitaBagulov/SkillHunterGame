@@ -1,11 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://deflw11wx8apv"]
+[gd_scene load_steps=17 format=3 uid="uid://deflw11wx8apv"]
 
 [ext_resource type="Script" path="res://GUI/Dialog/Scripts/dialog_system.gd" id="1_eo01w"]
 [ext_resource type="Texture2D" uid="uid://5ame44w6rh6" path="res://GUI/Dialog/Sprites/text-bubble.png" id="2_no8ek"]
 [ext_resource type="FontFile" uid="uid://bck648qyomn54" path="res://GUI/Fonts/Abaddon Light.ttf" id="3_bj0oj"]
 [ext_resource type="FontFile" uid="uid://b57u6mc3t3o6a" path="res://GUI/Fonts/Abaddon Bold.ttf" id="4_wmui0"]
 [ext_resource type="Texture2D" uid="uid://bhwnxh1nmt3yo" path="res://npc_and_dialog/sprites/portraits/npc_portrait_01.png" id="5_jks85"]
+[ext_resource type="Script" path="res://GUI/Dialog/Scripts/dialog_portrait.gd" id="6_bpc6w"]
+[ext_resource type="AudioStream" uid="uid://b3vhiq8jgyp85" path="res://GUI/Dialog/Audio/voice_blip.wav" id="6_fap6l"]
 [ext_resource type="FontFile" uid="uid://cu02w32euq8th" path="res://GUI/Fonts/m5x7.ttf" id="6_rhwh0"]
+[ext_resource type="Theme" uid="uid://d0375q3jqhgw4" path="res://GUI/Dialog/dialog_choise_theme.tres" id="9_ip75q"]
 
 [sub_resource type="Gradient" id="Gradient_03kqs"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -75,7 +78,7 @@ _data = {
 
 [node name="DialogSystem" type="CanvasLayer"]
 process_mode = 3
-layer = 0
+layer = 3
 script = ExtResource("1_eo01w")
 
 [node name="DialogUI" type="Control" parent="."]
@@ -123,7 +126,7 @@ text = "Example [b]Text[/b]!!!
 fit_content = true
 scroll_active = false
 
-[node name="Label" type="Label" parent="DialogUI"]
+[node name="NameLabel" type="Label" parent="DialogUI"]
 layout_mode = 0
 offset_left = 98.0
 offset_top = 150.0
@@ -141,10 +144,15 @@ text = "NAME"
 position = Vector2(52, 196)
 texture = ExtResource("5_jks85")
 hframes = 4
+script = ExtResource("6_bpc6w")
 
 [node name="Timer" type="Timer" parent="DialogUI"]
+one_shot = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DialogUI"]
+stream = ExtResource("6_fap6l")
+max_polyphony = 6
+bus = &"SFX"
 
 [node name="DialogProgressIndicator" type="PanelContainer" parent="DialogUI"]
 self_modulate = Color(1.82897e-06, 0.585636, 0.399317, 1)
@@ -168,3 +176,23 @@ libraries = {
 "": SubResource("AnimationLibrary_q0xdl")
 }
 autoplay = "default"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogUI"]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 95.0
+offset_right = 466.0
+offset_bottom = 249.0
+theme = ExtResource("9_ip75q")
+
+[node name="Button" type="Button" parent="DialogUI/VBoxContainer"]
+layout_mode = 2
+text = "Choise"
+
+[node name="Button2" type="Button" parent="DialogUI/VBoxContainer"]
+layout_mode = 2
+text = "Choise"
+
+[node name="Button3" type="Button" parent="DialogUI/VBoxContainer"]
+layout_mode = 2
+text = "Choise"

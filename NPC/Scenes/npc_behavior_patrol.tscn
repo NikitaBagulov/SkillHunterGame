@@ -5,3 +5,6 @@
 [node name="NpcBehaviorPatrol" type="Node2D"]
 script = ExtResource("1_h03gn")
 walk_speed = 1.0
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

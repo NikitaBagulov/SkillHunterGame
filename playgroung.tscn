@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=22 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
 [ext_resource type="Script" path="res://playgroung.gd" id="1_o0ui3"]
@@ -16,9 +16,11 @@
 [ext_resource type="PackedScene" uid="uid://fcpnjvpvt2w6" path="res://NPC/npc.tscn" id="14_kmd6v"]
 [ext_resource type="Resource" uid="uid://b6u0vc3ecsfif" path="res://NPC/00_NPCs/npc_01.tres" id="15_2enee"]
 [ext_resource type="PackedScene" uid="uid://bxo3oftj1jgxd" path="res://NPC/Scenes/npc_behavior_patrol.tscn" id="16_nfin8"]
+[ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="17_5gn4o"]
 [ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="17_w8qeo"]
 [ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="18_jcnne"]
 [ext_resource type="Resource" uid="uid://c5f4eqv7qy2kn" path="res://NPC/00_NPCs/hero.tres" id="19_42mgt"]
+[ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="19_upve5"]
 
 [node name="Playgroung" type="Node2D"]
 y_sort_enabled = true
@@ -68,38 +70,52 @@ item_data = ExtResource("7_3kupm")
 [node name="NPC" parent="." instance=ExtResource("14_kmd6v")]
 npc_resource = ExtResource("15_2enee")
 
-[node name="NpcBehaviorPatrol" parent="NPC" instance=ExtResource("16_nfin8")]
-walk_speed = 30.0
-
-[node name="PatrolLocation" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("4_i0e7n")]
-modulate = Color(1, 0, 0, 1)
-wait_time = 1.0
-
-[node name="PatrolLocation3" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("4_i0e7n")]
-modulate = Color(1, 1, 0, 1)
-position = Vector2(60, -130)
-wait_time = 1.0
-
-[node name="PatrolLocation2" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("4_i0e7n")]
-modulate = Color(0, 1, 0, 1)
-position = Vector2(156, -12)
-wait_time = 1.0
-
 [node name="DialogInteraction" parent="NPC" instance=ExtResource("17_w8qeo")]
-enabled = true
 
 [node name="DialogText" type="Node" parent="NPC/DialogInteraction"]
 script = ExtResource("18_jcnne")
 text = "Привет, [b]Герой[/b], это ты?"
 npc_info = ExtResource("15_2enee")
 
-[node name="DialogText2" type="Node" parent="NPC/DialogInteraction"]
-script = ExtResource("18_jcnne")
-text = "Да, это я!"
+[node name="DialogChoise" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("17_5gn4o")
 npc_info = ExtResource("19_42mgt")
 
-[node name="DialogText3" type="Node" parent="NPC/DialogInteraction"]
+[node name="DialogBranch" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
+script = ExtResource("19_upve5")
+text = "ДА!"
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
 script = ExtResource("18_jcnne")
-text = "Круто!"
+text = "Спасибо, братан!"
+npc_info = ExtResource("15_2enee")
+
+[node name="DialogText2" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
+script = ExtResource("18_jcnne")
+text = "Будь здоров!"
+npc_info = ExtResource("15_2enee")
+
+[node name="DialogBranch2" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
+script = ExtResource("19_upve5")
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch2"]
+script = ExtResource("18_jcnne")
+text = "Ну ты и лох!"
+npc_info = ExtResource("15_2enee")
+
+[node name="NpcBehaviorPatrol" parent="NPC" instance=ExtResource("16_nfin8")]
+walk_speed = 20.0
+
+[node name="PatrolLocation" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("4_i0e7n")]
+modulate = Color(1, 0, 0, 1)
+wait_time = 1.0
+
+[node name="PatrolLocation2" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("4_i0e7n")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(106, -78)
+
+[node name="PatrolLocation3" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("4_i0e7n")]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(150, 8)
 
 [editable path="Player"]

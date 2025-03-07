@@ -28,12 +28,10 @@ func _physics_process(delta):
 func gather_interactables() -> void:
 	for child in get_children():
 		if child is DialogInteraction:
-			print("yes child")
 			child.player_interacted.connect(_on_player_interacted)
 			child.finished.connect(_on_player_finished)
 
 func _on_player_interacted() -> void:
-	print("sucess")
 	update_direction(PlayerManager.player.global_position)
 	state = "idle"
 	velocity = Vector2.ZERO
