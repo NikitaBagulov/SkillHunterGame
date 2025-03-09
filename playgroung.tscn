@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=21 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
 [ext_resource type="Script" path="res://playgroung.gd" id="1_o0ui3"]
@@ -19,7 +19,6 @@
 [ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="17_5gn4o"]
 [ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="17_w8qeo"]
 [ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="18_jcnne"]
-[ext_resource type="Resource" uid="uid://c5f4eqv7qy2kn" path="res://NPC/00_NPCs/hero.tres" id="19_42mgt"]
 [ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="19_upve5"]
 
 [node name="Playgroung" type="Node2D"]
@@ -79,11 +78,12 @@ npc_info = ExtResource("15_2enee")
 
 [node name="DialogChoise" type="Node" parent="NPC/DialogInteraction"]
 script = ExtResource("17_5gn4o")
-npc_info = ExtResource("19_42mgt")
+npc_info = ExtResource("15_2enee")
 
 [node name="DialogBranch" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
 script = ExtResource("19_upve5")
 text = "ДА!"
+npc_info = ExtResource("15_2enee")
 
 [node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
 script = ExtResource("18_jcnne")
@@ -97,6 +97,7 @@ npc_info = ExtResource("15_2enee")
 
 [node name="DialogBranch2" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
 script = ExtResource("19_upve5")
+npc_info = ExtResource("15_2enee")
 
 [node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch2"]
 script = ExtResource("18_jcnne")
