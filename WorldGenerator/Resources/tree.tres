@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ObjectResource" load_steps=3 format=3 uid="uid://bovpk5y3sfkt1"]
+
+[ext_resource type="PackedScene" uid="uid://co1o4d8wybl3v" path="res://Props/Plants/plant.tscn" id="1_mc5ks"]
+[ext_resource type="Script" path="res://WorldGenerator/Scripts/ObjectResource.gd" id="1_sdtsm"]
+
+[resource]
+script = ExtResource("1_sdtsm")
+scenes = Array[PackedScene]([ExtResource("1_mc5ks")])
+biome = "Grass"
+probability = 0.01
+density_noise_scale = 0.1
+min_distance = 16.0
+offset_range = 8.0
+max_objects_per_chunk = 5

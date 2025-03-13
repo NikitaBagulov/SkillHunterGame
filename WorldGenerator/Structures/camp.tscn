@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://2jhrki0am1ms"]
+
+[ext_resource type="Texture2D" uid="uid://4spgu8d3agtf" path="res://WorldGenerator/Assets/Outdoor decoration/Outdoor_Decor_Free.png" id="1_pmenx"]
+[ext_resource type="PackedScene" uid="uid://c8hv2oxtho7xx" path="res://Interactebles/TreasureChest/TreasureChest.tscn" id="2_6f08h"]
+[ext_resource type="Resource" uid="uid://dsxrg0fp328b6" path="res://Items/apple.tres" id="2_as460"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7bf0"]
+size = Vector2(22, 6)
+
+[node name="Camp" type="Node2D"]
+
+[node name="TreasureChest" parent="." instance=ExtResource("2_6f08h")]
+position = Vector2(28, -8)
+item_data = ExtResource("2_as460")
+
+[node name="Wood" type="StaticBody2D" parent="."]
+light_mask = 0
+position = Vector2(6, 8)
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Wood"]
+texture = ExtResource("1_pmenx")
+region_enabled = true
+region_rect = Rect2(0, 112, 32, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wood"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_w7bf0")
+
+[node name="Wood2" type="StaticBody2D" parent="."]
+position = Vector2(47, 20)
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Wood2"]
+texture = ExtResource("1_pmenx")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 112, 32, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wood2"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_w7bf0")

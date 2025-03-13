@@ -15,7 +15,7 @@ func _ready():
 
 func update_bounds():
 	if world_generator:
-		var bounds = world_generator.get_current_bounds()
+		var bounds = world_generator.chunk_manager.get_current_bounds()
 		LevelManager.change_tilemap_bounds(bounds)
 
 # Метод для получения текущих границ (если нужно вызывать вручную)

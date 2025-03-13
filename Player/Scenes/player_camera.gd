@@ -1,14 +1,19 @@
 class_name PlayerCamera extends Camera2D
 
+var target: Node2D  # Цель, за которой следует камера (игрок)
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	LevelManager.TileMapBoundsChanged.connect(update_limits)
-	update_limits(LevelManager.current_tilemap_bounds)
-	pass # Replace with function body.
- 
+	make_current()
+
+func _process(delta):
+	if target:
+		global_position = target.global_position
+
+func set_target(node: Node2D):
+	target = node
+
 func update_limits(bounds: Array[Vector2]) -> void:
-	if bounds == []:
+	if bounds == [] or bounds.size() < 2:
 		return
 	limit_left = int(bounds[0].x)
 	limit_top = int(bounds[0].y)

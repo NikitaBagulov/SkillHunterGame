@@ -120,3 +120,4 @@ modulate = Color(0, 1, 0, 1)
 position = Vector2(150, 8)
 
 [editable path="Player"]
+[editable path="Plant"]
