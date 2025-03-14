@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cbjs6rm6yvcye"]
+[gd_scene load_steps=19 format=3 uid="uid://cbjs6rm6yvcye"]
 
 [ext_resource type="Script" path="res://WorldGenerator/Scripts/World.gd" id="1_2fcgd"]
 [ext_resource type="Texture2D" uid="uid://de5covq7pbx4b" path="res://WorldGenerator/Assets/Tilesets/Spring - simplified.png" id="2_m5ojv"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://WorldGenerator/Scripts/BiomeSettings.gd" id="7_b8fay"]
 [ext_resource type="Script" path="res://WorldGenerator/Scripts/ObjectResource.gd" id="8_p75be"]
 [ext_resource type="Resource" uid="uid://bovpk5y3sfkt1" path="res://WorldGenerator/Resources/tree.tres" id="9_no5wc"]
+[ext_resource type="Resource" uid="uid://bv3tc8kkj1rce" path="res://WorldGenerator/Resources/slime.tres" id="10_pnkbi"]
 [ext_resource type="Script" path="res://WorldGenerator/Scripts/StructureResource.gd" id="10_x6w1v"]
 [ext_resource type="PackedScene" uid="uid://2jhrki0am1ms" path="res://WorldGenerator/Structures/camp.tscn" id="11_khbli"]
 
@@ -582,5 +583,5 @@ script = ExtResource("6_hcivv")
 
 [node name="BiomeSettings" type="Node" parent="."]
 script = ExtResource("7_b8fay")
-object_resources = Array[ExtResource("8_p75be")]([ExtResource("9_no5wc")])
+object_resources = Array[ExtResource("8_p75be")]([ExtResource("9_no5wc"), ExtResource("10_pnkbi")])
 structure_resources = Array[ExtResource("10_x6w1v")]([SubResource("Resource_yfu04")])

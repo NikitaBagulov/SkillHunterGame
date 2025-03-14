@@ -9,6 +9,7 @@ class_name Player extends CharacterBody2D
 @onready var state_machine: PlayerStateMachine = $StateMachine
 @onready var hit_box: HitBox = $HitBox
 @onready var audio: AudioStreamPlayer2D = $Audio/AudioStreamPlayer2D
+@onready var health: Health = $HealthComponent
 
 
 var cardinal_direction: Vector2 = Vector2.DOWN
@@ -28,8 +29,7 @@ func _ready():
 	PlayerManager.set_player(self)
 	abilities.player = self
 	state_machine.initialize(self)
-	hit_box.Damaged.connect(_take_damage)
-	update_hp(99)
+	hit_box.Damaged.connect(health.take_damage)
 	pass
 	
 func _process(delta):
@@ -81,29 +81,3 @@ func animation_direction() -> String:
 			return "side"
 		_:
 			return "down"
-
-func _take_damage(hurt_box: HurtBox) -> void:
-	if invulnerable:
-		return
-	update_hp(-hurt_box.damage)
-	if HP > 0:
-		player_damaged.emit(hurt_box)
-	else:
-		player_damaged.emit(hurt_box)
-		update_hp(99)
-	pass	
-	
-func update_hp(delta: int) -> void:
-	HP = clampi(HP + delta, 0, max_HP)
-	Hud.update_hp(HP, max_HP)
-	pass	
-
-func make_invulnerable(_duration: float = 1.0) -> void:
-	invulnerable = true
-	hit_box.monitoring = false
-	
-	await  get_tree().create_timer(_duration).timeout
-	
-	invulnerable = false
-	hit_box.monitoring = true
-	pass

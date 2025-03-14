@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://capjxtgkwskpi"]
+
+[ext_resource type="Script" path="res://Enemies/enemy_spawner.gd" id="1_ba2b7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jjk7l"]
+
+[node name="EnemySpawner" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_ba2b7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jjk7l")
+debug_color = Color(0.236635, 0.618679, 0.439139, 0.42)

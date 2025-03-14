@@ -28,7 +28,55 @@ func generate_objects(chunk_pos: Vector2i):
 	
 	# Спавним объекты и структуры для доминирующего биома
 	spawn_single_objects(dominant_biome, possible_positions, chunk_pos)
+	spawn_enemy_spawners(dominant_biome, possible_positions, chunk_pos)
 	spawn_structures(dominant_biome, chunk_pos)
+
+func spawn_enemy_spawners(dominant_biome: String, possible_positions: Array, chunk_pos: Vector2i):
+	for object_resource in biome_settings.object_resources:
+		if object_resource.biome != dominant_biome or not object_resource.is_enemy:
+			continue
+		if possible_positions.is_empty():
+			continue
+		
+		var selected_positions = []
+		for pos in possible_positions:
+			var noise_pos = Vector2(pos.x, pos.y) * object_resource.density_noise_scale
+			var density_value = world_generator.noise_manager.get_density_noise(noise_pos)
+			var adjusted_probability = object_resource.probability * density_value
+			
+			if randf() < adjusted_probability:
+				selected_positions.append(pos)
+		
+		if selected_positions.size() > object_resource.max_objects_per_chunk:
+			selected_positions.shuffle()
+			selected_positions.resize(object_resource.max_objects_per_chunk)
+		
+		for pos in selected_positions:
+			var spawner = create_enemy_spawner(object_resource, pos, chunk_pos)
+			if spawner:
+				objects_node.add_child(spawner)
+				chunk_objects[chunk_pos].append(spawner)
+
+func create_enemy_spawner(object_resource: ObjectResource, pos: Vector2i, chunk_pos: Vector2i) -> Node2D:
+	var tile_center = ground_layer.map_to_local(pos)
+	var offset = Vector2(
+		randf_range(-object_resource.offset_range, object_resource.offset_range),
+		randf_range(-object_resource.offset_range, object_resource.offset_range)
+	)
+	var final_position = tile_center + offset
+	
+	for existing_obj in chunk_objects[chunk_pos]:
+		if final_position.distance_to(existing_obj.global_position) < object_resource.min_distance:
+			return null
+	
+	var spawner = EnemySpawner.new()
+	spawner.biome = object_resource.biome
+	spawner.enemy_scenes = object_resource.scenes
+	spawner.max_enemies = object_resource.max_objects_per_chunk
+	spawner.spawn_radius = 500.0  # Можно настроить в ObjectResource
+	spawner.respawn_time = 10.0  # Можно настроить в ObjectResource
+	spawner.global_position = final_position
+	return spawner
 
 # Подсчет биомов в чанке и определение доминирующего
 func get_dominant_biome(chunk_pos: Vector2i, start_pos: Vector2i, chunk_size: Vector2i) -> Dictionary:

@@ -90,6 +90,7 @@ func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 	for terrain_index in cells_by_terrain.keys():
 		if cells_by_terrain[terrain_index].size() > 0:
 			ground_layer.set_cells_terrain_connect(cells_by_terrain[terrain_index], 0, terrain_index, false)
+			ground_layer.set_cells_terrain_connect(cells_by_terrain[terrain_index], 0, terrain_index, false)
 	update_chunk_borders(chunk_pos)
 
 func cache_chunk(chunk_pos: Vector2i):
@@ -168,6 +169,7 @@ func update_chunk_borders(chunk_pos: Vector2i):
 	
 	for terrain_index in border_cells.keys():
 		if border_cells[terrain_index].size() > 0:
+			ground_layer.set_cells_terrain_connect(border_cells[terrain_index], 0, terrain_index, false)
 			ground_layer.set_cells_terrain_connect(border_cells[terrain_index], 0, terrain_index, false)
 
 func get_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) -> Array:

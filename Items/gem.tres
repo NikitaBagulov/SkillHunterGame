@@ -1,8 +1,16 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://hoismocbk86k"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3 uid="uid://hoismocbk86k"]
 
 [ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_8bxfm"]
 [ext_resource type="Script" path="res://Items/Scripts/item_data.gd" id="1_bsyxm"]
 [ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_gcq02"]
+[ext_resource type="Script" path="res://Skills/Regeneration.gd" id="3_tbuhp"]
+
+[sub_resource type="Resource" id="Resource_nr7dh"]
+script = ExtResource("3_tbuhp")
+skill_type = 1
+element = 0
+name = ""
+description = ""
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0mk44"]
 atlas = ExtResource("2_gcq02")
@@ -13,4 +21,5 @@ script = ExtResource("1_bsyxm")
 name = "Кристалл"
 description = "Очень дорогой!"
 texture = SubResource("AtlasTexture_0mk44")
+skill = SubResource("Resource_nr7dh")
 effects = Array[ExtResource("1_8bxfm")]([])
