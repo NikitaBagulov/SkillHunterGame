@@ -10,6 +10,7 @@ class_name Player extends CharacterBody2D
 @onready var hit_box: HitBox = $HitBox
 @onready var audio: AudioStreamPlayer2D = $Audio/AudioStreamPlayer2D
 @onready var health: Health = $HealthComponent
+@onready var experience_manager: ExperienceManager = $ExperienceManager
 
 
 var cardinal_direction: Vector2 = Vector2.DOWN
@@ -21,8 +22,8 @@ signal DirectionChanged(new_direction: Vector2)
 signal player_damaged(hurt_box: HurtBox)
 
 var invulnerable: bool = false
-var HP: int = 6
-var max_HP: int = 6
+#var HP: int = 6
+#var max_HP: int = 6
 
 
 func _ready():
@@ -30,6 +31,7 @@ func _ready():
 	abilities.player = self
 	state_machine.initialize(self)
 	hit_box.Damaged.connect(health.take_damage)
+	experience_manager.stats = health.stats
 	pass
 	
 func _process(delta):

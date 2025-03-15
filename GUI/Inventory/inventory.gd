@@ -5,6 +5,7 @@ signal showen
 
 @onready var item_description: Label = $ItemDescription
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+@onready var stats_ui: StatsUI = $StatsUI
 
 var is_paused: bool = false
 # Called when the node enters the scene tree for the first time.
@@ -22,12 +23,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 func show_inventory() -> void:
 	#get_tree().paused = true
+	stats_ui.visible = true
 	visible = true
 	is_paused = true
 	showen.emit()
 
 func hide_inventory() -> void:
 	#get_tree().paused = false
+	stats_ui.visible = false
 	visible = false
 	is_paused = false
 	hidden.emit()

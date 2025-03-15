@@ -99,25 +99,27 @@ func cache_chunk(chunk_pos: Vector2i):
 	var cells_by_terrain = {}
 	for biome in biomes:
 		cells_by_terrain[biome[0]] = []
-	
+
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			var pos = start_pos + Vector2i(x, y)
 			var tile_data = ground_layer.get_cell_tile_data(pos)
 			if tile_data:
 				cells_by_terrain[tile_data.terrain].append(pos)
-	
+
 	var object_data = []
 	if chunk_objects.has(chunk_pos):
 		for obj in chunk_objects[chunk_pos]:
-			var scene_path = obj.scene_file_path
-			if not object_pool.has(scene_path):
-				object_pool[scene_path] = []
-			object_pool[scene_path].append(obj)
-			obj.get_parent().remove_child(obj)
-			object_data.append(ObjectData.new(scene_path, obj.global_position))
+			if is_instance_valid(obj):  # Проверяем, жив ли объект
+				var scene_path = obj.scene_file_path
+				var position = obj.global_position
+				object_data.append(ObjectData.new(scene_path, position))
+				if not object_pool.has(scene_path):
+					object_pool[scene_path] = []
+				object_pool[scene_path].append(obj)
+				obj.get_parent().remove_child(obj)  # Удаляем из сцены, но не освобождаем
 		chunk_objects.erase(chunk_pos)
-	
+
 	cached_chunks[chunk_pos] = [cells_by_terrain, Time.get_ticks_msec() / 1000.0, object_data]
 	clear_chunk(chunk_pos)
 
@@ -149,10 +151,11 @@ func clear_chunk(chunk_pos: Vector2i):
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			ground_layer.erase_cell(start_pos + Vector2i(x, y))
-	
+
 	if chunk_objects.has(chunk_pos):
 		for obj in chunk_objects[chunk_pos]:
-			obj.queue_free()
+			if is_instance_valid(obj):  # Проверяем, жив ли объект
+				obj.queue_free()  # Освобождаем объект
 		chunk_objects.erase(chunk_pos)
 
 func update_chunk_borders(chunk_pos: Vector2i):

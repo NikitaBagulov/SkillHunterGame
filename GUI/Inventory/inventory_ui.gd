@@ -6,7 +6,7 @@ var focus_index: int = 0
 
 @export var data: InventoryData
 
-@onready var pause_menu
+@onready var stats_ui: StatsUI = $"../../StatsUI"
 
 
 func _ready():

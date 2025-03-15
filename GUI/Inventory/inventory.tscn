@@ -1,20 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://2che2phc8avj"]
+[gd_scene load_steps=6 format=3 uid="uid://2che2phc8avj"]
 
 [ext_resource type="Script" path="res://GUI/Inventory/inventory.gd" id="1_rrc2c"]
-[ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_6noxw"]
+[ext_resource type="StyleBox" uid="uid://bblg5uvit4jtr" path="res://GUI/Inventory/inventory.tres" id="2_nne2g"]
 [ext_resource type="Script" path="res://GUI/Inventory/inventory_ui.gd" id="3_whaf0"]
 [ext_resource type="Resource" uid="uid://b6nyw4yfpyiam" path="res://GUI/Inventory/player_inventory.tres" id="4_uqpnw"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1kuvs"]
-atlas = ExtResource("2_6noxw")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ee070"]
-texture = SubResource("AtlasTexture_1kuvs")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 14.0
+[ext_resource type="PackedScene" uid="uid://co1u4ajcoq32b" path="res://GUI/Stats/StatsUI.tscn" id="5_wkf2s"]
 
 [node name="Inventory" type="CanvasLayer"]
 script = ExtResource("1_rrc2c")
@@ -33,13 +23,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -192.0
-offset_top = -64.0
-offset_right = 192.0
-offset_bottom = 32.0
+offset_left = -233.0
+offset_top = -127.0
+offset_right = 151.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_ee070")
+theme_override_styles/panel = ExtResource("2_nne2g")
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer"]
 custom_minimum_size = Vector2(0, 96)
@@ -64,3 +54,9 @@ grow_vertical = 2
 autowrap_mode = 2
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="StatsUI" parent="." instance=ExtResource("5_wkf2s")]
+offset_left = 262.0
+offset_top = 136.0
+offset_right = -90.0
+offset_bottom = -6.0

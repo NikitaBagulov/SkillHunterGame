@@ -7,6 +7,7 @@ signal enemy_destroyed(hurt_box: HurtBox)
 const DIRECTIONS = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, Vector2.UP]
 
 @export var HP: int = 3
+@export var experience_drop: int = 5  # Количество опыта, которое даёт враг
 
 var cardinal_direction: Vector2 = Vector2.DOWN
 var direction: Vector2 = Vector2.ZERO
@@ -75,4 +76,5 @@ func _take_damage(hurt_box: HurtBox) -> void:
 	if HP > 0:
 		enemy_damaged.emit(hurt_box)
 	else:
+		print("Враг уничтожен, опыт: ", experience_drop)
 		enemy_destroyed.emit(hurt_box)
