@@ -16,15 +16,12 @@ func spawn_player():
 		PlayerManager.set_player_position(safe_position)
 		PlayerManager.set_player(world_generator.player)
 		
-		# Центрируем камеру на игроке
-		var camera = world_generator.player.get_node("PlayerCamera")  # Предполагается, что камера называется "PlayerCamera"
-		if camera and camera is PlayerCamera:
-			camera.global_position = safe_position  # Устанавливаем позицию камеры
-			camera.make_current()  # Убеждаемся, что эта камера активна
-			camera.force_update_scroll()
-			var bounds = world_generator.chunk_manager.get_current_bounds()
-			camera.update_limits(bounds)
-			print("Камера центрирована на игроке в: ", safe_position)
+		WorldCamera.global_position = safe_position  # Устанавливаем позицию камеры
+		WorldCamera.make_current()  # Убеждаемся, что эта камера активна
+		WorldCamera.force_update_scroll()
+		#var bounds = world_generator.chunk_manager.get_current_bounds()
+		#WorldCamera.update_limits(bounds)
+		print("Камера центрирована на игроке в: ", safe_position)
 		
 		print("Игрок спавнен в: ", safe_position)
 	else:

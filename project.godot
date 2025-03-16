@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 [autoload]
 
 PlayerManager="*res://00_Globals/global_player_manager.gd"
+WorldCamera="*res://Player/Scenes/WorldCamera.tscn"
 AudioManager="*res://00_Globals/global_audio_manager.gd"
 LevelManager="*res://00_Globals/GlobalLevelManager.gd"
 SceneLoadingScreen="*res://GUI/LoadingScreen/LoadingScreen.tscn"

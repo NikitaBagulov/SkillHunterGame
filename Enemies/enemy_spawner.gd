@@ -32,7 +32,8 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("player_spawn_zone"):
 		is_active = true
 		if spawned_enemies.is_empty():
-			spawn_enemies()
+			# Откладываем спавн врагов
+			call_deferred("spawn_enemies")
 
 func _on_area_exited(area: Area2D) -> void:
 	if area.is_in_group("player_spawn_zone"):
@@ -51,7 +52,8 @@ func spawn_enemies() -> void:
 	while spawned_enemies.size() < max_enemies:
 		var enemy = create_enemy_instance()
 		if enemy:
-			spawn_container.add_child(enemy)
+			# Откладываем добавление врага в сцену
+			spawn_container.call_deferred("add_child", enemy)
 			spawned_enemies.append(enemy)
 			enemy.connect("tree_exited", Callable(self, "_on_enemy_died").bind(enemy), CONNECT_REFERENCE_COUNTED)
 

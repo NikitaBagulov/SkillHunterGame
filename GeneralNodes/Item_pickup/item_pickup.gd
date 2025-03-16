@@ -25,7 +25,7 @@ func item_picked_up() -> void:
 	audio_stream_player_2d.play()
 	visible = false
 	await audio_stream_player_2d.finished
-	pass	
+	queue_free()
 
 func _set_item_data(value: ItemData) -> void:
 	item_data = value

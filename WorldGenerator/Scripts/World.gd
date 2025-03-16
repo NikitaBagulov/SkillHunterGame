@@ -4,7 +4,6 @@ class_name WorldGenerator extends Node2D
 @onready var biome_settings: BiomeSettings = $BiomeSettings
 
 var tile_set
-var camera: PlayerCamera
 
 @export var generation_settings = {
 	"chunk_size": Vector2i(8, 8),
@@ -47,11 +46,7 @@ func _ready():
 	object_spawner.initialize(self, objects_node, ground_layer, biome_settings)  # Исправлено: objects_node вместо self
 	player_spawner.initialize(self)
 	
-	# Настройка камеры
-	camera = PlayerCamera.new()
-	camera.name = "WorldCamera"
-	add_child(camera)
-	camera.make_current()
+	WorldCamera.make_current()
 	
 	# Таймеры для обновления мира
 	var update_timer = Timer.new()
@@ -71,7 +66,7 @@ func _ready():
 	SceneLoadingScreen.show_loading()
 	await load_initial_chunks()
 	player_spawner.spawn_player()
-	camera.set_target(player)
+	WorldCamera.set_target(player)
 
 func load_initial_chunks() -> void:
 	var render_distance = generation_settings["render_distance"]
@@ -105,3 +100,10 @@ func check_player_position():
 		chunk_manager.update_chunks(player_chunk)
 	if ground_layer is LevelTileMap:
 		ground_layer.update_bounds()
+	update_objects_visibility()
+
+# Новый метод для обновления видимости
+func update_objects_visibility():
+	for obj in objects_node.get_children():
+		if is_instance_valid(obj):
+			obj.visible = WorldCamera.is_in_view(obj.global_position)

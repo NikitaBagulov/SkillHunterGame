@@ -1092,3 +1092,4 @@ script = ExtResource("23_y8cp1")
 inventory_data = ExtResource("24_s2v1d")
 
 [node name="SpawnZone" parent="." instance=ExtResource("26_r7wht")]
+radius = 400.0
