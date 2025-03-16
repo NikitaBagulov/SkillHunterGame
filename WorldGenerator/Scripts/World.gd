@@ -7,7 +7,8 @@ var tile_set
 
 @export var generation_settings = {
 	"chunk_size": Vector2i(8, 8),
-	"render_distance": 4,
+	"render_distance": 4,           # Полный радиус загрузки
+	"initial_load_distance": 1,     # Начальный радиус загрузки (3x3 чанка)
 	"tile_scale": 1.0,
 	"noise_type": FastNoiseLite.TYPE_PERLIN,
 	"noise_frequency": 0.005,
@@ -15,7 +16,7 @@ var tile_set
 	"noise_seed": 0,
 	"noise_offset": Vector2(0, 0),
 	"chunk_cache_time": 120.0,
-	"chunk_load_interval": 0.01,
+	"chunk_load_interval": 0.05,    # Увеличим интервал для плавности
 	"density_noise_frequency": 0.05
 }
 

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EquipableItemData" load_steps=8 format=3 uid="uid://dytjm4nss7obv"]
+[gd_resource type="Resource" script_class="EquipableItemData" load_steps=7 format=3 uid="uid://dytjm4nss7obv"]
 
 [ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_lsp6m"]
 [ext_resource type="Script" path="res://Items/Scripts/equipable_item_modifier.gd" id="2_u3ukt"]
@@ -10,10 +10,6 @@ script = ExtResource("2_u3ukt")
 type = 1
 value = 1
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nirjh"]
-atlas = ExtResource("4_vchqt")
-region = Rect2(0, 0, 16, 16)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_14r4c"]
 atlas = ExtResource("4_vchqt")
 region = Rect2(0, 0, 16, 16)
@@ -22,7 +18,6 @@ region = Rect2(0, 0, 16, 16)
 script = ExtResource("3_odi5a")
 type = 0
 modifiers = Array[ExtResource("2_u3ukt")]([SubResource("Resource_8u88w")])
-sprite_texture = SubResource("AtlasTexture_nirjh")
 name = "Палка"
 description = "В детстве всегда мечтал найти такую!"
 texture = SubResource("AtlasTexture_14r4c")

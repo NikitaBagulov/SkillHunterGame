@@ -80,6 +80,11 @@ func item_from_save(save_object: Dictionary) -> SlotData:
 	new_slot.quantity = int(save_object.quantity)
 	return new_slot
 
+func swap_item_by_index(i1: int, i2: int) -> void:
+	var temp: SlotData = slots[i1]
+	slots[i1] = slots[i2]
+	slots[i2] = temp
+
 func equip_item( slot : SlotData ) -> void:
 	if slot == null or not slot.item_data is EquipableItemData:
 		return
@@ -108,7 +113,7 @@ func equip_item( slot : SlotData ) -> void:
 	slots[ equipment_index ] = slot
 	
 	equipment_changed.emit()
-	PauseMenu.focused_item_changed( unequiped_slot )
+	#Inventory.focused_item_changed( unequiped_slot )
 	pass
  
  

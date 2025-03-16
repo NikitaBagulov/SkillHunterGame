@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=22 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
 [ext_resource type="Script" path="res://playgroung.gd" id="1_o0ui3"]
@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://dhkuedwtsl10l" path="res://Items/potion.tres" id="7_3kupm"]
 [ext_resource type="Resource" uid="uid://hoismocbk86k" path="res://Items/gem.tres" id="7_n8e7g"]
 [ext_resource type="PackedScene" uid="uid://c8hv2oxtho7xx" path="res://Interactebles/TreasureChest/TreasureChest.tscn" id="8_46kmp"]
+[ext_resource type="Resource" uid="uid://dytjm4nss7obv" path="res://Items/sword.tres" id="9_jr0w8"]
 [ext_resource type="Resource" uid="uid://big86vbpt0csl" path="res://Items/stone.tres" id="10_862ce"]
 [ext_resource type="AudioStream" uid="uid://dn1w11jt052pf" path="res://Music/example_music_01.ogg" id="12_70887"]
 [ext_resource type="PackedScene" uid="uid://fcpnjvpvt2w6" path="res://NPC/npc.tscn" id="14_kmd6v"]
@@ -46,7 +47,7 @@ position = Vector2(189, 160)
 
 [node name="ItemPickup" parent="." instance=ExtResource("6_irg8q")]
 position = Vector2(107, 78)
-item_data = ExtResource("7_3kupm")
+item_data = ExtResource("9_jr0w8")
 
 [node name="TreasureChest" parent="." instance=ExtResource("8_46kmp")]
 position = Vector2(15, 66)

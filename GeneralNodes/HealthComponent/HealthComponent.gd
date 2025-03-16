@@ -23,6 +23,10 @@ func initialize() -> void:
 	Hud.update_hp(stats.hp, stats.max_hp)
 	stats.take_damage(0)  # Инициализация UI
 
+func update_hp(delta: int) -> void:
+	stats.hp = clampi(stats.hp + delta, 0, stats.max_hp)
+	Hud.update_hp(stats.hp, stats.max_hp)
+
 func take_damage(hurt_box: HurtBox) -> void:
 	if player.invulnerable:
 		return

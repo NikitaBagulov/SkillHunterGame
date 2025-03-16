@@ -522,19 +522,6 @@ size = Vector2i(2, 2)
 [node name="World" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_2fcgd")
-generation_settings = {
-"chunk_cache_time": 520.0,
-"chunk_load_interval": 0.01,
-"chunk_size": Vector2i(10, 10),
-"density_noise_frequency": 0.05,
-"noise_frequency": 0.005,
-"noise_octaves": 3,
-"noise_offset": Vector2(0, 0),
-"noise_seed": 0,
-"noise_type": 3,
-"render_distance": 10,
-"tile_scale": 1.0
-}
 
 [node name="GroundedLayer" type="TileMapLayer" parent="."]
 z_index = -1

@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://co1u4ajcoq32b"]
+[gd_scene load_steps=7 format=3 uid="uid://co1u4ajcoq32b"]
 
 [ext_resource type="StyleBox" uid="uid://bblg5uvit4jtr" path="res://GUI/Inventory/inventory.tres" id="1_1wpwr"]
 [ext_resource type="Script" path="res://GUI/Stats/stats_ui.gd" id="1_eqqu1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oklba"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mbg8a"]
+bg_color = Color(0.842944, 0.0516904, 0.0293368, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e0t6i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2fiv5"]
+bg_color = Color(0.270598, 0.520976, 0.299939, 1)
 
 [node name="StatsUI" type="PanelContainer"]
 custom_minimum_size = Vector2(128, 128)
@@ -23,6 +33,10 @@ layout_mode = 2
 
 [node name="HPBar" type="ProgressBar" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_oklba")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mbg8a")
 
 [node name="ExpBar" type="ProgressBar" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_e0t6i")
+theme_override_styles/fill = SubResource("StyleBoxFlat_2fiv5")

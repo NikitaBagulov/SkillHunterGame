@@ -1,4 +1,3 @@
-# ChunkManager.gd
 class_name ChunkManager extends Node
 
 const CACHE_CELLS = 0
@@ -9,20 +8,19 @@ var loaded_chunks = {}
 var cached_chunks = {}
 var chunk_queue = []
 var chunk_objects = {}
+var object_pool = {}
 var world_generator: WorldGenerator
 var ground_layer: Node2D
 var settings = {}
 var biomes = []
 
-func initialize(wg: WorldGenerator, gl: Node2D, gen_settings: Dictionary, biome_settings: BiomeSettings) -> void:
+func initialize(wg: WorldGenerator, gl: Node2D, gen_settings: Dictionary, biome_settings: BiomeSettings):
 	world_generator = wg
 	ground_layer = gl
 	settings = gen_settings
 	biomes = biome_settings.biomes
-	chunk_objects = world_generator.chunk_manager.chunk_objects  # Синхронизация с ObjectSpawner
 
-# Обновление чанков вокруг игрока
-func update_chunks(player_chunk: Vector2i) -> void:
+func update_chunks(player_chunk: Vector2i):
 	var new_chunks = {}
 	var render_distance = settings["render_distance"]
 	for x in range(player_chunk.x - render_distance, player_chunk.x + render_distance + 1):
@@ -53,15 +51,13 @@ func update_chunks(player_chunk: Vector2i) -> void:
 	
 	loaded_chunks = new_chunks
 
-# Загрузка следующего чанка из очереди
-func load_next_chunk() -> void:
+func load_next_chunk():
 	if chunk_queue.is_empty():
 		return
 	var chunk_pos = chunk_queue.pop_front()
 	generate_chunk(chunk_pos)
 
-# Генерация чанка
-func generate_chunk(chunk_pos: Vector2i) -> void:
+func generate_chunk(chunk_pos: Vector2i):
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
 	var cells_by_terrain = {}
@@ -88,46 +84,46 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 				cells_by_terrain[selected_terrain].append(pos)
 	
 	apply_chunk(chunk_pos, cells_by_terrain)
-	await world_generator.object_spawner.generate_objects(chunk_pos)  # Асинхронный вызов
+	world_generator.object_spawner.generate_objects(chunk_pos)
 
-# Применение террейна к чанку
-func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary) -> void:
+func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 	for terrain_index in cells_by_terrain.keys():
 		if cells_by_terrain[terrain_index].size() > 0:
 			ground_layer.set_cells_terrain_connect(cells_by_terrain[terrain_index], 0, terrain_index, false)
 			ground_layer.set_cells_terrain_connect(cells_by_terrain[terrain_index], 0, terrain_index, false)
 	update_chunk_borders(chunk_pos)
 
-# Кэширование чанка с использованием пула ObjectSpawner
-func cache_chunk(chunk_pos: Vector2i) -> void:
+func cache_chunk(chunk_pos: Vector2i):
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
 	var cells_by_terrain = {}
 	for biome in biomes:
 		cells_by_terrain[biome[0]] = []
-	
+
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			var pos = start_pos + Vector2i(x, y)
 			var tile_data = ground_layer.get_cell_tile_data(pos)
 			if tile_data:
 				cells_by_terrain[tile_data.terrain].append(pos)
-	
+
 	var object_data = []
 	if chunk_objects.has(chunk_pos):
 		for obj in chunk_objects[chunk_pos]:
-			if is_instance_valid(obj):
+			if is_instance_valid(obj):  # Проверяем, жив ли объект
 				var scene_path = obj.scene_file_path
 				var position = obj.global_position
 				object_data.append(ObjectData.new(scene_path, position))
-				world_generator.object_spawner.recycle_object(obj)  # Используем recycle_object из ObjectSpawner
+				if not object_pool.has(scene_path):
+					object_pool[scene_path] = []
+				object_pool[scene_path].append(obj)
+				obj.get_parent().remove_child(obj)  # Удаляем из сцены, но не освобождаем
 		chunk_objects.erase(chunk_pos)
-	
+
 	cached_chunks[chunk_pos] = [cells_by_terrain, Time.get_ticks_msec() / 1000.0, object_data]
 	clear_chunk(chunk_pos)
 
-# Восстановление чанка
-func restore_chunk(chunk_pos: Vector2i) -> void:
+func restore_chunk(chunk_pos: Vector2i):
 	var cells_by_terrain = cached_chunks[chunk_pos][CACHE_CELLS]
 	var object_data = cached_chunks[chunk_pos][CACHE_OBJECTS]
 	apply_chunk(chunk_pos, cells_by_terrain)
@@ -137,8 +133,8 @@ func restore_chunk(chunk_pos: Vector2i) -> void:
 	for data in object_data:
 		var scene_path = data.scene_path
 		var instance = null
-		if world_generator.object_spawner.object_pool.has(scene_path) and not world_generator.object_spawner.object_pool[scene_path].is_empty():
-			instance = world_generator.object_spawner.object_pool[scene_path].pop_back()
+		if object_pool.has(scene_path) and not object_pool[scene_path].is_empty():
+			instance = object_pool[scene_path].pop_back()
 			instance.global_position = data.position
 		else:
 			var scene = load(scene_path)
@@ -149,22 +145,20 @@ func restore_chunk(chunk_pos: Vector2i) -> void:
 			world_generator.objects_node.add_child(instance)
 			chunk_objects[chunk_pos].append(instance)
 
-# Очистка чанка
-func clear_chunk(chunk_pos: Vector2i) -> void:
+func clear_chunk(chunk_pos: Vector2i):
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			ground_layer.erase_cell(start_pos + Vector2i(x, y))
-	
+
 	if chunk_objects.has(chunk_pos):
 		for obj in chunk_objects[chunk_pos]:
-			if is_instance_valid(obj):
-				world_generator.object_spawner.recycle_object(obj)  # Перерабатываем объекты вместо удаления
+			if is_instance_valid(obj):  # Проверяем, жив ли объект
+				obj.queue_free()  # Освобождаем объект
 		chunk_objects.erase(chunk_pos)
 
-# Обновление границ чанка
-func update_chunk_borders(chunk_pos: Vector2i) -> void:
+func update_chunk_borders(chunk_pos: Vector2i):
 	var chunk_size = settings["chunk_size"]
 	var border_cells = {}
 	for biome in biomes:
@@ -181,7 +175,6 @@ func update_chunk_borders(chunk_pos: Vector2i) -> void:
 			ground_layer.set_cells_terrain_connect(border_cells[terrain_index], 0, terrain_index, false)
 			ground_layer.set_cells_terrain_connect(border_cells[terrain_index], 0, terrain_index, false)
 
-# Получение позиций границы чанка
 func get_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) -> Array:
 	var start_pos = chunk_pos * chunk_size
 	var positions = []
@@ -193,7 +186,6 @@ func get_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) -> Array:
 		positions.append(start_pos + Vector2i(chunk_size.x - 1, y))
 	return positions
 
-# Получение позиций соседних границ
 func get_neighbor_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) -> Array:
 	var positions = []
 	var neighbors = [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]
@@ -215,8 +207,7 @@ func get_neighbor_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) ->
 					positions.append(neighbor_start + Vector2i(x, 0))
 	return positions
 
-# Обновление клетки границы
-func update_border_cell(pos: Vector2i, border_cells: Dictionary) -> void:
+func update_border_cell(pos: Vector2i, border_cells: Dictionary):
 	var noise_value = world_generator.noise_manager.get_cached_noise(pos)
 	var selected_terrain = 0
 	for biome in biomes:
@@ -225,7 +216,6 @@ func update_border_cell(pos: Vector2i, border_cells: Dictionary) -> void:
 			break
 	border_cells[selected_terrain].append(pos)
 
-# Получение текущих границ загруженных чанков
 func get_current_bounds() -> Array[Vector2]:
 	if loaded_chunks.is_empty():
 		return [Vector2.ZERO, Vector2.ZERO]

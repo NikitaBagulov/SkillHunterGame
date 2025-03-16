@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://2che2phc8avj"]
+[gd_scene load_steps=7 format=3 uid="uid://2che2phc8avj"]
 
 [ext_resource type="Script" path="res://GUI/Inventory/inventory.gd" id="1_rrc2c"]
 [ext_resource type="StyleBox" uid="uid://bblg5uvit4jtr" path="res://GUI/Inventory/inventory.tres" id="2_nne2g"]
 [ext_resource type="Script" path="res://GUI/Inventory/inventory_ui.gd" id="3_whaf0"]
 [ext_resource type="Resource" uid="uid://b6nyw4yfpyiam" path="res://GUI/Inventory/player_inventory.tres" id="4_uqpnw"]
+[ext_resource type="PackedScene" uid="uid://catt4bbm6hsq" path="res://GUI/Inventory/inventory_slot_ui.tscn" id="5_w2a1k"]
 [ext_resource type="PackedScene" uid="uid://co1u4ajcoq32b" path="res://GUI/Stats/StatsUI.tscn" id="5_wkf2s"]
 
 [node name="Inventory" type="CanvasLayer"]
@@ -24,9 +25,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -233.0
-offset_top = -127.0
-offset_right = 151.0
-offset_bottom = -3.0
+offset_top = -126.0
+offset_right = -29.0
+offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_nne2g")
@@ -35,9 +36,104 @@ theme_override_styles/panel = ExtResource("2_nne2g")
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_vertical = 0
-columns = 10
+columns = 5
 script = ExtResource("3_whaf0")
 data = ExtResource("4_uqpnw")
+
+[node name="InventorySlot" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot7" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot8" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot9" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot10" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot11" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot12" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot13" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot14" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot15" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot16" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot17" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot18" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot19" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="InventorySlot20" parent="PanelContainer/GridContainer" instance=ExtResource("5_w2a1k")]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -126.0
+offset_right = 37.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_nne2g")
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer2"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Head" parent="PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Body" parent="PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Pants" parent="PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Boots" parent="PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="ItemDescription" type="Label" parent="."]
 anchors_preset = 8
@@ -45,10 +141,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -178.0
-offset_top = 3.5
-offset_right = 178.0
-offset_bottom = 26.5
+offset_left = -226.0
+offset_top = 47.0
+offset_right = 130.0
+offset_bottom = 70.0
 grow_horizontal = 2
 grow_vertical = 2
 autowrap_mode = 2
@@ -56,7 +152,7 @@ autowrap_mode = 2
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="StatsUI" parent="." instance=ExtResource("5_wkf2s")]
-offset_left = 262.0
-offset_top = 136.0
-offset_right = -90.0
-offset_bottom = -6.0
+offset_left = 283.0
+offset_top = 8.0
+offset_right = -69.0
+offset_bottom = -134.0
