@@ -3,9 +3,13 @@ extends CanvasLayer
 signal hidden
 signal showen
 
+@onready var background: ColorRect = $ColorRect
 @onready var item_description: Label = $ItemDescription
 @onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 @onready var stats_ui: StatsUI = $StatsUI
+@onready var main_inventory: PanelContainer = $PanelContainer
+@onready var equip_slots: PanelContainer = $PanelContainer2
+
 
 var is_paused: bool = false
 # Called when the node enters the scene tree for the first time.
@@ -22,16 +26,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		
 func show_inventory() -> void:
+
 	#get_tree().paused = true
 	stats_ui.visible = true
-	visible = true
+	background.visible = true
+	item_description.visible = true
+	main_inventory.visible = true
+	equip_slots.visible = true
+	Hud.visible = false
 	is_paused = true
 	showen.emit()
 
 func hide_inventory() -> void:
 	#get_tree().paused = false
 	stats_ui.visible = false
-	visible = false
+	background.visible = false
+	item_description.visible = false
+	main_inventory.visible = false
+	equip_slots.visible = false
+	Hud.visible = false
 	is_paused = false
 	hidden.emit()
 

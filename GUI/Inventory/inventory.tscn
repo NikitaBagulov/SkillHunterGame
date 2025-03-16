@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://2che2phc8avj"]
+[gd_scene load_steps=8 format=3 uid="uid://2che2phc8avj"]
 
 [ext_resource type="Script" path="res://GUI/Inventory/inventory.gd" id="1_rrc2c"]
+[ext_resource type="StyleBox" uid="uid://cbruqhq5ju0qj" path="res://GUI/Inventory/inventory_quick.tres" id="2_lsf7c"]
 [ext_resource type="StyleBox" uid="uid://bblg5uvit4jtr" path="res://GUI/Inventory/inventory.tres" id="2_nne2g"]
 [ext_resource type="Script" path="res://GUI/Inventory/inventory_ui.gd" id="3_whaf0"]
 [ext_resource type="Resource" uid="uid://b6nyw4yfpyiam" path="res://GUI/Inventory/player_inventory.tres" id="4_uqpnw"]
@@ -8,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://co1u4ajcoq32b" path="res://GUI/Stats/StatsUI.tscn" id="5_wkf2s"]
 
 [node name="Inventory" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_rrc2c")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -132,6 +134,66 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Boots" parent="PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="."]
+process_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -182.0
+offset_top = -50.0
+offset_right = 182.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("2_lsf7c")
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+columns = 10
+
+[node name="QuickSlot1" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot2" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot3" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot4" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot5" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot6" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot7" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot8" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot9" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot10" parent="PanelContainer3/GridContainer" instance=ExtResource("5_w2a1k")]
 unique_name_in_owner = true
 layout_mode = 2
 

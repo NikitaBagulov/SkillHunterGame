@@ -1,22 +1,50 @@
 class_name InventoryData extends Resource
 
 signal equipment_changed
-
 signal item_added(slot: SlotData)
 signal item_removed(slot: SlotData)
 
 @export var slots: Array[SlotData]
 var equipment_slot_count: int = 4
+var quick_slot_count: int = 10  # Добавляем константу для слотов быстрого доступа
+
+
 
 func _init():
 	connect_slots()
+	# Убедимся, что массив slots имеет правильный размер
+	if slots.size() < equipment_slot_count + quick_slot_count:
+		slots.resize(slots.size() + equipment_slot_count + quick_slot_count)
 
-func inventory_slots() -> Array[ SlotData ]:
-	return slots.slice( 0, -equipment_slot_count )
- 
- 
-func equipment_slots() -> Array[ SlotData ]:
-	return slots.slice( -equipment_slot_count, slots.size() )
+func inventory_slots() -> Array[SlotData]:
+	# Основной инвентарь - до слотов экипировки
+	return slots.slice(0, slots.size() - equipment_slot_count - quick_slot_count)
+
+func equipment_slots() -> Array[SlotData]:
+	# Слоты экипировки - после основного инвентаря, но перед быстрыми слотами
+	return slots.slice(slots.size() - equipment_slot_count - quick_slot_count, 
+					 slots.size() - quick_slot_count)
+
+func quick_slots() -> Array[SlotData]:
+	# Слоты быстрого доступа - последние 10 слотов
+	return slots.slice(slots.size() - quick_slot_count, slots.size())
+
+# Новая функция для использования предмета из слота быстрого доступа
+func use_quick_slot(index: int) -> bool:
+	if index < 0 || index >= quick_slot_count:
+		return false
+	
+	var quick_slot_index = slots.size() - quick_slot_count + index
+	var slot = slots[quick_slot_index]
+	
+	if slot != null && slot.item_data != null:
+		# Здесь можно добавить логику использования предмета
+		# Например, если предмет используемый:
+		if slot.item_data is ItemData and slot.item_data is not EquipableItemData:
+			slot.quantity -= 1
+			slot_changed()
+			return true
+	return false
 
 func add_item(item: ItemData, count: int = 1) -> bool:
 	for slot in slots:
