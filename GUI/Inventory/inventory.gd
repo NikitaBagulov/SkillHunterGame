@@ -44,7 +44,7 @@ func hide_inventory() -> void:
 	item_description.visible = false
 	main_inventory.visible = false
 	equip_slots.visible = false
-	Hud.visible = false
+	Hud.visible = true
 	is_paused = false
 	hidden.emit()
 

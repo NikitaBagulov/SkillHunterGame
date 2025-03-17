@@ -20,6 +20,7 @@ func set_progress(value: float) -> void:
 		set_process_input(true)  # Включаем обработку ввода для ожидания клавиши
 
 func show_loading() -> void:
+	Inventory.visible = false
 	visible = true
 	animation_player.play("fade_in")
 	is_loading_complete = false
@@ -31,6 +32,7 @@ func hide_loading() -> void:
 	animation_player.play("fade_out")
 	await animation_player.animation_finished
 	visible = false
+	Inventory.visible = true
 	is_loading_complete = false
 	set_process_input(false)  # Отключаем обработку ввода
 	get_tree().set_pause(false)
