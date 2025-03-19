@@ -11,7 +11,8 @@ class_name Player extends CharacterBody2D
 @onready var audio: AudioStreamPlayer2D = $Audio/AudioStreamPlayer2D
 @onready var health: Health = $HealthComponent
 @onready var experience_manager: ExperienceManager = $ExperienceManager
-
+@onready var weapon_texture: Sprite2D = $WeaponSprite
+@onready var attack_hurt_box: HurtBox = %AttackHurtBox
 
 var cardinal_direction: Vector2 = Vector2.DOWN
 var direction: Vector2 = Vector2.ZERO
@@ -31,14 +32,11 @@ func _ready():
 	abilities.player = self
 	state_machine.initialize(self)
 	hit_box.Damaged.connect(health.take_damage)
-	experience_manager.stats = health.stats
+	experience_manager.stats = PlayerManager.PLAYER_STATS
+	change_weapon_texture(PlayerManager.INVENTORY_DATA.get_equipped_weapon_texture())
 	pass
 	
 func _process(delta):
-	#direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
-	#direction.y = Input.get_action_strength("down") - Input.get_action_strength("up")
-	#direction = direction.normalized()
-	
 	direction = Vector2(
 		Input.get_axis("left", "right"),
 		Input.get_axis("up", "down")
@@ -47,6 +45,9 @@ func _process(delta):
 	
 func _physics_process(delta):
 	move_and_slide()
+
+func change_weapon_texture(texture: Texture) -> void:
+	weapon_texture.texture = texture
 
 func set_direction() -> bool:
 	

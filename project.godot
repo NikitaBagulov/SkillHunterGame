@@ -40,10 +40,6 @@ window/stretch/mode="viewport"
 
 project/assembly_name="SkillHunter"
 
-[editor_plugins]
-
-enabled=PackedStringArray()
-
 [global_group]
 
 player=""

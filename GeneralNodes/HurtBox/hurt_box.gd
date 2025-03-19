@@ -1,17 +1,16 @@
-class_name HurtBox extends Area2D
+extends Area2D
+class_name HurtBox
 
+# --- Настройки ---
+## Урон, наносимый при столкновении с HitBox
 @export var damage: int = 1
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	area_entered.connect(hitbox_entered)
-	pass # Replace with function body.
+# --- Инициализация ---
+func _ready() -> void:
+	area_entered.connect(_on_area_entered)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-func hitbox_entered(area: Area2D) -> void:
+# --- Обработка столкновений ---
+## Обрабатывает вход другой области (HitBox) и наносит урон
+func _on_area_entered(area: Area2D) -> void:
 	if area is HitBox:
 		area.take_damage(self)

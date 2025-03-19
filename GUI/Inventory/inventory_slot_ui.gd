@@ -1,6 +1,17 @@
 class_name InventorySlotUI extends Button
 
+enum ItemType {
+	HEAD,
+	BODY,
+	WEAPON,
+	ACCESSORY,
+	BOOTS,
+	PANTS,
+}
+
 var slot_data: SlotData
+var slot_type: int = -1  # Тип слота из enum ItemType
+
 var click_pos: Vector2 = Vector2.ZERO
 var dragging: bool = false
 var drag_texture: Control
@@ -84,3 +95,6 @@ func outside_drag_threshhold() -> bool:
 	if get_global_mouse_position().distance_to(click_pos) > drag_threshhold:
 		return true
 	return false
+	
+func is_inventory_slot() -> bool:
+	return slot_type == -1

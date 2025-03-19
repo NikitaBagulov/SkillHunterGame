@@ -1,63 +1,78 @@
-class_name EnemyStateChase extends EnemyState
+extends EnemyState
+class_name EnemyStateChase
 
+# --- Настройки ---
+## Имя анимации для состояния погони
 @export var animation_name: String = "chase"
+## Скорость преследования
 @export var chase_speed: float = 20.0
+## Скорость поворота (0.0 - 1.0)
 @export var turn_rate: float = 0.25
 
+# --- Настройки AI ---
 @export_category("AI")
+## Зона видимости врага
 @export var vision_area: VisionArea
+## Зона атаки врага
 @export var attack_area: HurtBox
+## Длительность состояния агрессии после потери игрока
 @export var state_aggro_duration: float = 0.5
+## Следующее состояние после завершения погони
 @export var next_state: EnemyState
 
-var _timer: float = 0.0
-var _direction: Vector2
+# --- Переменные ---
+## Таймер состояния агрессии
+var _aggro_timer: float = 0.0
+## Направление движения
+var _direction: Vector2 = Vector2.ZERO
+## Флаг видимости игрока
 var _can_see_player: bool = false
 
+# --- Инициализация ---
 func init() -> void:
 	if vision_area:
-		vision_area.player_entered.connect(_on_player_enter)
-		vision_area.player_exited.connect(_on_player_exit)
-	pass
+		vision_area.player_entered.connect(_on_player_entered)
+		vision_area.player_exited.connect(_on_player_exited)
 
+# --- Управление состоянием ---
 func enter() -> void:
-	_timer = state_aggro_duration
+	_aggro_timer = state_aggro_duration
 	enemy.update_animation(animation_name)
-	
 	if attack_area:
 		attack_area.monitoring = true
-	pass
-	
+
 func exit() -> void:
 	if attack_area:
 		attack_area.monitoring = false
 	_can_see_player = false
-	pass
-	
-func process(_delta: float) -> EnemyState:
-	var new_direction: Vector2 = enemy.global_position.direction_to(PlayerManager.player.global_position)
-	_direction = lerp(_direction, new_direction, turn_rate)
+
+func process(delta: float) -> EnemyState:
+	# Вычисляем направление к игроку и плавно поворачиваем
+	var target_direction = enemy.global_position.direction_to(PlayerManager.player.global_position)
+	_direction = _direction.lerp(target_direction, turn_rate)
 	enemy.velocity = _direction * chase_speed
+	
 	if enemy.set_direction(_direction):
 		enemy.update_animation(animation_name)
 	
-	if !_can_see_player:
-		_timer -= _delta
-		if _timer <= 0:
+	# Управляем таймером агрессии
+	if not _can_see_player:
+		_aggro_timer -= delta
+		if _aggro_timer <= 0:
 			return next_state
 	else:
-		_timer = state_aggro_duration
+		_aggro_timer = state_aggro_duration
+	
 	return null
 
-func physics(_delta: float) -> EnemyState:
-	return null
-
-func _on_player_enter() -> void:
+# --- Обработчики событий ---
+## Реакция на появление игрока в зоне видимости
+func _on_player_entered() -> void:
 	_can_see_player = true
 	if state_machine.current_state is EnemyStateStun or state_machine.current_state is EnemyStateDestroy:
 		return
 	state_machine.change_state(self)
-	pass
 
-func _on_player_exit() -> void:
+## Реакция на уход игрока из зоны видимости
+func _on_player_exited() -> void:
 	_can_see_player = false

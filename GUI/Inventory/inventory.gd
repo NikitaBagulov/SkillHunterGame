@@ -10,6 +10,7 @@ signal showen
 @onready var main_inventory: PanelContainer = $PanelContainer
 @onready var equip_slots: PanelContainer = $PanelContainer2
 
+var selected_quick_slot: InventorySlotUI = null
 
 var is_paused: bool = false
 # Called when the node enters the scene tree for the first time.

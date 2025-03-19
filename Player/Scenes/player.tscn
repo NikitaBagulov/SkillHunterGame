@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=54 format=3 uid="uid://bx7k3yspke326"]
 
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Player/Scripts/state_idle.gd" id="5_e5cws"]
 [ext_resource type="AudioStream" uid="uid://o6ljcjahdy5r" path="res://Player/Sprites/SwordSwoosh.wav" id="5_lgaaf"]
 [ext_resource type="Texture2D" uid="uid://dpw1ehlqmxxla" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_walk.png" id="5_mevil"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="6_2bvo6"]
 [ext_resource type="Texture2D" uid="uid://ckbuudhi2bpt4" path="res://Player/Sprites/Pack Content/Side animations/spr_player_right_walk.png" id="6_7a8q7"]
 [ext_resource type="Script" path="res://Player/Scripts/state_walk.gd" id="6_48nr7"]
 [ext_resource type="Texture2D" uid="uid://jydgr2rgx74n" path="res://Player/Sprites/Pack Content/Back animations/spr_player_back_walk.png" id="7_w1fug"]
@@ -121,6 +122,54 @@ tracks/6/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("WeaponSprite:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.63188]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("WeaponSprite:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("WeaponSprite:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-13, -3)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("WeaponSprite:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_bhw7a"]
 resource_name = "attack_down"
@@ -192,10 +241,10 @@ tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.266667),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.0333333, 0.133333),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(3.56, 3.6), Vector2(2.70667, 2.73334), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(3.56, 3.6), Vector2(2.70667, 2.73334)]
 }
 tracks/6/type = "audio"
 tracks/6/imported = false
@@ -212,6 +261,54 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0)
 }
 tracks/6/use_blend = true
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("WeaponSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-13, -3), Vector2(-13, -3), Vector2(8, 18), Vector2(0, 17)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("WeaponSprite:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-1.63188, -3.17255, -4.71322, -4.71322]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("WeaponSprite:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.75, 0.75)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("WeaponSprite:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.266667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="Animation" id="Animation_37d1c"]
 resource_name = "attack_side"
@@ -303,10 +400,59 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0)
 }
 tracks/6/use_blend = true
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("WeaponSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.133333, 0.166667, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(9, 6), Vector2(10, 6), Vector2(-11, -1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("WeaponSprite:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0.133333, 0.166667, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.316651, -1.57815]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("WeaponSprite:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0.133333, 0.166667, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.5, 0.5), Vector2(0.75, 0.75)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("WeaponSprite:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.2, 0.3, 0.433333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, false, false]
+}
 
 [sub_resource type="Animation" id="Animation_k1tum"]
 resource_name = "attack_up"
 length = 0.5
+step = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -394,6 +540,54 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0)
 }
 tracks/6/use_blend = true
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("WeaponSprite:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.033, 0.2, 0.201, 0.268),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(12, 14), Vector2(-13, -3), Vector2(-13, -3), Vector2(-11, -5), Vector2(-11, -5)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("WeaponSprite:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.033, 0.201, 0.268),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [-4.71239, -1.56424, -1.56424, -1.56424]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("WeaponSprite:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.033, 0.2, 0.201, 0.267),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.75, 0.75), Vector2(0.75, 0.75), Vector2(0.75, 0.75), Vector2(0.75, 0.75), Vector2(0.75, 0.75)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("WeaponSprite:visible")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.268),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="Animation" id="Animation_m1lhc"]
 resource_name = "idle_down"
@@ -991,6 +1185,10 @@ radius = 5.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_ui8hx"]
 radius = 25.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qekr8"]
+atlas = ExtResource("6_2bvo6")
+region = Rect2(0, 0, 16, 16)
+
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 16
 motion_mode = 1
@@ -1011,7 +1209,6 @@ region_rect = Rect2(240, 80, 80, 80)
 unique_name_in_owner = true
 position = Vector2(0, 9)
 collision_mask = 256
-monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/AttackHurtBox"]
 shape = SubResource("CircleShape2D_v050q")
@@ -1028,7 +1225,6 @@ libraries = {
 }
 
 [node name="HealthComponent" parent="." instance=ExtResource("25_g5pib")]
-stats = ExtResource("26_ker66")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_17lg5")
@@ -1084,6 +1280,7 @@ magnet_strength = 0.1
 play_magnet_audio = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemMagnet"]
+position = Vector2(5, 4)
 shape = SubResource("CircleShape2D_ui8hx")
 debug_color = Color(0.849198, 0.000908324, 0.901895, 0.42)
 
@@ -1093,3 +1290,8 @@ inventory_data = ExtResource("24_s2v1d")
 
 [node name="SpawnZone" parent="." instance=ExtResource("26_r7wht")]
 radius = 400.0
+
+[node name="WeaponSprite" type="Sprite2D" parent="."]
+position = Vector2(-13, -3)
+rotation = -1.63188
+texture = SubResource("AtlasTexture_qekr8")

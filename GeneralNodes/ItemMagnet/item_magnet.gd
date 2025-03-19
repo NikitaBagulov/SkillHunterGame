@@ -1,33 +1,52 @@
-class_name ItemMagnet extends Area2D
+extends Area2D
+class_name ItemMagnet
 
-var items: Array[ItemPickup] = []
-var speeds: Array[float] = []
-
+# --- Настройки ---
+## Сила притяжения магнита (влияет на ускорение предметов)
 @export var magnet_strength: float = 1.0
+## Воспроизводить ли звук при притягивании предмета
 @export var play_magnet_audio: bool = false
 
+# --- Переменные ---
+## Список притягиваемых предметов
+var items: Array[ItemPickup] = []
+## Скорости притягивания для каждого предмета
+var speeds: Array[float] = []
+
+# --- Ссылки на узлы ---
 @onready var audio: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
-func _ready():
-	area_entered.connect(_on_area_enter)
-	
-func _process(delta):
-	for i in range(items.size()-1, -1, -1):
-		var _item = items[i]
-		if _item == null:	
+# --- Инициализация ---
+func _ready() -> void:
+	area_entered.connect(_on_area_entered)
+
+# --- Обработка каждого кадра ---
+func _process(delta: float) -> void:
+	# Обратный цикл для безопасного удаления элементов
+	for i in range(items.size() - 1, -1, -1):
+		var item = items[i]
+		if not is_instance_valid(item):
+			# Удаляем недействительный предмет
 			items.remove_at(i)
 			speeds.remove_at(i)
-		elif _item.global_position.distance_to(global_position) > speeds[i]:
+			continue
+		
+		var distance = item.global_position.distance_to(global_position)
+		if distance > speeds[i]:
+			# Увеличиваем скорость притягивания и двигаем предмет
 			speeds[i] += magnet_strength * delta
-			_item.position += _item.global_position.direction_to(global_position) * speeds[i]	
+			item.position += item.global_position.direction_to(global_position) * speeds[i]
 		else:
-			_item.global_position = global_position
-	
-func _on_area_enter(_area: Area2D):
-	if _area.get_parent() is ItemPickup:
-		var _new_item = _area.get_parent() as ItemPickup
-		items.append(_new_item)
+			# Предмет достиг магнита
+			item.global_position = global_position
+
+# --- Обработчики событий ---
+## Добавляет новый предмет в список притягиваемых
+func _on_area_entered(area: Area2D) -> void:
+	var parent = area.get_parent()
+	if parent is ItemPickup:
+		var new_item = parent as ItemPickup
+		items.append(new_item)
 		speeds.append(magnet_strength)
 		if play_magnet_audio:
-			audio.play(0)
-	pass
+			audio.play()

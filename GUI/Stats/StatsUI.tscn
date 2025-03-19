@@ -14,12 +14,12 @@ bg_color = Color(0.842944, 0.0516904, 0.0293368, 1)
 bg_color = Color(0.270598, 0.520976, 0.299939, 1)
 
 [node name="StatsUI" type="PanelContainer"]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(96, 64)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -352.0
-offset_bottom = -142.0
+offset_right = -384.0
+offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_1wpwr")
@@ -40,3 +40,6 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_mbg8a")
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_e0t6i")
 theme_override_styles/fill = SubResource("StyleBoxFlat_2fiv5")
+
+[node name="DamageLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2

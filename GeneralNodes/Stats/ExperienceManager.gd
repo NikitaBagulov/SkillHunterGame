@@ -1,15 +1,13 @@
-# ExperienceManager.gd
 extends Node
 class_name ExperienceManager
 
-@export var stats: Stats  # Ссылка на Stats игрока
+# --- Настройки ---
+## Ссылка на статистику игрока
+@export var stats: Stats
 
-func _ready() -> void:
-	pass
-
+# --- Управление опытом ---
+## Добавляет опыт игроку
 func gain_experience(amount: int) -> void:
 	if stats:
 		stats.add_experience(amount)
-		print("Получено опыта:", amount)
-
-# Убираем connect_to_enemy и _on_enemy_destroyed, так как они больше не нужны
+		print("Experience gained: ", amount)
