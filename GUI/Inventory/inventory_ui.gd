@@ -4,7 +4,7 @@ const INVENTORY_SLOT = preload("res://GUI/Inventory/inventory_slot_ui.tscn")
 
 var focus_index: int = 0
 var hovered_item: InventorySlotUI
-var selected_quick_slot: int = -1
+var selected_quick_slot: int = 0
 
 @export var data: InventoryData
 
@@ -35,6 +35,8 @@ var equip_colors = {
 var inventory_slots_ui: Array[InventorySlotUI] = []
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	Inventory.hidden.connect(clear_inventory)
 	Inventory.showen.connect(update_inventory)
 	
@@ -108,7 +110,7 @@ func update_inventory(apply_focus: bool = true) -> void:
 	
 	update_quick_slot_selection()
 
-func input(event):
+func _input(event):
 	for i in range(10):
 		if event.is_action_pressed("quick_slot" + str(i + 1)):
 			if selected_quick_slot == i:

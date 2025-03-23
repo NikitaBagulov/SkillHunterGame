@@ -524,7 +524,7 @@ y_sort_enabled = true
 script = ExtResource("1_2fcgd")
 generation_settings = {
 "chunk_cache_time": 120.0,
-"chunk_load_interval": 0.05,
+"chunk_load_interval": 0.5,
 "chunk_size": Vector2i(8, 8),
 "density_noise_frequency": 0.05,
 "initial_load_distance": 1,

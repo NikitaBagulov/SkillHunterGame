@@ -35,6 +35,10 @@ text = "Save"
 layout_mode = 2
 text = "Load"
 
+[node name="ButtonExit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
 [node name="Label" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0.721569)
 anchors_preset = 5

@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=52 format=3 uid="uid://bx7k3yspke326"]
 
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
@@ -23,10 +23,8 @@
 [ext_resource type="AudioStream" uid="uid://b28vo48gqqkkw" path="res://Player/Sprites/hit_player.wav" id="19_ho8js"]
 [ext_resource type="Script" path="res://Player/Scripts/Abilities/abilities.gd" id="22_7epog"]
 [ext_resource type="PackedScene" uid="uid://bl6xxjegdtc3b" path="res://GeneralNodes/ItemMagnet/ItemMagnet.tscn" id="23_scpv6"]
-[ext_resource type="Script" path="res://SkillLogic/SkillManager.gd" id="23_y8cp1"]
-[ext_resource type="Resource" uid="uid://b6nyw4yfpyiam" path="res://GUI/Inventory/player_inventory.tres" id="24_s2v1d"]
+[ext_resource type="Script" path="res://SkillSystem/SkillManager.gd" id="23_y8cp1"]
 [ext_resource type="PackedScene" uid="uid://b4kjay8wgnv8p" path="res://GeneralNodes/HealthComponent/HealthComponent.tscn" id="25_g5pib"]
-[ext_resource type="Resource" uid="uid://b43r7n1vj4ei1" path="res://Player/PlayerStats.tres" id="26_ker66"]
 [ext_resource type="PackedScene" uid="uid://b3nb3pybkadqr" path="res://GeneralNodes/SpawnZone/SpawnZone.tscn" id="26_r7wht"]
 [ext_resource type="Script" path="res://GeneralNodes/Stats/ExperienceManager.gd" id="27_174at"]
 
@@ -1243,7 +1241,6 @@ script = ExtResource("17_1mfyy")
 
 [node name="ExperienceManager" type="Node" parent="."]
 script = ExtResource("27_174at")
-stats = ExtResource("26_ker66")
 
 [node name="Interactions" type="Node2D" parent="."]
 position = Vector2(0, 9)
@@ -1284,10 +1281,6 @@ position = Vector2(5, 4)
 shape = SubResource("CircleShape2D_ui8hx")
 debug_color = Color(0.849198, 0.000908324, 0.901895, 0.42)
 
-[node name="SkillManager" type="Node" parent="."]
-script = ExtResource("23_y8cp1")
-inventory_data = ExtResource("24_s2v1d")
-
 [node name="SpawnZone" parent="." instance=ExtResource("26_r7wht")]
 radius = 400.0
 
@@ -1295,3 +1288,7 @@ radius = 400.0
 position = Vector2(-13, -3)
 rotation = -1.63188
 texture = SubResource("AtlasTexture_qekr8")
+
+[node name="SkillManager" type="Node" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("23_y8cp1")
+player = NodePath("..")

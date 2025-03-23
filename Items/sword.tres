@@ -1,14 +1,9 @@
-[gd_resource type="Resource" script_class="EquipableItemData" load_steps=7 format=3 uid="uid://dytjm4nss7obv"]
+[gd_resource type="Resource" script_class="EquipableItemData" load_steps=6 format=3 uid="uid://dytjm4nss7obv"]
 
 [ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_lsp6m"]
 [ext_resource type="Script" path="res://Items/Scripts/equipable_item_modifier.gd" id="2_u3ukt"]
 [ext_resource type="Script" path="res://Items/Scripts/equipable_item_data.gd" id="3_odi5a"]
 [ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="4_vchqt"]
-
-[sub_resource type="Resource" id="Resource_8u88w"]
-script = ExtResource("2_u3ukt")
-type = 1
-value = 10
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14r4c"]
 atlas = ExtResource("4_vchqt")
@@ -17,8 +12,8 @@ region = Rect2(16, 0, 16, 16)
 [resource]
 script = ExtResource("3_odi5a")
 type = 4
-modifiers = Array[ExtResource("2_u3ukt")]([SubResource("Resource_8u88w")])
+modifiers = Array[ExtResource("2_u3ukt")]([])
 name = "Палка"
 description = "В детстве всегда мечтал найти такую!"
 texture = SubResource("AtlasTexture_14r4c")
-effects = Array[ExtResource("1_lsp6m")]([])
+effects = Array[ExtResource("1_lsp6m")]([null])

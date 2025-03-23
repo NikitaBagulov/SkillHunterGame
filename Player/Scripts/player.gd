@@ -13,6 +13,7 @@ class_name Player extends CharacterBody2D
 @onready var experience_manager: ExperienceManager = $ExperienceManager
 @onready var weapon_texture: Sprite2D = $WeaponSprite
 @onready var attack_hurt_box: HurtBox = %AttackHurtBox
+@onready var skill_manager: SkillManager = $SkillManager
 
 var cardinal_direction: Vector2 = Vector2.DOWN
 var direction: Vector2 = Vector2.ZERO
@@ -30,11 +31,18 @@ var invulnerable: bool = false
 func _ready():
 	PlayerManager.set_player(self)
 	abilities.player = self
+	skill_manager.player = self
 	state_machine.initialize(self)
 	hit_box.Damaged.connect(health.take_damage)
 	experience_manager.stats = PlayerManager.PLAYER_STATS
 	change_weapon_texture(PlayerManager.INVENTORY_DATA.get_equipped_weapon_texture())
 	pass
+	
+func _input(event):
+	if event.is_action_pressed("ui_accept"):  # Например, Enter
+		print(PlayerManager.PLAYER_STATS.max_hp)
+		skill_manager.check_skills_status()	
+
 	
 func _process(delta):
 	direction = Vector2(
@@ -48,6 +56,7 @@ func _physics_process(delta):
 
 func change_weapon_texture(texture: Texture) -> void:
 	weapon_texture.texture = texture
+	skill_manager.update_passive_skills()
 
 func set_direction() -> bool:
 	

@@ -3,7 +3,7 @@ class_name ExperienceManager
 
 # --- Настройки ---
 ## Ссылка на статистику игрока
-@export var stats: Stats
+var stats: Stats = PlayerManager.PLAYER_STATS
 
 # --- Управление опытом ---
 ## Добавляет опыт игроку

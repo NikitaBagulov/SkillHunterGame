@@ -11,7 +11,7 @@ func spawn_player():
 		return
 	var safe_position = find_safe_spawn_position()
 	if safe_position:
-		PlayerManager.add_player_instance(world_generator)
+		PlayerManager.spawn_player(world_generator)
 		world_generator.player = PlayerManager.get_player()
 		PlayerManager.set_player_position(safe_position)
 		PlayerManager.set_player(world_generator.player)

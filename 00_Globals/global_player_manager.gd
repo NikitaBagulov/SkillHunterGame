@@ -6,7 +6,7 @@ const PLAYER_SCENE = preload("res://Player/Scenes/player.tscn")
 ## Данные инвентаря игрока
 const INVENTORY_DATA: InventoryData = preload("res://GUI/Inventory/player_inventory.tres")
 ## Статистика игрока
-const PLAYER_STATS: Stats = preload("res://Player/PlayerStats.tres")
+var PLAYER_STATS: Stats = preload("res://Player/PlayerStats.tres")
 
 # --- Сигналы ---
 ## Сигнал нажатия кнопки взаимодействия

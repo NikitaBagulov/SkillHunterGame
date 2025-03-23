@@ -28,7 +28,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 func show_inventory() -> void:
 
-	#get_tree().paused = true
+	
 	stats_ui.visible = true
 	background.visible = true
 	item_description.visible = true
@@ -36,10 +36,12 @@ func show_inventory() -> void:
 	equip_slots.visible = true
 	Hud.visible = false
 	is_paused = true
+	
 	showen.emit()
+	get_tree().paused = true
 
 func hide_inventory() -> void:
-	#get_tree().paused = false
+	
 	stats_ui.visible = false
 	background.visible = false
 	item_description.visible = false
@@ -48,6 +50,7 @@ func hide_inventory() -> void:
 	Hud.visible = true
 	is_paused = false
 	hidden.emit()
+	get_tree().paused = false
 
 func update_item_description(new_text: String) -> void:
 	item_description.text = new_text

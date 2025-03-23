@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://Player/Scenes/player_camera.gd" id="1_oqk76"]
 
 [node name="WorldCamera" type="Camera2D"]
+position = Vector2(240, 135)
 script = ExtResource("1_oqk76")
