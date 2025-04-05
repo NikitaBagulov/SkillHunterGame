@@ -10,64 +10,59 @@ enum KeyBinding { NONE, Q, E, R, T }
 @export var element: Element = Element.NONE
 @export var key_binding: KeyBinding = KeyBinding.NONE
 @export_multiline var description: String = ""
-@export var base_value: int = 10
-@export var cooldown: float = 1.0
-@export var duration: float = 0.0
-
-@export var custom_logic: GDScript
-var logic_instance = null
+@export var base_value: int = 10  # Базовое значение (урон/бонус)
+@export var cooldown: float = 1.0  # Перезарядка для активных
+@export var duration: float = 0.0  # Длительность эффекта
 
 func _init():
-	if custom_logic:
-		logic_instance = custom_logic.new()
-		if logic_instance:
-			print("Skill '%s' initialized with logic: %s" % [name, custom_logic.resource_path])
-		else:
-			print("Failed to initialize logic for skill '%s'" % name)
-	else:
-		print("No custom logic assigned to skill '%s'" % name)
+	print("Skill '%s' initialized (Type: %s, Element: %s)" % [
+		name,
+		SkillType.keys()[type],
+		Element.keys()[element]
+	])
 
+# Виртуальный метод для активных навыков
 func execute(player: Player) -> bool:
-	if not logic_instance:
-		print("No logic instance for skill '%s' (ACTIVE)" % name)
-		return false
 	if type != SkillType.ACTIVE:
-		print("Skill '%s' is not ACTIVE" % name)
+		print("Skill '%s' is not ACTIVE, cannot execute" % name)
 		return false
-	var success = logic_instance.execute(player, self)
-	if success:
-		apply_elemental_effect(player)
-		print("Skill '%s' executed successfully" % name)
-	else:
-		print("Skill '%s' execution failed" % name)
-	return success
+	print("Default execute called for '%s' - override this method in inherited script" % name)
+	return false
 
+# Виртуальный метод для применения пассивного эффекта
 func apply_passive(player: Player) -> void:
 	if type != SkillType.PASSIVE:
-		print("Skill '%s' is not PASSIVE" % name)
+		print("Skill '%s' is not PASSIVE, cannot apply passive" % name)
 		return
-	if not logic_instance:
-		print("No logic instance for skill '%s' (PASSIVE)" % name)
-		return
-	logic_instance.apply_passive(player, self)
-	print("Skill '%s' passive applied" % name)
+	print("Default apply_passive called for '%s' - override this method in inherited script" % name)
 
+# Виртуальный метод для снятия пассивного эффекта
 func remove_passive(player: Player) -> void:
 	if type != SkillType.PASSIVE:
+		print("Skill '%s' is not PASSIVE, cannot remove passive" % name)
 		return
-	if not logic_instance:
-		print("No logic instance for skill '%s' (PASSIVE)" % name)
-		return
-	logic_instance.remove_passive(player, self)
-	print("Skill '%s' passive removed" % name)
+	print("Default remove_passive called for '%s' - override this method in inherited script" % name)
 
+# Применение эффекта стихии
 func apply_elemental_effect(player: Player) -> void:
 	match element:
 		Element.FIRE:
 			player.effect_animation_player.play("fire_effect")
+			print("Applied FIRE effect for '%s'" % name)
 		Element.WATER:
 			player.effect_animation_player.play("water_effect")
+			print("Applied WATER effect for '%s'" % name)
 		Element.AIR:
 			player.effect_animation_player.play("air_effect")
+			print("Applied AIR effect for '%s'" % name)
 		Element.EARTH:
 			player.effect_animation_player.play("earth_effect")
+			print("Applied EARTH effect for '%s'" % name)
+
+func get_description() -> String:
+	var desc = description
+	if element != Element.NONE:
+		desc += " (Element: " + Element.keys()[element] + ")"
+	if type == SkillType.ACTIVE and key_binding != KeyBinding.NONE:
+		desc += " (Key: " + KeyBinding.keys()[key_binding] + ")"
+	return desc + " [Level " + str(level) + "]"

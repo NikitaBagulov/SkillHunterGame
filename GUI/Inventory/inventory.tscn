@@ -10,7 +10,6 @@
 
 [node name="Inventory" type="CanvasLayer"]
 process_mode = 3
-visible = false
 script = ExtResource("1_rrc2c")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -232,6 +231,6 @@ autowrap_mode = 2
 
 [node name="StatsUI" parent="." instance=ExtResource("5_wkf2s")]
 offset_left = 378.0
-offset_top = 4.0
+offset_top = 5.0
 offset_right = -6.0
-offset_bottom = -176.0
+offset_bottom = -153.0

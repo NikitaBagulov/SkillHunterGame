@@ -36,12 +36,13 @@ func _ready():
 	hit_box.Damaged.connect(health.take_damage)
 	experience_manager.stats = PlayerManager.PLAYER_STATS
 	change_weapon_texture(PlayerManager.INVENTORY_DATA.get_equipped_weapon_texture())
+	PlayerManager.PLAYER_STATS.player_level_up.emit(PlayerManager.PLAYER_STATS)
 	pass
 	
 func _input(event):
 	if event.is_action_pressed("ui_accept"):  # Например, Enter
-		print(PlayerManager.PLAYER_STATS.max_hp)
-		skill_manager.check_skills_status()	
+		print("HP: ", PlayerManager.PLAYER_STATS.max_hp)
+		print("DMG: ", PlayerManager.PLAYER_STATS.total_damage)
 
 	
 func _process(delta):

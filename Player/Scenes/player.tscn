@@ -31,9 +31,6 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sy26"]
 radius = 5.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_v050q"]
-radius = 4.375
-
 [sub_resource type="Animation" id="Animation_xgl54"]
 length = 0.001
 tracks/0/type = "value"
@@ -87,7 +84,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/path = NodePath("AttackHurtBox:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -99,7 +96,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/path = NodePath("AttackHurtBox:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -223,7 +220,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/path = NodePath("AttackHurtBox:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -235,7 +232,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/path = NodePath("AttackHurtBox:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -362,7 +359,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/path = NodePath("AttackHurtBox:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -374,7 +371,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/path = NodePath("AttackHurtBox:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -502,7 +499,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/AttackHurtBox:position")
+tracks/4/path = NodePath("AttackHurtBox:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -514,7 +511,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/AttackHurtBox:scale")
+tracks/5/path = NodePath("AttackHurtBox:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1187,6 +1184,9 @@ radius = 25.0
 atlas = ExtResource("6_2bvo6")
 region = Rect2(0, 0, 16, 16)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_v050q"]
+radius = 4.375
+
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 16
 motion_mode = 1
@@ -1202,15 +1202,6 @@ texture = ExtResource("2_xbkxk")
 hframes = 12
 frame = 4
 region_rect = Rect2(240, 80, 80, 80)
-
-[node name="AttackHurtBox" parent="Sprite2D" instance=ExtResource("15_jvqnq")]
-unique_name_in_owner = true
-position = Vector2(0, 9)
-collision_mask = 256
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/AttackHurtBox"]
-shape = SubResource("CircleShape2D_v050q")
-debug_color = Color(0.892804, 0.0499779, 9.62615e-08, 0.42)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1292,3 +1283,12 @@ texture = SubResource("AtlasTexture_qekr8")
 [node name="SkillManager" type="Node" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("23_y8cp1")
 player = NodePath("..")
+
+[node name="AttackHurtBox" parent="." instance=ExtResource("15_jvqnq")]
+unique_name_in_owner = true
+position = Vector2(0, 9)
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHurtBox"]
+shape = SubResource("CircleShape2D_v050q")
+debug_color = Color(0.892804, 0.0499779, 9.62615e-08, 0.42)

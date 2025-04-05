@@ -3,7 +3,7 @@ class_name Stats
 
 # --- Сигналы ---
 ## Сигнал повышения уровня игрока
-signal player_level_up(new_level: int)
+signal player_level_up(stats: Stats)
 ## Сигнал обновления итогового урона
 signal damage_updated(total_damage: int)
 
@@ -70,6 +70,7 @@ var speed_bonus: int = 0 :
 	set(value):
 		speed_bonus = max(value, 0)  # Не допускаем отрицательного бонуса скорости
 
+
 # --- Управление уроном ---
 ## Пересчитывает итоговый урон с учетом бонуса от оружия
 func update_damage(weapon_bonus: int) -> void:
@@ -80,6 +81,7 @@ func update_damage(weapon_bonus: int) -> void:
 ## Добавляет опыт и проверяет повышение уровня
 func add_experience(amount: int) -> void:
 	experience += amount  # Используем сеттер
+	player_level_up.emit(self)
 
 ## Повышает уровень игрока
 func _level_up() -> void:
@@ -89,7 +91,7 @@ func _level_up() -> void:
 	max_hp += 2  # Используем сеттер
 	hp = max_hp  # Используем сеттер
 	base_damage += 1  # Используем сеттер
-	player_level_up.emit(level)
+	player_level_up.emit(self)
 
 ## Вычисляет опыт для следующего уровня
 func _calculate_next_level_exp() -> int:
@@ -99,7 +101,9 @@ func _calculate_next_level_exp() -> int:
 ## Наносит урон игроку
 func take_damage(amount: int) -> void:
 	hp -= amount  # Используем сеттер
+	player_level_up.emit(self)
 
 ## Лечит игрока
 func heal(amount: int) -> void:
 	hp += amount  # Используем сеттер
+	player_level_up.emit(self)

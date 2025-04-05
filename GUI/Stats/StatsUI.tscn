@@ -18,8 +18,9 @@ custom_minimum_size = Vector2(96, 64)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -384.0
-offset_bottom = -180.0
+offset_top = 1.0
+offset_right = -372.0
+offset_bottom = -157.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_1wpwr")
@@ -32,14 +33,50 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="HPBar" type="ProgressBar" parent="VBoxContainer"]
+custom_minimum_size = Vector2(80, 16)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_oklba")
 theme_override_styles/fill = SubResource("StyleBoxFlat_mbg8a")
+show_percentage = false
+
+[node name="HPLabel" type="Label" parent="VBoxContainer/HPBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -9.0
+offset_right = 15.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ExpBar" type="ProgressBar" parent="VBoxContainer"]
+custom_minimum_size = Vector2(80, 16)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_e0t6i")
 theme_override_styles/fill = SubResource("StyleBoxFlat_2fiv5")
+show_percentage = false
+
+[node name="ExpLabel" type="Label" parent="VBoxContainer/ExpBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -9.0
+offset_right = 15.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DamageLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
