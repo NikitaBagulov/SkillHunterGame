@@ -80,5 +80,6 @@ func play_audio(audio: AudioStream) -> void:
 ## Обновляет текстуру оружия игрока на основе экипированного предмета
 func _update_weapon_texture() -> void:
 	var texture = INVENTORY_DATA.get_equipped_weapon_texture()
-	if texture and player:
+	if player:
 		player.change_weapon_texture(texture)
+		

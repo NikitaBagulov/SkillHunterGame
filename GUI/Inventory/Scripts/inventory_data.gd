@@ -68,21 +68,29 @@ func equip_item(slot: SlotData) -> void:
 		EquipableItemData.Type.BOOTS:
 			target_index = equipment_start + 6  # Sixth slot: Boots
 		EquipableItemData.Type.ACCESSORY:
-			# Accessory slots: Fourth (3), Seventh (6), and possibly more
-			for i in [3, 5, 7]:  # Adjust these indices based on total slots
+			for i in [3, 5, 7]:
 				if slots[equipment_start + i] == null:
 					target_index = equipment_start + i
 					break
-			# If all accessory slots are full, swap with the first accessory slot
 			if target_index == -1:
 				target_index = equipment_start + 3
 	
 	if target_index != -1:
 		var unequipped_slot: SlotData = slots[target_index]
+		# Remove passive skill from the unequipped item (if any)
+		if unequipped_slot and unequipped_slot.item_data and unequipped_slot.item_data.skill:
+			if unequipped_slot.item_data.skill.type == SkillResource.SkillType.PASSIVE:
+				unequipped_slot.item_data.skill.remove_passive(PlayerManager.player)
+		
+		# Equip the new item
 		slots[target_index] = slot
 		slots[slot_index] = unequipped_slot
+		
+		# Apply passive skill from the newly equipped item (if any)
+		if item.skill and item.skill.type == SkillResource.SkillType.PASSIVE:
+			item.skill.apply_passive(PlayerManager.player)
+		
 		equipment_changed.emit()
-		# Уведомляем PlayerManager о смене экипировки
 		PlayerManager.update_equipment_damage()
 
 func add_item(item: ItemData, count: int = 1) -> bool:
@@ -182,7 +190,6 @@ func get_equipment_bonus(bonus_type: EquipableItemModifier.Type, compare: Equipa
 	
 func get_equipped_weapon_damage_bonus() -> int:
 	var weapon_slot = equipment_slots()[1]  # Индекс слота для оружия (например, 1)
-	print(weapon_slot.item_data.get_attack_bonus())
 	if weapon_slot and weapon_slot.item_data:
 		return weapon_slot.item_data.get_attack_bonus()
 	return 0
@@ -206,3 +213,25 @@ func get_equipped_weapon() -> EquipableItemData:
 func get_equipped_weapon_texture() -> Texture:
 	var weapon = get_equipped_weapon()
 	return weapon.texture if weapon else null
+
+func unequip_item(equipment_index: int) -> void:
+	var slot_data = slots[equipment_index]
+	if slot_data == null:
+		return
+	
+	# Remove passive skill effect before moving the item
+	if slot_data.item_data and slot_data.item_data.skill:
+		if slot_data.item_data.skill.type == SkillResource.SkillType.PASSIVE:
+			slot_data.item_data.skill.remove_passive(PlayerManager.player)
+	
+	# Move the item to the inventory
+	for i in range(slots.size() - equipment_slot_count - quick_slot_count):
+		if slots[i] == null:
+			slots[i] = slot_data
+			slots[equipment_index] = null
+			equipment_changed.emit()
+			changed.emit()
+			PlayerManager.update_equipment_damage()
+			PlayerManager._update_weapon_texture()
+			return
+	print("No free inventory slot available!")
