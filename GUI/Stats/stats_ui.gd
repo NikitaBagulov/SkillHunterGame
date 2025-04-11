@@ -11,10 +11,15 @@ class_name StatsUI
 
 func _ready():
 	PlayerManager.PLAYER_STATS.damage_updated.connect(update_damage_label)
+	PlayerManager.PLAYER_STATS.health_updated.connect(update_hp_label)
 	PlayerManager.PLAYER_STATS.player_level_up.connect(update_stats)
 
 func update_damage_label(value: int):
 	damage_label.text = "Урон: " + str(value)
+	
+func update_hp_label(hp: int, max_hp: int):
+	print("HP: ", hp, max_hp)
+	hp_label.text = "%d/%d HP" % [hp, max_hp]
 
 func update_stats(stats: Stats) -> void:
 	level_label.text = "Level: %d" % stats.level

@@ -29,7 +29,7 @@
 [ext_resource type="Script" path="res://GeneralNodes/Stats/ExperienceManager.gd" id="27_174at"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sy26"]
-radius = 5.0
+radius = 7.0
 
 [sub_resource type="Animation" id="Animation_xgl54"]
 length = 0.001
@@ -1175,7 +1175,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p48i2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ecceo"]
-radius = 5.0
+radius = 7.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ui8hx"]
 radius = 25.0
@@ -1247,10 +1247,10 @@ shape = SubResource("RectangleShape2D_p48i2")
 debug_color = Color(0.301645, 0.628056, 0, 0.42)
 
 [node name="HitBox" parent="." instance=ExtResource("18_hihgb")]
+position = Vector2(0, 9)
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(0, 7)
 shape = SubResource("CircleShape2D_ecceo")
 debug_color = Color(0.794478, 0.425468, 3.85046e-07, 0.42)
 
@@ -1263,12 +1263,11 @@ max_polyphony = 6
 script = ExtResource("22_7epog")
 
 [node name="ItemMagnet" parent="." instance=ExtResource("23_scpv6")]
-position = Vector2(0, 4)
+position = Vector2(0, 5)
 magnet_strength = 0.1
 play_magnet_audio = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ItemMagnet"]
-position = Vector2(5, 4)
 shape = SubResource("CircleShape2D_ui8hx")
 debug_color = Color(0.849198, 0.000908324, 0.901895, 0.42)
 

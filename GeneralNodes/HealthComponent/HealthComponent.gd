@@ -25,7 +25,6 @@ func _initialize() -> void:
 	
 	# Инициализируем здоровье и UI
 	stats.hp = stats.max_hp
-	Hud.update_max_hp(stats.max_hp)
 	Hud.update_hp(stats.hp, stats.max_hp)
 	stats.take_damage(0)  # Обновляем UI без реального урона
 

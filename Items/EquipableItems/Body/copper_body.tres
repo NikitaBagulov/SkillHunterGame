@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="EquipableItemData" load_steps=7 format=3 uid="uid://0l2pnav7sljt"]
+
+[ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_wg5lt"]
+[ext_resource type="Script" path="res://Items/Scripts/equipable_item_modifier.gd" id="2_q86x6"]
+[ext_resource type="Script" path="res://Items/Scripts/equipable_item_data.gd" id="3_4r6re"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="4_05aau"]
+
+[sub_resource type="Resource" id="Resource_75pnw"]
+script = ExtResource("2_q86x6")
+type = 0
+value = 8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14r4c"]
+atlas = ExtResource("4_05aau")
+region = Rect2(224, 80, 16, 16)
+
+[resource]
+script = ExtResource("3_4r6re")
+type = 1
+modifiers = Array[ExtResource("2_q86x6")]([SubResource("Resource_75pnw")])
+name = "Палка"
+description = "В детстве всегда мечтал найти такую!"
+texture = SubResource("AtlasTexture_14r4c")
+effects = Array[ExtResource("1_wg5lt")]([])

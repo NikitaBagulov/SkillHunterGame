@@ -23,8 +23,8 @@ var drag_threshhold: float = 16.0
 func _ready() -> void:
 	texture.texture = null
 	label.text = ""
-	focus_entered.connect(item_focused)
-	focus_exited.connect(item_unfocused)
+	#focus_entered.connect(item_focused)
+	#focus_exited.connect(item_unfocused)
 	pressed.connect(item_pressed)
 	button_down.connect(on_button_down)
 	button_up.connect(on_button_up)
@@ -49,15 +49,15 @@ func set_slot_data(value: SlotData) -> void:
 	else:
 		label.text = str( slot_data.quantity )
 
-func item_focused() -> void:
-	if slot_data != null:
-		if slot_data.item_data != null:
-			Inventory.update_item_description(slot_data.item_data.description)
-	pass
+#func item_focused() -> void:
+	#if slot_data != null:
+		#if slot_data.item_data != null:
+			##Inventory.update_item_description(slot_data.item_data.description)
+	#pass
 	
-func item_unfocused() -> void:
-	Inventory.update_item_description("")
-	pass
+#func item_unfocused() -> void:
+	#Inventory.update_item_description("")
+	#pass
 	
 func item_pressed() -> void:
 	if slot_data and !outside_drag_threshhold():

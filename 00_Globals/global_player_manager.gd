@@ -22,14 +22,17 @@ var player_spawned: bool = false
 
 # --- Инициализация ---
 func _ready() -> void:
-	# Подключаем сигнал изменения экипировки к обновлению текстуры оружия
+	# Подключаем сигнал изменения экипировки к обновлению текстуры оружия и здоровья
 	INVENTORY_DATA.equipment_changed.connect(_update_weapon_texture)
+	INVENTORY_DATA.equipment_changed.connect(update_health)
 
 # --- Управление игроком ---
 ## Устанавливает экземпляр игрока и отправляет сигнал
 func set_player(new_player: Player) -> void:
 	player = new_player
 	player_assigned.emit(player)
+	# Обновляем здоровье при установке игрока
+	update_health()
 
 ## Возвращает текущий экземпляр игрока
 func get_player() -> Player:
@@ -56,10 +59,10 @@ func set_player_position(new_position: Vector2) -> void:
 # --- Управление характеристиками ---
 ## Устанавливает здоровье игрока
 func set_health(hp: int, max_hp: int) -> void:
+	PLAYER_STATS.hp = hp
+	PLAYER_STATS.max_hp = max_hp
 	if player:
-		player.HP = hp
-		player.max_HP = max_hp
-		player.update_hp(0)
+		player.health.update_hp(0)
 
 ## Обновляет урон от экипированного оружия
 func update_equipment_damage() -> void:
@@ -67,6 +70,14 @@ func update_equipment_damage() -> void:
 	PLAYER_STATS.update_damage(weapon_bonus)
 	if player:
 		player.attack_hurt_box.damage = weapon_bonus
+
+## Обновляет здоровье игрока на основе экипировки
+func update_health() -> void:
+	var health_bonus = INVENTORY_DATA.get_health_bonus()
+	PLAYER_STATS.update_health(health_bonus)
+	Hud.update_hp(PLAYER_STATS.hp, PLAYER_STATS.max_hp)
+	#if player:
+		#player.health.update_hp(0)
 
 # --- Управление звуком ---
 ## Воспроизводит указанный аудиопоток через аудиоузел игрока
@@ -82,4 +93,3 @@ func _update_weapon_texture() -> void:
 	var texture = INVENTORY_DATA.get_equipped_weapon_texture()
 	if player:
 		player.change_weapon_texture(texture)
-		

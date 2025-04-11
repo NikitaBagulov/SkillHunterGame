@@ -1,14 +1,52 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcghc2nf73q1j"]
+[gd_scene load_steps=6 format=3 uid="uid://bcghc2nf73q1j"]
 
 [ext_resource type="Script" path="res://GUI/Player_HUD/hud.gd" id="1_kq8ir"]
 [ext_resource type="Texture2D" uid="uid://1ypt5cgt6wqu" path="res://GUI/Player_HUD/gui-health.png" id="2_c1m02"]
 [ext_resource type="PackedScene" uid="uid://2fwhjxlvsvo4" path="res://GUI/Player_HUD/heart_GUI.tscn" id="3_v7rw4"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nqe5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n802d"]
+bg_color = Color(0.842944, 0.0516904, 0.0293368, 1)
+
 [node name="HUD" type="CanvasLayer"]
-visible = false
 script = ExtResource("1_kq8ir")
 
+[node name="VBoxContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="HPBar" type="ProgressBar" parent="VBoxContainer"]
+custom_minimum_size = Vector2(80, 16)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/background = SubResource("StyleBoxFlat_5nqe5")
+theme_override_styles/fill = SubResource("StyleBoxFlat_n802d")
+show_percentage = false
+
+[node name="HPLabel" type="Label" parent="VBoxContainer/HPBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -9.0
+offset_right = 15.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Control" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,4 +95,37 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Heart9" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart10" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart11" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart12" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart13" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart14" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart15" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart16" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart17" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart18" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart19" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
+layout_mode = 2
+
+[node name="Heart20" parent="Control/HFlowContainer" instance=ExtResource("3_v7rw4")]
 layout_mode = 2
