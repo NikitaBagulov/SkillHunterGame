@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://catt4bbm6hsq"]
 
-[ext_resource type="Script" path="res://GUI/Inventory/inventory_slot_ui.gd" id="1_esa7n"]
+[ext_resource type="Script" uid="uid://drjrna8iuxxn0" path="res://GUI/Inventory/inventory_slot_ui.gd" id="1_esa7n"]
 [ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_jxdim"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_juely"]

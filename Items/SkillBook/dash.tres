@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SkillItemData" load_steps=6 format=3 uid="uid://cs7hbechg25cp"]
+
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_nblw2"]
+[ext_resource type="Script" uid="uid://hnhu85aguabn" path="res://Items/Scripts/skill_item_data.gd" id="2_26bq7"]
+[ext_resource type="Resource" uid="uid://b28gu4wkd2u08" path="res://SkillSystem/SkillResources/dash.tres" id="3_emwby"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="4_wcfxu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vq6ak"]
+atlas = ExtResource("4_wcfxu")
+region = Rect2(16, 240, 16, 16)
+
+[resource]
+script = ExtResource("2_26bq7")
+skill_item_type = 0
+element = 0
+name = "Рывок"
+description = ""
+texture = SubResource("AtlasTexture_vq6ak")
+skill = ExtResource("3_emwby")
+effects = Array[ExtResource("1_nblw2")]([])
+metadata/_custom_type_script = "uid://hnhu85aguabn"

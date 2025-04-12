@@ -104,6 +104,7 @@ func update_inventory(apply_focus: bool = true) -> void:
 	if apply_focus and inventory_slots_ui.size() > 0:
 		inventory_slots_ui[0].grab_focus()
 	update_quick_slot_selection()
+	PlayerManager.player.skill_manager.update_passive_skills()
 
 func update_inventory_slots() -> void:
 	var inventory_slots: Array[SlotData] = data.inventory_slots()

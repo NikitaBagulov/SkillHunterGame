@@ -74,10 +74,13 @@ func update_equipment_damage() -> void:
 ## Обновляет здоровье игрока на основе экипировки
 func update_health() -> void:
 	var health_bonus = INVENTORY_DATA.get_health_bonus()
-	PLAYER_STATS.update_health(health_bonus)
-	Hud.update_hp(PLAYER_STATS.hp, PLAYER_STATS.max_hp)
-	#if player:
-		#player.health.update_hp(0)
+	# Учитываем бонусы от пассивных навыков экипировки
+	var skill_bonus = 0
+	for slot in INVENTORY_DATA.equipment_slots():
+		if slot and slot.item_data and slot.item_data.skill and slot.item_data.skill.type == SkillResource.SkillType.PASSIVE:
+			if slot.item_data.skill.element == SkillResource.Element.EARTH:
+				skill_bonus += slot.item_data.skill.base_value + (slot.item_data.skill.level - 1) * 5
+	PLAYER_STATS.update_health(health_bonus + skill_bonus)
 
 # --- Управление звуком ---
 ## Воспроизводит указанный аудиопоток через аудиоузел игрока

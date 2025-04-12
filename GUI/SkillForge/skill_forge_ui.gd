@@ -46,14 +46,11 @@ func clear_slots() -> void:
 func update_forge_button_state() -> void:
 	var slot_1_data = input_slot_1.slot_data
 	var slot_2_data = input_slot_2.slot_data
-	
-	print("Slot 1: ", slot_1_data, " Slot 2: ", slot_2_data)
 	if slot_1_data == null or slot_2_data == null:
 		forge_button.disabled = true
 		return
 	
 	var forge_result = forge_items(slot_1_data, slot_2_data)
-	print("Forge result: ", forge_result)
 	forge_button.disabled = not forge_result.success
 
 # Вызывается при изменении инвентаря (например, после перетаскивания)

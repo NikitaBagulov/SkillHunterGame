@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ObjectResource" load_steps=3 format=3 uid="uid://bovpk5y3sfkt1"]
 
 [ext_resource type="PackedScene" uid="uid://co1o4d8wybl3v" path="res://Props/Plants/plant.tscn" id="1_mc5ks"]
-[ext_resource type="Script" path="res://WorldGenerator/Scripts/ObjectResource.gd" id="1_sdtsm"]
+[ext_resource type="Script" uid="uid://bnbb5uxugvnn8" path="res://WorldGenerator/Scripts/ObjectResource.gd" id="1_sdtsm"]
 
 [resource]
 script = ExtResource("1_sdtsm")

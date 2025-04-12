@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://c8hv2oxtho7xx"]
 
-[ext_resource type="Script" path="res://Interactebles/TreasureChest/treasure_chest.gd" id="1_kjl3w"]
+[ext_resource type="Script" uid="uid://bimdktmw4tm40" path="res://Interactebles/TreasureChest/treasure_chest.gd" id="1_kjl3w"]
 [ext_resource type="Texture2D" uid="uid://cktctcagrtsck" path="res://Interactebles/TreasureChest/treasure-chest.png" id="2_xvgp1"]
 [ext_resource type="AudioStream" uid="uid://dihsdxueo0otk" path="res://Interactebles/TreasureChest/treasure-open.wav" id="3_24r4m"]
 [ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="3_ftk4h"]
@@ -180,10 +180,10 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mfr1i"]
 _data = {
-"RESET": SubResource("Animation_gn3yd"),
-"closed": SubResource("Animation_cn158"),
-"open_chest": SubResource("Animation_sig71"),
-"opened": SubResource("Animation_4b2fr")
+&"RESET": SubResource("Animation_gn3yd"),
+&"closed": SubResource("Animation_cn158"),
+&"open_chest": SubResource("Animation_sig71"),
+&"opened": SubResource("Animation_4b2fr")
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dpiyj"]
@@ -207,7 +207,7 @@ hframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_mfr1i")
+&"": SubResource("AnimationLibrary_mfr1i")
 }
 autoplay = "closed"
 

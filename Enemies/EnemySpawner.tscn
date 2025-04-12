@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://capjxtgkwskpi"]
 
-[ext_resource type="Script" path="res://Enemies/enemy_spawner.gd" id="1_ba2b7"]
+[ext_resource type="Script" uid="uid://dtq33wquyrkfp" path="res://Enemies/enemy_spawner.gd" id="1_ba2b7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jjk7l"]
 

@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3 uid="uid://dhkuedwtsl10l"]
 
-[ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_5wjim"]
-[ext_resource type="Script" path="res://Items/Scripts/item_data.gd" id="1_77wis"]
-[ext_resource type="Script" path="res://Items/Item_effect/item_effect_heal.gd" id="2_6s50n"]
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_5wjim"]
+[ext_resource type="Script" uid="uid://dns18ehqprxk8" path="res://Items/Scripts/item_data.gd" id="1_77wis"]
+[ext_resource type="Script" uid="uid://4d688yd5ejk" path="res://Items/Item_effect/item_effect_heal.gd" id="2_6s50n"]
 [ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_gjbc3"]
 [ext_resource type="AudioStream" uid="uid://bknig1ufuakyu" path="res://Items/Item_effect/Sounds/hp-up.wav" id="3_fh7ix"]
 

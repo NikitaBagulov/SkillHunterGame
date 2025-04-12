@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="SkillItemData" load_steps=7 format=3 uid="uid://spequ8lgxmdr"]
 
-[ext_resource type="Script" path="res://Items/Item_effect/item_effect.gd" id="1_385st"]
-[ext_resource type="Script" path="res://Items/Scripts/skill_item_data.gd" id="2_3qyok"]
-[ext_resource type="Script" path="res://SkillSystem/SkillResources/vitallity_skill.gd" id="3_crqdl"]
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_385st"]
+[ext_resource type="Script" uid="uid://hnhu85aguabn" path="res://Items/Scripts/skill_item_data.gd" id="2_3qyok"]
+[ext_resource type="Script" uid="uid://jbfr5mb8ax8j" path="res://SkillSystem/Skills/vitallity_skill.gd" id="3_crqdl"]
 [ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="4_dm8f2"]
 
 [sub_resource type="Resource" id="Resource_wt8fx"]
 script = ExtResource("3_crqdl")
 name = "Виталити"
-type = 0
+type = 1
 level = 1
-element = 0
+element = 4
 key_binding = 0
 description = ""
 base_value = 10
@@ -24,7 +24,7 @@ region = Rect2(32, 240, 16, 16)
 [resource]
 script = ExtResource("2_3qyok")
 skill_item_type = 0
-element = 0
+element = 4
 name = "Виталити"
 description = ""
 texture = SubResource("AtlasTexture_17wxe")

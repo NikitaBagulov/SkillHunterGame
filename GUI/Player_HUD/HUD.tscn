@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bcghc2nf73q1j"]
 
-[ext_resource type="Script" path="res://GUI/Player_HUD/hud.gd" id="1_kq8ir"]
+[ext_resource type="Script" uid="uid://csngca5jrps2d" path="res://GUI/Player_HUD/hud.gd" id="1_kq8ir"]
 [ext_resource type="Texture2D" uid="uid://1ypt5cgt6wqu" path="res://GUI/Player_HUD/gui-health.png" id="2_c1m02"]
 [ext_resource type="PackedScene" uid="uid://2fwhjxlvsvo4" path="res://GUI/Player_HUD/heart_GUI.tscn" id="3_v7rw4"]
 

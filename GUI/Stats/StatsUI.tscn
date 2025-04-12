@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://co1u4ajcoq32b"]
 
 [ext_resource type="StyleBox" uid="uid://bblg5uvit4jtr" path="res://GUI/Inventory/inventory.tres" id="1_1wpwr"]
-[ext_resource type="Script" path="res://GUI/Stats/stats_ui.gd" id="1_eqqu1"]
+[ext_resource type="Script" uid="uid://7ekc3xrn2rw5" path="res://GUI/Stats/stats_ui.gd" id="1_eqqu1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oklba"]
 

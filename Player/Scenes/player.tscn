@@ -1,32 +1,31 @@
-[gd_scene load_steps=52 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=51 format=3 uid="uid://bx7k3yspke326"]
 
-[ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_83mit"]
+[ext_resource type="Script" uid="uid://b1ohjwdi1kmgy" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
 [ext_resource type="Texture2D" uid="uid://br84lqbgf3cj6" path="res://Player/Sprites/Pack Content/Side animations/spr_player_right_idle.png" id="3_mq3kv"]
-[ext_resource type="Script" path="res://Player/Scripts/player_state_machine.gd" id="4_17lg5"]
+[ext_resource type="Script" uid="uid://dvmdch881swg2" path="res://Player/Scripts/player_state_machine.gd" id="4_17lg5"]
 [ext_resource type="Texture2D" uid="uid://dsn8v1lw6rxry" path="res://Player/Sprites/Pack Content/Back animations/spr_player_back_idle.png" id="4_apmb1"]
-[ext_resource type="Script" path="res://Player/Scripts/state_idle.gd" id="5_e5cws"]
+[ext_resource type="Script" uid="uid://c2wut3xligydn" path="res://Player/Scripts/state_idle.gd" id="5_e5cws"]
 [ext_resource type="AudioStream" uid="uid://o6ljcjahdy5r" path="res://Player/Sprites/SwordSwoosh.wav" id="5_lgaaf"]
 [ext_resource type="Texture2D" uid="uid://dpw1ehlqmxxla" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_walk.png" id="5_mevil"]
 [ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="6_2bvo6"]
 [ext_resource type="Texture2D" uid="uid://ckbuudhi2bpt4" path="res://Player/Sprites/Pack Content/Side animations/spr_player_right_walk.png" id="6_7a8q7"]
-[ext_resource type="Script" path="res://Player/Scripts/state_walk.gd" id="6_48nr7"]
+[ext_resource type="Script" uid="uid://behvq57xhkrya" path="res://Player/Scripts/state_walk.gd" id="6_48nr7"]
 [ext_resource type="Texture2D" uid="uid://jydgr2rgx74n" path="res://Player/Sprites/Pack Content/Back animations/spr_player_back_walk.png" id="7_w1fug"]
 [ext_resource type="Texture2D" uid="uid://bd3xqybsw6sir" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_attack.png" id="8_1ea5k"]
 [ext_resource type="Texture2D" uid="uid://b7cutro482vp4" path="res://Player/Sprites/Pack Content/Side animations/spr_player_right_attack.png" id="9_s5yta"]
 [ext_resource type="Texture2D" uid="uid://cw8wuvfyvhxbm" path="res://Player/Sprites/Pack Content/Back animations/spr_player_back_attack.png" id="10_2swlx"]
-[ext_resource type="Script" path="res://Player/Scripts/state_attack.gd" id="14_ya0hw"]
-[ext_resource type="Script" path="res://Player/Scripts/player_interaction_host.gd" id="15_4a10s"]
+[ext_resource type="Script" uid="uid://dl0p11fnlnrx8" path="res://Player/Scripts/state_attack.gd" id="14_ya0hw"]
+[ext_resource type="Script" uid="uid://2joegeoak3lp" path="res://Player/Scripts/player_interaction_host.gd" id="15_4a10s"]
 [ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="15_jvqnq"]
-[ext_resource type="Script" path="res://Player/Scripts/state_stun.gd" id="17_1mfyy"]
+[ext_resource type="Script" uid="uid://baeiuwivsgufa" path="res://Player/Scripts/state_stun.gd" id="17_1mfyy"]
 [ext_resource type="PackedScene" uid="uid://bgt7thfgw0ugh" path="res://GeneralNodes/HitBox/hit_box.tscn" id="18_hihgb"]
 [ext_resource type="AudioStream" uid="uid://b28vo48gqqkkw" path="res://Player/Sprites/hit_player.wav" id="19_ho8js"]
-[ext_resource type="Script" path="res://Player/Scripts/Abilities/abilities.gd" id="22_7epog"]
 [ext_resource type="PackedScene" uid="uid://bl6xxjegdtc3b" path="res://GeneralNodes/ItemMagnet/ItemMagnet.tscn" id="23_scpv6"]
-[ext_resource type="Script" path="res://SkillSystem/SkillManager.gd" id="23_y8cp1"]
+[ext_resource type="Script" uid="uid://5h10aqdhukub" path="res://SkillSystem/SkillManager.gd" id="23_y8cp1"]
 [ext_resource type="PackedScene" uid="uid://b4kjay8wgnv8p" path="res://GeneralNodes/HealthComponent/HealthComponent.tscn" id="25_g5pib"]
 [ext_resource type="PackedScene" uid="uid://b3nb3pybkadqr" path="res://GeneralNodes/SpawnZone/SpawnZone.tscn" id="26_r7wht"]
-[ext_resource type="Script" path="res://GeneralNodes/Stats/ExperienceManager.gd" id="27_174at"]
+[ext_resource type="Script" uid="uid://by3k1xfoqxjbx" path="res://GeneralNodes/Stats/ExperienceManager.gd" id="27_174at"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8sy26"]
 radius = 7.0
@@ -1090,19 +1089,19 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3nokt"]
 _data = {
-"RESET": SubResource("Animation_xgl54"),
-"attack_down": SubResource("Animation_bhw7a"),
-"attack_side": SubResource("Animation_37d1c"),
-"attack_up": SubResource("Animation_k1tum"),
-"idle_down": SubResource("Animation_m1lhc"),
-"idle_side": SubResource("Animation_j1s8q"),
-"idle_up": SubResource("Animation_fwek5"),
-"stun_down": SubResource("Animation_1y8xh"),
-"stun_side": SubResource("Animation_t2x6s"),
-"stun_up": SubResource("Animation_vpscw"),
-"walk_down": SubResource("Animation_wyxwf"),
-"walk_side": SubResource("Animation_qhabt"),
-"walk_up": SubResource("Animation_x4ulr")
+&"RESET": SubResource("Animation_xgl54"),
+&"attack_down": SubResource("Animation_bhw7a"),
+&"attack_side": SubResource("Animation_37d1c"),
+&"attack_up": SubResource("Animation_k1tum"),
+&"idle_down": SubResource("Animation_m1lhc"),
+&"idle_side": SubResource("Animation_j1s8q"),
+&"idle_up": SubResource("Animation_fwek5"),
+&"stun_down": SubResource("Animation_1y8xh"),
+&"stun_side": SubResource("Animation_t2x6s"),
+&"stun_up": SubResource("Animation_vpscw"),
+&"walk_down": SubResource("Animation_wyxwf"),
+&"walk_side": SubResource("Animation_qhabt"),
+&"walk_up": SubResource("Animation_x4ulr")
 }
 
 [sub_resource type="Animation" id="Animation_jeacp"]
@@ -1167,9 +1166,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0cvht"]
 _data = {
-"RESET": SubResource("Animation_jeacp"),
-"damaged": SubResource("Animation_lgatm"),
-"default": SubResource("Animation_o3h1t")
+&"RESET": SubResource("Animation_jeacp"),
+&"damaged": SubResource("Animation_lgatm"),
+&"default": SubResource("Animation_o3h1t")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p48i2"]
@@ -1205,12 +1204,12 @@ region_rect = Rect2(240, 80, 80, 80)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_3nokt")
+&"": SubResource("AnimationLibrary_3nokt")
 }
 
 [node name="EffectAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_0cvht")
+&"": SubResource("AnimationLibrary_0cvht")
 }
 
 [node name="HealthComponent" parent="." instance=ExtResource("25_g5pib")]
@@ -1258,9 +1257,6 @@ debug_color = Color(0.794478, 0.425468, 3.85046e-07, 0.42)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
 max_polyphony = 6
-
-[node name="Abilities" type="Node" parent="."]
-script = ExtResource("22_7epog")
 
 [node name="ItemMagnet" parent="." instance=ExtResource("23_scpv6")]
 position = Vector2(0, 5)

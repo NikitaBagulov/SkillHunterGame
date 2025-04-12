@@ -1,20 +1,20 @@
 [gd_scene load_steps=41 format=3 uid="uid://dv7010105eerr"]
 
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy.gd" id="1_a1ea2"]
+[ext_resource type="Script" uid="uid://bttvluxjegrnh" path="res://Enemies/Scripts/enemy.gd" id="1_a1ea2"]
 [ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="2_yuf7p"]
 [ext_resource type="PackedScene" uid="uid://bgt7thfgw0ugh" path="res://GeneralNodes/HitBox/hit_box.tscn" id="3_segje"]
 [ext_resource type="Texture2D" uid="uid://crkew6pdof7xt" path="res://Enemies/Slime/Shadow.png" id="4_0tyai"]
 [ext_resource type="Texture2D" uid="uid://dontk7uhfjaxt" path="res://Enemies/Goblin/goblin.png" id="5_8phll"]
 [ext_resource type="AudioStream" uid="uid://dme8oacnaq834" path="res://Enemies/Slime/hit_01.wav" id="6_lowoh"]
 [ext_resource type="AudioStream" uid="uid://ci7vxluvrd0ol" path="res://Enemies/Slime/hit_00.wav" id="7_d723m"]
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy_state_machine.gd" id="8_ba17h"]
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy_state_idle.gd" id="9_vtv70"]
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy_state_walk.gd" id="10_rhjxw"]
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy_state_stun.gd" id="11_1gm6n"]
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy_state_destroy.gd" id="12_l6ub2"]
-[ext_resource type="Script" path="res://Enemies/Scripts/drop_data.gd" id="13_4btce"]
+[ext_resource type="Script" uid="uid://rybxbh5hw6sa" path="res://Enemies/Scripts/enemy_state_machine.gd" id="8_ba17h"]
+[ext_resource type="Script" uid="uid://6mptu0odax52" path="res://Enemies/Scripts/enemy_state_idle.gd" id="9_vtv70"]
+[ext_resource type="Script" uid="uid://wr2sekydlqy8" path="res://Enemies/Scripts/enemy_state_walk.gd" id="10_rhjxw"]
+[ext_resource type="Script" uid="uid://cggnggk7m1eq0" path="res://Enemies/Scripts/enemy_state_stun.gd" id="11_1gm6n"]
+[ext_resource type="Script" uid="uid://bn3njn5an8f3o" path="res://Enemies/Scripts/enemy_state_destroy.gd" id="12_l6ub2"]
+[ext_resource type="Script" uid="uid://mhgh1ilnd0tn" path="res://Enemies/Scripts/drop_data.gd" id="13_4btce"]
 [ext_resource type="Resource" uid="uid://hoismocbk86k" path="res://Items/gem.tres" id="14_ihrej"]
-[ext_resource type="Script" path="res://Enemies/Scripts/enemy_state_chase.gd" id="15_3lvh1"]
+[ext_resource type="Script" uid="uid://lt2hdyb0cu7w" path="res://Enemies/Scripts/enemy_state_chase.gd" id="15_3lvh1"]
 [ext_resource type="Texture2D" uid="uid://dlutp0ayihmko" path="res://Enemies/Slime/DestroySmoke.png" id="15_s3i5d"]
 [ext_resource type="PackedScene" uid="uid://bi5drlmr351u3" path="res://Enemies/VisionArea.tscn" id="17_kulay"]
 
@@ -594,22 +594,22 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hoh2d"]
 _data = {
-"RESET": SubResource("Animation_m8gpi"),
-"chase_down": SubResource("Animation_c5lvk"),
-"chase_side": SubResource("Animation_aqyus"),
-"chase_up": SubResource("Animation_biip0"),
-"destroy_down": SubResource("Animation_o5c5s"),
-"destroy_side": SubResource("Animation_fmrx3"),
-"destroy_up": SubResource("Animation_tvgm0"),
-"idle_down": SubResource("Animation_3xmv8"),
-"idle_side": SubResource("Animation_6kohy"),
-"idle_up": SubResource("Animation_70x2e"),
-"stun_down": SubResource("Animation_rvxrh"),
-"stun_side": SubResource("Animation_y1e4c"),
-"stun_up": SubResource("Animation_n76vp"),
-"walk_down": SubResource("Animation_xtq2w"),
-"walk_side": SubResource("Animation_sbld0"),
-"walk_up": SubResource("Animation_5uddn")
+&"RESET": SubResource("Animation_m8gpi"),
+&"chase_down": SubResource("Animation_c5lvk"),
+&"chase_side": SubResource("Animation_aqyus"),
+&"chase_up": SubResource("Animation_biip0"),
+&"destroy_down": SubResource("Animation_o5c5s"),
+&"destroy_side": SubResource("Animation_fmrx3"),
+&"destroy_up": SubResource("Animation_tvgm0"),
+&"idle_down": SubResource("Animation_3xmv8"),
+&"idle_side": SubResource("Animation_6kohy"),
+&"idle_up": SubResource("Animation_70x2e"),
+&"stun_down": SubResource("Animation_rvxrh"),
+&"stun_side": SubResource("Animation_y1e4c"),
+&"stun_up": SubResource("Animation_n76vp"),
+&"walk_down": SubResource("Animation_xtq2w"),
+&"walk_side": SubResource("Animation_sbld0"),
+&"walk_up": SubResource("Animation_5uddn")
 }
 
 [sub_resource type="Resource" id="Resource_hi8dh"]
@@ -675,8 +675,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_v1ubl"]
 _data = {
-"RESET": SubResource("Animation_6iv8l"),
-"destroy": SubResource("Animation_v2o73")
+&"RESET": SubResource("Animation_6iv8l"),
+&"destroy": SubResource("Animation_v2o73")
 }
 
 [node name="Goblin" type="CharacterBody2D"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c133jex4gilic"]
 
-[ext_resource type="Script" path="res://GUI/SkillForge/skill_forge_ui.gd" id="1_0n4qx"]
+[ext_resource type="Script" uid="uid://b2pnw8hf6myc3" path="res://GUI/SkillForge/skill_forge_ui.gd" id="1_0n4qx"]
 [ext_resource type="StyleBox" uid="uid://bblg5uvit4jtr" path="res://GUI/Inventory/inventory.tres" id="2_4ourt"]
 [ext_resource type="PackedScene" uid="uid://catt4bbm6hsq" path="res://GUI/Inventory/inventory_slot_ui.tscn" id="3_70leh"]
 

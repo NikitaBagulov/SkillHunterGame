@@ -1,7 +1,7 @@
-[gd_scene load_steps=36 format=3 uid="uid://dplwduvtiv1sp"]
+[gd_scene load_steps=37 format=3 uid="uid://dplwduvtiv1sp"]
 
 [ext_resource type="PackedScene" uid="uid://bx7k3yspke326" path="res://Player/Scenes/player.tscn" id="1_0jjx0"]
-[ext_resource type="Script" path="res://playgroung.gd" id="1_o0ui3"]
+[ext_resource type="Script" uid="uid://g4opyh3av0dw" path="res://playgroung.gd" id="1_o0ui3"]
 [ext_resource type="PackedScene" uid="uid://b6blyw1et3p07" path="res://Tile Maps/grass.tscn" id="2_klgk0"]
 [ext_resource type="PackedScene" uid="uid://cir6uck3jdmuv" path="res://Tile Maps/dirt.tscn" id="3_xw3sh"]
 [ext_resource type="PackedScene" uid="uid://co1o4d8wybl3v" path="res://Props/Plants/plant.tscn" id="4_8bwkk"]
@@ -20,10 +20,10 @@
 [ext_resource type="PackedScene" uid="uid://fcpnjvpvt2w6" path="res://NPC/npc.tscn" id="14_kmd6v"]
 [ext_resource type="Resource" uid="uid://b6u0vc3ecsfif" path="res://NPC/00_NPCs/npc_01.tres" id="15_2enee"]
 [ext_resource type="PackedScene" uid="uid://bxo3oftj1jgxd" path="res://NPC/Scenes/npc_behavior_patrol.tscn" id="16_nfin8"]
-[ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="17_5gn4o"]
+[ext_resource type="Script" uid="uid://meb5adohrfil" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="17_5gn4o"]
 [ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="17_w8qeo"]
-[ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="18_jcnne"]
-[ext_resource type="Script" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="19_upve5"]
+[ext_resource type="Script" uid="uid://j7t0khckxins" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="18_jcnne"]
+[ext_resource type="Script" uid="uid://cinls4mh53t30" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="19_upve5"]
 [ext_resource type="Resource" uid="uid://blr1m7ntjhob8" path="res://Items/EquipableItems/Body/iron2_body.tres" id="25_8sd4u"]
 [ext_resource type="Resource" uid="uid://dhc3shn2r2g7e" path="res://Items/EquipableItems/Head/gold_head.tres" id="26_8p7ym"]
 [ext_resource type="Resource" uid="uid://do25tvgo7fgv2" path="res://Items/EquipableItems/Body/wood_body.tres" id="26_ogxqf"]
@@ -35,6 +35,7 @@
 [ext_resource type="Resource" uid="uid://da21qwgtgfiqh" path="res://Items/EquipableItems/Head/cooper_head.tres" id="32_sbiid"]
 [ext_resource type="Resource" uid="uid://dno5gwb372pxf" path="res://Items/EquipableItems/Head/iron2_head.tres" id="33_obpki"]
 [ext_resource type="Resource" uid="uid://spequ8lgxmdr" path="res://Items/SkillBook/vitality.tres" id="35_li4um"]
+[ext_resource type="Resource" uid="uid://cs7hbechg25cp" path="res://Items/SkillBook/dash.tres" id="36_hfa2r"]
 
 [node name="Playgroung" type="Node2D"]
 y_sort_enabled = true
@@ -182,9 +183,13 @@ item_data = ExtResource("33_obpki")
 position = Vector2(-40, 139)
 item_data = ExtResource("26_8p7ym")
 
-[node name="Head6" parent="." instance=ExtResource("6_irg8q")]
+[node name="Vitalidy" parent="." instance=ExtResource("6_irg8q")]
 position = Vector2(195, 127)
 item_data = ExtResource("35_li4um")
+
+[node name="Dash" parent="." instance=ExtResource("6_irg8q")]
+position = Vector2(195, 127)
+item_data = ExtResource("36_hfa2r")
 
 [editable path="Player"]
 [editable path="Plant"]

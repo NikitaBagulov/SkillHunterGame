@@ -17,6 +17,7 @@ func _ready() -> void:
 	update_passive_skills()
 
 func _process(delta: float) -> void:
+	update_passive_skills()
 	for skill in active_skill_cooldowns.keys():
 		active_skill_cooldowns[skill] -= delta
 		if active_skill_cooldowns[skill] <= 0:
@@ -29,19 +30,28 @@ func _input(event: InputEvent) -> void:
 			if item.skill and item.skill.type == SkillResource.SkillType.ACTIVE:
 				var key = KEY_MAP.get(item.skill.key_binding, -1)
 				if event.keycode == key:
+					# Вызываем асинхронный метод use_skill
 					use_skill(item.skill)
 
+# Делаем метод асинхронным с помощью async
 func use_skill(skill: SkillResource) -> bool:
 	if skill.type != SkillResource.SkillType.ACTIVE:
+		print("Skill '%s' is not ACTIVE" % skill.name)
 		return false
 	if active_skill_cooldowns.has(skill):
+		print("Skill '%s' is on cooldown: %.1f" % [skill.name, active_skill_cooldowns[skill]])
 		return false
 	if not is_skill_equipped(skill):
+		print("Skill '%s' is not equipped" % skill.name)
 		return false
 
-	var success = skill.execute(player)
+	# Добавляем await для асинхронного вызова execute
+	var success = await skill.execute(player)
 	if success:
 		active_skill_cooldowns[skill] = skill.cooldown
+		print("Skill '%s' executed successfully, cooldown set to %.1f" % [skill.name, skill.cooldown])
+	else:
+		print("Skill '%s' execution failed" % skill.name)
 	return success
 
 func update_passive_skills() -> void:

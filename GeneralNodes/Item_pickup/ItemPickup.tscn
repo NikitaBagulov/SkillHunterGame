@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bt10avxvpwkde"]
 
-[ext_resource type="Script" path="res://GeneralNodes/Item_pickup/item_pickup.gd" id="1_m046g"]
+[ext_resource type="Script" uid="uid://lc26rqh7ibwf" path="res://GeneralNodes/Item_pickup/item_pickup.gd" id="1_m046g"]
 [ext_resource type="AudioStream" uid="uid://bv7d4bvk2l45r" path="res://GeneralNodes/Item_pickup/item_pickup.wav" id="2_8x7ld"]
 [ext_resource type="Texture2D" uid="uid://crkew6pdof7xt" path="res://Enemies/Slime/Shadow.png" id="3_qow73"]
 
@@ -39,8 +39,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5e743"]
 _data = {
-"RESET": SubResource("Animation_8ocom"),
-"default": SubResource("Animation_y7ruj")
+&"RESET": SubResource("Animation_8ocom"),
+&"default": SubResource("Animation_y7ruj")
 }
 
 [node name="ItemPickup" type="Node2D"]
@@ -65,6 +65,6 @@ texture = ExtResource("3_qow73")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_5e743")
+&"": SubResource("AnimationLibrary_5e743")
 }
 autoplay = "default"

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://co1o4d8wybl3v"]
 
-[ext_resource type="Script" path="res://Props/Plants/plant.gd" id="1_eym5d"]
+[ext_resource type="Script" uid="uid://cutxjsf5yfcrb" path="res://Props/Plants/plant.gd" id="1_eym5d"]
 [ext_resource type="Texture2D" uid="uid://b5ayi86gd51no" path="res://Props/Sprites/Elements/Plants/spr_deco_tree_01_strip4.png" id="1_l0dr2"]
 [ext_resource type="PackedScene" uid="uid://bgt7thfgw0ugh" path="res://GeneralNodes/HitBox/hit_box.tscn" id="2_wqeyf"]
 

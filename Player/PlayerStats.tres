@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://b43r7n1vj4ei1"]
 
-[ext_resource type="Script" path="res://GeneralNodes/Stats/Stats.gd" id="1_kf72o"]
+[ext_resource type="Script" uid="uid://cjd6exgnwpbik" path="res://GeneralNodes/Stats/Stats.gd" id="1_kf72o"]
 
 [resource]
 script = ExtResource("1_kf72o")
-max_hp = 6
+base_max_hp = 6
 base_damage = 1
 level = 1
 experience = 0

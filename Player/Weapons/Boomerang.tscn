@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cs3jnoy88ar1u"]
 
-[ext_resource type="Script" path="res://Player/Weapons/boomerang.gd" id="1_52cym"]
+[ext_resource type="Script" uid="uid://b6l6hcplxxj0o" path="res://Player/Weapons/boomerang.gd" id="1_52cym"]
 [ext_resource type="Texture2D" uid="uid://ds30ui64eg2gu" path="res://Player/Sprites/boomerang.png" id="2_3m5c3"]
 [ext_resource type="AudioStream" uid="uid://bavl1tdv7jjgs" path="res://Player/Sprites/catch.wav" id="2_vv72i"]
 [ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="3_qpgnw"]
@@ -44,8 +44,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y8x8v"]
 _data = {
-"RESET": SubResource("Animation_sq6i3"),
-"boomerang": SubResource("Animation_rlssw")
+&"RESET": SubResource("Animation_sq6i3"),
+&"boomerang": SubResource("Animation_rlssw")
 }
 
 [node name="Boomerang" type="Node2D"]

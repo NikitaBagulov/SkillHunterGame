@@ -18,7 +18,6 @@ func update_damage_label(value: int):
 	damage_label.text = "Урон: " + str(value)
 	
 func update_hp_label(hp: int, max_hp: int):
-	print("HP: ", hp, max_hp)
 	hp_label.text = "%d/%d HP" % [hp, max_hp]
 
 func update_stats(stats: Stats) -> void:
