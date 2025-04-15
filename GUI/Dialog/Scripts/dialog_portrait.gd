@@ -5,7 +5,7 @@ var open_mouth: bool = false: set = _set_open_mouth
 var mouse_open_frames: int = 0
 var audio_pitch_base: float = 1.0
 
-@onready var audio: AudioStreamPlayer = $"../AudioStreamPlayer"
+@onready var audio: AudioStreamPlayer = $"../../../AudioStreamPlayer"
 
 func _ready():
 	if Engine.is_editor_hint():

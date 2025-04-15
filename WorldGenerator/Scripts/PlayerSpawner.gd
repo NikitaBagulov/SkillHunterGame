@@ -12,8 +12,10 @@ func spawn_player():
 	var safe_position = find_safe_spawn_position()
 	if safe_position:
 		PlayerManager.spawn_player(world_generator)
+
 		world_generator.player = PlayerManager.get_player()
 		PlayerManager.set_player_position(safe_position)
+
 		PlayerManager.set_player(world_generator.player)
 		
 		WorldCamera.global_position = safe_position  # Устанавливаем позицию камеры

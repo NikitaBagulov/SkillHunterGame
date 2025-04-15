@@ -22,8 +22,11 @@ func _ready() -> void:
 ## Обрабатывает столкновение с телом (игроком)
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player and item_data:
-		if PlayerManager.INVENTORY_DATA.add_item(item_data):
+		var inventory_data = Repository.instance.get_data("inventory", "data", null)
+		if inventory_data and inventory_data.add_item(item_data):
 			_item_picked_up()
+			# Обновляем инвентарь в Repository
+			Repository.instance.update_data("inventory", "data", inventory_data)
 
 # --- Управление сбором предмета ---
 ## Выполняет действия при поднятии предмета

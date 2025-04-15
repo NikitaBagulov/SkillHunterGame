@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dng0df4mnd6hq"]
+
+[ext_resource type="Script" uid="uid://fbixtpwnitmk" path="res://Player/PlayerSpawner/player_spawner.gd" id="1_v1q8r"]
+[ext_resource type="Texture2D" uid="uid://c37f5aupyk14x" path="res://IconGodotNode/node_2D/icon_flag.png" id="2_x2ceo"]
+
+[node name="PlayerSpawner" type="Node2D"]
+script = ExtResource("1_v1q8r")
+
+[node name="SpawnIndicator" type="Sprite2D" parent="."]
+texture = ExtResource("2_x2ceo")

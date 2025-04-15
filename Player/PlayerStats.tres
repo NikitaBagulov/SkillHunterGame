@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://b43r7n1vj4ei1"]
+[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://bc2svn36t3m4o"]
 
 [ext_resource type="Script" uid="uid://cjd6exgnwpbik" path="res://GeneralNodes/Stats/Stats.gd" id="1_kf72o"]
 
@@ -9,3 +9,6 @@ base_damage = 1
 level = 1
 experience = 0
 exp_to_next_level = 10
+position = Vector2(0, 0)
+base_move_speed = 100.0
+metadata/_custom_type_script = "uid://cjd6exgnwpbik"

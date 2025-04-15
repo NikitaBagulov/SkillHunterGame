@@ -546,3 +546,7 @@ script = ExtResource("6_hcivv")
 script = ExtResource("7_b8fay")
 object_resources = Array[ExtResource("8_p75be")]([ExtResource("9_no5wc"), ExtResource("10_pnkbi")])
 structure_resources = Array[ExtResource("10_x6w1v")]([SubResource("Resource_yfu04")])
+
+[node name="UpdateTimer" type="Timer" parent="."]
+
+[node name="LoadTimer" type="Timer" parent="."]

@@ -81,40 +81,70 @@ process_mode = 3
 layer = 3
 script = ExtResource("1_eo01w")
 
-[node name="DialogUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="DialogUI"]
+[node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0, 0, 0, 0.607843)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_right = 720.0
+offset_bottom = 405.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_lcf5a")
 
-[node name="PanelContainer" type="PanelContainer" parent="DialogUI"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -382.0
-offset_top = -95.0
-offset_right = -10.0
-offset_bottom = -11.0
-grow_horizontal = 0
-grow_vertical = 0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="DialogUI" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="PortraitSprite" type="Sprite2D" parent="MarginContainer/DialogUI"]
+visible = false
+position = Vector2(52, 196)
+texture = ExtResource("5_jks85")
+hframes = 4
+script = ExtResource("6_bpc6w")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/DialogUI"]
+layout_mode = 2
+theme = ExtResource("9_ip75q")
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/DialogUI/VBoxContainer"]
+layout_mode = 2
+text = "Choise"
+
+[node name="Button2" type="Button" parent="MarginContainer/DialogUI/VBoxContainer"]
+layout_mode = 2
+text = "Choise"
+
+[node name="Button3" type="Button" parent="MarginContainer/DialogUI/VBoxContainer"]
+layout_mode = 2
+text = "Choise"
+
+[node name="NameLabel" type="Label" parent="MarginContainer/DialogUI"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.894118, 0.862745, 0.796078, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_wmui0")
+text = "NAME"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/DialogUI"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_wo0p4")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="DialogUI/PanelContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/DialogUI/PanelContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.439216, 0.396078, 0.321569, 1)
 theme_override_fonts/normal_font = ExtResource("3_bj0oj")
@@ -126,73 +156,40 @@ text = "Example [b]Text[/b]!!!
 fit_content = true
 scroll_active = false
 
-[node name="NameLabel" type="Label" parent="DialogUI"]
-layout_mode = 0
-offset_left = 98.0
-offset_top = 150.0
-offset_right = 187.0
-offset_bottom = 173.0
-theme_override_colors/font_color = Color(0.894118, 0.862745, 0.796078, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/shadow_outline_size = 5
-theme_override_fonts/font = ExtResource("4_wmui0")
-text = "NAME"
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/DialogUI"]
+layout_mode = 2
 
-[node name="PortraitSprite" type="Sprite2D" parent="DialogUI"]
-position = Vector2(52, 196)
-texture = ExtResource("5_jks85")
-hframes = 4
-script = ExtResource("6_bpc6w")
-
-[node name="Timer" type="Timer" parent="DialogUI"]
-one_shot = true
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DialogUI"]
-stream = ExtResource("6_fap6l")
-max_polyphony = 6
-bus = &"SFX"
-
-[node name="DialogProgressIndicator" type="PanelContainer" parent="DialogUI"]
+[node name="DialogProgressIndicator" type="PanelContainer" parent="MarginContainer/DialogUI/HBoxContainer"]
 self_modulate = Color(1.82897e-06, 0.585636, 0.399317, 1)
-layout_mode = 0
-offset_left = 428.0
-offset_top = 241.0
-offset_right = 468.0
-offset_bottom = 260.0
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_mlkjc")
 
-[node name="Label" type="Label" parent="DialogUI/DialogProgressIndicator"]
+[node name="Label" type="Label" parent="MarginContainer/DialogUI/HBoxContainer/DialogProgressIndicator"]
 layout_mode = 2
+theme = ExtResource("9_ip75q")
 theme_override_fonts/font = ExtResource("6_rhwh0")
 text = "NEXT"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DialogUI/DialogProgressIndicator"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/DialogUI/HBoxContainer/DialogProgressIndicator"]
 root_node = NodePath("../Label")
 libraries = {
-"": SubResource("AnimationLibrary_q0xdl")
+&"": SubResource("AnimationLibrary_q0xdl")
 }
 autoplay = "default"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DialogUI"]
-layout_mode = 0
-offset_left = 154.0
-offset_top = 95.0
-offset_right = 466.0
-offset_bottom = 249.0
-theme = ExtResource("9_ip75q")
-
-[node name="Button" type="Button" parent="DialogUI/VBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/DialogUI/HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-text = "Choise"
 
-[node name="Button2" type="Button" parent="DialogUI/VBoxContainer"]
-layout_mode = 2
-text = "Choise"
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
 
-[node name="Button3" type="Button" parent="DialogUI/VBoxContainer"]
-layout_mode = 2
-text = "Choise"
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_fap6l")
+max_polyphony = 6
+bus = &"SFX"

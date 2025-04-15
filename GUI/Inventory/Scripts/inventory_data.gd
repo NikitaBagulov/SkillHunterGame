@@ -254,3 +254,53 @@ func get_equipped_weapon() -> EquipableItemData:
 func get_equipped_weapon_texture() -> Texture:
 	var weapon = get_equipped_weapon()
 	return weapon.texture if weapon else null
+	
+# ⚙️ Сериализация для Repository
+func serialize() -> Dictionary:
+	var result: Dictionary = {}
+	for i in slots.size():
+		var slot = slots[i]
+		result[i] = _slot_to_dict(slot)
+	return {
+		"slots": result
+	}
+
+# ⚙️ Десериализация из Repository
+func deserialize(data: Dictionary) -> void:
+	if not data.has("slots"):
+		return
+
+	var slot_dict: Dictionary = data["slots"]
+	var total_size: int = inventory_slot_count + equipment_slot_count + quick_slot_count + forge_slot_count
+	slots.resize(total_size)
+
+	for i in slot_dict.keys():
+		var idx := int(i)
+		if idx >= 0 and idx < total_size:
+			slots[idx] = _dict_to_slot(slot_dict[i])
+	connect_slots()
+	data_changed.emit()
+
+# 🔄 Преобразует слот в словарь
+func _slot_to_dict(slot: SlotData) -> Dictionary:
+	var dict := {
+		"item": "",
+		"quantity": 0
+	}
+	if slot:
+		dict["quantity"] = slot.quantity
+		if slot.item_data and slot.item_data.resource_path != "":
+			dict["item"] = slot.item_data.resource_path
+	return dict
+
+# 🔄 Создаёт слот из словаря
+func _dict_to_slot(dict: Dictionary) -> SlotData:
+	if not dict.has("item") or dict["item"] == "":
+		return null
+
+	var new_slot := SlotData.new()
+	new_slot.item_data = load(dict["item"])
+	print(new_slot.item_data)
+	new_slot.quantity = dict.get("quantity", 1)
+	new_slot.changed.connect(slot_changed)
+	return new_slot

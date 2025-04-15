@@ -4,6 +4,7 @@ var hearts: Array[HeartGUI] = []
 
 @onready var hp_label: Label = $VBoxContainer/HPBar/HPLabel
 @onready var hp_bar: ProgressBar = $VBoxContainer/HPBar
+
 func _ready():
 	PlayerManager.PLAYER_STATS.health_updated.connect(update_hp)
 	#for child in $Control/HFlowContainer.get_children():

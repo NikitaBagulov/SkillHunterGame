@@ -1,4 +1,5 @@
-class_name Player extends CharacterBody2D
+class_name Player
+extends CharacterBody2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var effect_animation_player: AnimationPlayer = $EffectAnimationPlayer
@@ -23,17 +24,37 @@ signal player_damaged(hurt_box: HurtBox)
 var invulnerable: bool = false
 
 func _ready():
+	# Ждем готовности PlayerManager
+	if PlayerManager.is_inside_tree():
+		_initialize_player()
+	else:
+		PlayerManager.manager_ready.connect(_initialize_player)
+
+func _initialize_player():
+	# Устанавливаем игрока
 	PlayerManager.set_player(self)
 	skill_manager.player = self
 	state_machine.initialize(self)
 	hit_box.Damaged.connect(health.take_damage)
 	experience_manager.stats = PlayerManager.PLAYER_STATS
-	change_weapon_texture(PlayerManager.INVENTORY_DATA.get_equipped_weapon_texture())
-	PlayerManager.PLAYER_STATS.player_level_up.emit(PlayerManager.PLAYER_STATS)
+	weapon_texture.visible = false
+	
+	# Инициализируем Stats, если нужно
+	if not PlayerManager.PLAYER_STATS._is_initialized:
+		PlayerManager.PLAYER_STATS.initialize()
+	
 	# Синхронизируем начальную позицию
 	PlayerManager.PLAYER_STATS.position = global_position
-	# Подключаемся к сигналу обновления позиции
 	PlayerManager.PLAYER_STATS.position_updated.connect(_on_position_updated)
+	
+	# Регистрируем Stats в Repository
+	Repository.instance.register("player", "stats", PlayerManager.PLAYER_STATS, true)
+	
+	# Обновляем текстуру оружия
+	#change_weapon_texture(PlayerManager.INVENTORY_DATA.get_equipped_weapon_texture())
+	
+	# Уведомляем о начальном состоянии
+	PlayerManager.PLAYER_STATS.player_level_up.emit(PlayerManager.PLAYER_STATS)
 
 func _process(delta):
 	direction = Vector2(
@@ -46,7 +67,9 @@ func _physics_process(delta):
 	velocity = direction * PlayerManager.PLAYER_STATS.move_speed
 	move_and_slide()
 	# Обновляем позицию в Stats после перемещения
-	PlayerManager.PLAYER_STATS.position = global_position
+	if global_position != PlayerManager.PLAYER_STATS.position:
+		PlayerManager.PLAYER_STATS.position = global_position
+		Repository.instance.update_data("player", "stats", PlayerManager.PLAYER_STATS)
 
 func change_weapon_texture(texture: Texture) -> void:
 	weapon_texture.texture = texture
@@ -85,5 +108,5 @@ func animation_direction() -> String:
 			return "down"
 
 func _on_position_updated(new_position: Vector2) -> void:
-	# Если нужно синхронизировать позицию в обратную сторону (например, при телепортации)
+	# Синхронизируем позицию
 	global_position = new_position

@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://duxowqns5jvyw"]
+
+[ext_resource type="Script" uid="uid://dmfts521dbori" path="res://GeneralNodes/Portal/portal.gd" id="1_kvxcf"]
+[ext_resource type="Texture2D" uid="uid://dds4tvovgcltl" path="res://Assets/Background/Tilesets/TilesetNatures.png" id="2_p36jf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2et5i"]
+size = Vector2(16, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dbue"]
+atlas = ExtResource("2_p36jf")
+region = Rect2(32, 48, 48, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p36jf"]
+radius = 5.09902
+
+[node name="Portal" type="Area2D"]
+script = ExtResource("1_kvxcf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_2et5i")
+debug_color = Color(0.56199, 0.394556, 1, 0.42)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = SubResource("AtlasTexture_3dbue")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-13, -4)
+collision_layer = 16
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_p36jf")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(13, -4)
+collision_layer = 16
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("CircleShape2D_p36jf")

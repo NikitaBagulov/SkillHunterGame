@@ -1,9 +1,9 @@
 extends Node
 
+#static var instance: SaveManager = null
+
 # Путь к файлу сохранения
 const SAVE_PATH: String = "user://savegame.save"
-# Ключ для шифрования (в виде PackedByteArray)
-var ENCRYPTION_KEY: PackedByteArray = "my_secret_key_123".to_utf8_buffer()
 
 # Сигналы для уведомления о состоянии сохранения/загрузки
 signal save_completed(success: bool)
@@ -18,15 +18,16 @@ func _ready() -> void:
 # Сохранение игры (синхронное)
 func save_game() -> bool:
 	var save_data = Repository.instance.serialize()
-	var file = FileAccess.open_encrypted(SAVE_PATH, FileAccess.WRITE, ENCRYPTION_KEY)
+	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
+		Repository.instance.log_message("Opening file for saving...")
 		file.store_var(save_data, true)
 		file.close()
-		Repository.instance.log_message("Game saved successfully")
+		Repository.instance.log_message("Game saved successfully (sync)")
 		save_completed.emit(true)
 		return true
 	else:
-		Repository.instance.log_message("Failed to save game")
+		Repository.instance.log_message("Failed to open file for saving")
 		save_completed.emit(false)
 		return false
 
@@ -36,95 +37,95 @@ func load_game() -> bool:
 		Repository.instance.log_message("No save file found at: %s" % SAVE_PATH)
 		load_completed.emit(false)
 		return false
-	
-	var file = FileAccess.open_encrypted(SAVE_PATH, FileAccess.READ, ENCRYPTION_KEY)
+
+	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file:
+		Repository.instance.log_message("Opening file for loading...")
 		var save_data = file.get_var(true)
 		file.close()
+
 		if save_data is Dictionary:
 			var success = Repository.instance.deserialize(save_data)
 			load_completed.emit(success)
-			if success:
-				Repository.instance.log_message("Game loaded successfully")
-			else:
-				Repository.instance.log_message("Failed to load game: Invalid data")
+			Repository.instance.log_message("Game loaded successfully (sync)" if success else "Failed to load game: Invalid data")
 			return success
 		else:
-			Repository.instance.log_message("Failed to load game: Corrupted file")
-			load_completed.emit(false)
-			return false
+			Repository.instance.log_message("Failed to load game: Data is not a Dictionary")
 	else:
-		Repository.instance.log_message("Failed to open save file")
-		load_completed.emit(false)
-		return false
+		Repository.instance.log_message("Failed to open save file for reading")
 
-# Асинхронное сохранение с использованием потока
+	load_completed.emit(false)
+	return false
+
+# Асинхронное сохранение
 func save_game_async() -> bool:
 	var thread = Thread.new()
 	var save_data = Repository.instance.serialize()
 	var error = thread.start(_write_save_file.bind(save_data))
+
 	if error != OK:
 		Repository.instance.log_message("Failed to start save thread: %s" % error)
 		save_completed.emit(false)
 		return false
-	
-	# Ожидаем завершения потока
+
 	var success = thread.wait_to_finish()
 	save_completed.emit(success)
-	if success:
-		Repository.instance.log_message("Game saved successfully (async)")
-	else:
-		Repository.instance.log_message("Failed to save game (async)")
+	Repository.instance.log_message("Game saved successfully (async)" if success else "Failed to save game (async)")
 	return success
 
-# Асинхронная загрузка с использованием потока
+# Асинхронная загрузка
 func load_game_async() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
 		Repository.instance.log_message("No save file found at: %s" % SAVE_PATH)
 		load_completed.emit(false)
 		return false
-	
+
 	var thread = Thread.new()
 	var error = thread.start(_read_save_file)
+
 	if error != OK:
 		Repository.instance.log_message("Failed to start load thread: %s" % error)
 		load_completed.emit(false)
 		return false
-	
-	# Ожидаем завершения потока
+
 	var save_data = thread.wait_to_finish()
 	if save_data is Dictionary:
 		var success = Repository.instance.deserialize(save_data)
 		load_completed.emit(success)
-		if success:
-			Repository.instance.log_message("Game loaded successfully (async)")
-		else:
-			Repository.instance.log_message("Failed to load game: Invalid data (async)")
+		Repository.instance.log_message("Game loaded successfully (async)" if success else "Failed to load game: Invalid data (async)")
 		return success
 	else:
-		Repository.instance.log_message("Failed to load game: Corrupted file (async)")
+		Repository.instance.log_message("Failed to load game: Data is corrupted or null (async)")
 		load_completed.emit(false)
 		return false
 
-# Вспомогательная функция для сохранения в потоке
+# Вспомогательная функция для сохранения
 func _write_save_file(save_data: Dictionary) -> bool:
-	var file = FileAccess.open_encrypted(SAVE_PATH, FileAccess.WRITE, ENCRYPTION_KEY)
+	Repository.instance.log_message("Thread: Writing save data to file...")
+	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
 		file.store_var(save_data, true)
 		file.close()
+		Repository.instance.log_message("Thread: Save data written successfully")
 		return true
+	else:
+		Repository.instance.log_message("Thread: Failed to open file for writing")
 	return false
 
-# Вспомогательная функция для чтения в потоке
+# Вспомогательная функция для загрузки
 func _read_save_file() -> Variant:
-	var file = FileAccess.open_encrypted(SAVE_PATH, FileAccess.READ, ENCRYPTION_KEY)
+	Repository.instance.log_message("Thread: Reading save file...")
+	var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
 	if file:
 		var data = file.get_var(true)
 		file.close()
+		Repository.instance.log_message("Thread: Save data read successfully")
 		return data
+	else:
+		Repository.instance.log_message("Thread: Failed to open file for reading")
 	return null
 
-# Очистка сохранений
+# Очистка сохранения
 func clear_save() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(SAVE_PATH)

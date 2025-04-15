@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bo1he5a2qqx72"]
+
+[ext_resource type="PackedScene" uid="uid://caosgc7d7xw16" path="res://StartLocation/StartLocation.tscn" id="1_rehs3"]
+[ext_resource type="PackedScene" uid="uid://dng0df4mnd6hq" path="res://Player/PlayerSpawner/PlayerSpawner.tscn" id="2_ayyf6"]
+
+[node name="MainRoot" type="Node"]
+
+[node name="StartLocation" parent="." instance=ExtResource("1_rehs3")]
+
+[node name="PlayerSpawner" parent="." instance=ExtResource("2_ayyf6")]
+position = Vector2(96, 46)

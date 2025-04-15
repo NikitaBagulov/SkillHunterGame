@@ -1,4 +1,5 @@
-class_name SkillManager extends Node
+class_name SkillManager
+extends Node
 
 @export var player: Player
 var active_skill_cooldowns: Dictionary = {}
@@ -65,15 +66,20 @@ func update_passive_skills() -> void:
 	
 	if player.health:
 		player.health.update_hp(0)
-	var equipped_weapon = PlayerManager.INVENTORY_DATA.get_equipped_weapon()
+	
+	# Получаем инвентарь из Repository
+	var inventory_data = Repository.instance.get_data("inventory", "data", null)
+	var equipped_weapon = inventory_data.get_equipped_weapon() if inventory_data else null
 	if equipped_weapon:
-		PlayerManager.PLAYER_STATS.update_damage(equipped_weapon.get_attack_bonus())
-	else:
-		PlayerManager.PLAYER_STATS.update_damage(0)
+		PlayerManager.PLAYER_STATS.update_damage(inventory_data.get_equipped_weapon_damage_bonus())
+	#else:
+		#PlayerManager.PLAYER_STATS.update_damage(0)
 
 func get_equipped_items() -> Array[EquipableItemData]:
 	var items: Array[EquipableItemData] = []
-	var weapon = PlayerManager.INVENTORY_DATA.get_equipped_weapon()
+	# Получаем инвентарь из Repository
+	var inventory_data = Repository.instance.get_data("inventory", "data", null)
+	var weapon = inventory_data.get_equipped_weapon() if inventory_data else null
 	if weapon:
 		items.append(weapon)
 	return items

@@ -4,15 +4,17 @@ extends Node
 ## Сцена игрока для инстанцирования
 const PLAYER_SCENE = preload("res://Player/Scenes/player.tscn")
 ## Данные инвентаря игрока
-const INVENTORY_DATA: InventoryData = preload("res://GUI/Inventory/player_inventory.tres")
+@export var INVENTORY_DATA: InventoryData = preload("res://GUI/Inventory/player_inventory.tres")
 ## Статистика игрока
-var PLAYER_STATS: Stats = preload("res://Player/PlayerStats.tres")
+@export var PLAYER_STATS: Stats = Stats.new()
 
 # --- Сигналы ---
 ## Сигнал нажатия кнопки взаимодействия
 signal interact_pressed
 ## Сигнал назначения игрока
 signal player_assigned(player: Player)
+## Сигнал готовности менеджера
+signal manager_ready
 
 # --- Переменные ---
 ## Ссылка на экземпляр игрока
@@ -24,7 +26,19 @@ var player_spawned: bool = false
 func _ready() -> void:
 	# Подключаем сигнал изменения экипировки к обновлению текстуры оружия и здоровья
 	INVENTORY_DATA.equipment_changed.connect(_update_weapon_texture)
+	INVENTORY_DATA.equipment_changed.connect(update_equipment_damage)
 	INVENTORY_DATA.equipment_changed.connect(update_health)
+	
+	
+	PLAYER_STATS.init()
+	
+	# Регистрируем данные в Repository
+	Repository.instance.register("player", "stats", PLAYER_STATS, true)
+	Repository.instance.register("inventory", "data", INVENTORY_DATA, true)
+	
+	# Сигнализируем о готовности
+	manager_ready.emit()
+	print("GlobalPlayerManager ready")
 
 # --- Управление игроком ---
 ## Устанавливает экземпляр игрока и отправляет сигнал
@@ -46,7 +60,8 @@ func spawn_player(parent_node: Node = null) -> void:
 	
 	player = PLAYER_SCENE.instantiate()
 	var target_node = parent_node if parent_node else get_tree().root
-	target_node.add_child(player)
+
+	target_node.call_deferred("add_child", player)
 	
 	player_spawned = true
 	set_player(player)

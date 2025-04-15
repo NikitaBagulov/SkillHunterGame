@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://c8hv2oxtho7xx"]
+[gd_scene load_steps=13 format=3 uid="uid://c8hv2oxtho7xx"]
 
 [ext_resource type="Script" uid="uid://bimdktmw4tm40" path="res://Interactebles/TreasureChest/treasure_chest.gd" id="1_kjl3w"]
 [ext_resource type="Texture2D" uid="uid://cktctcagrtsck" path="res://Interactebles/TreasureChest/treasure-chest.png" id="2_xvgp1"]
 [ext_resource type="AudioStream" uid="uid://dihsdxueo0otk" path="res://Interactebles/TreasureChest/treasure-open.wav" id="3_24r4m"]
 [ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="3_ftk4h"]
-[ext_resource type="PackedScene" uid="uid://bu8qup2x7gswi" path="res://GeneralNodes/PersistentDataHandler/PersistentDataHandler.tscn" id="5_fmat3"]
 
 [sub_resource type="Animation" id="Animation_gn3yd"]
 length = 0.001
@@ -243,5 +242,3 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_lmqje")
 debug_color = Color(0.153511, 0.645044, 7.70092e-07, 0.42)
-
-[node name="IsOpen" parent="." instance=ExtResource("5_fmat3")]

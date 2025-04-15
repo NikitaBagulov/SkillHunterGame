@@ -13,14 +13,29 @@ var world_generator: WorldGenerator
 var ground_layer: Node2D
 var settings = {}
 var biomes = []
+var is_paused: bool = false
 
 func initialize(wg: WorldGenerator, gl: Node2D, gen_settings: Dictionary, biome_settings: BiomeSettings):
 	world_generator = wg
 	ground_layer = gl
 	settings = gen_settings
 	biomes = biome_settings.biomes
+	is_paused = not wg.visible
+	print("ChunkManager: Initialized, paused: ", is_paused)
+
+func pause_loading():
+	is_paused = true
+	chunk_queue.clear() # Очищаем очередь, чтобы не прогружать чанки
+	print("ChunkManager: Paused loading")
+
+func resume_loading():
+	is_paused = false
+	print("ChunkManager: Resumed loading")
 
 func update_chunks(player_chunk: Vector2i):
+	if is_paused:
+		return
+	
 	var new_chunks = {}
 	var render_distance = settings["render_distance"]
 	for x in range(player_chunk.x - render_distance, player_chunk.x + render_distance + 1):
@@ -46,18 +61,22 @@ func update_chunks(player_chunk: Vector2i):
 		if current_time - cached_chunks[chunk_pos][CACHE_TIMESTAMP] > settings["chunk_cache_time"]:
 			to_remove.append(chunk_pos)
 	for chunk_pos in to_remove:
-		clear_chunk(chunk_pos)
-		cached_chunks.erase(chunk_pos)
+			clear_chunk(chunk_pos)
+			cached_chunks.erase(chunk_pos)
 	
 	loaded_chunks = new_chunks
+	print("ChunkManager: Updated chunks, loaded: ", loaded_chunks.size(), " queued: ", chunk_queue.size())
 
 func load_next_chunk():
-	if chunk_queue.is_empty():
+	if is_paused or chunk_queue.is_empty():
 		return
 	var chunk_pos = chunk_queue.pop_front()
 	generate_chunk(chunk_pos)
 
 func generate_chunk(chunk_pos: Vector2i):
+	if is_paused:
+		return
+	
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
 	var cells_by_terrain = {}
@@ -85,8 +104,12 @@ func generate_chunk(chunk_pos: Vector2i):
 	
 	apply_chunk(chunk_pos, cells_by_terrain)
 	world_generator.object_spawner.generate_objects(chunk_pos)
+	print("ChunkManager: Generated chunk at ", chunk_pos)
 
 func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
+	if is_paused:
+		return
+	
 	for terrain_index in cells_by_terrain.keys():
 		if cells_by_terrain[terrain_index].size() > 0:
 			ground_layer.set_cells_terrain_connect(cells_by_terrain[terrain_index], 0, terrain_index, false)
@@ -94,6 +117,9 @@ func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 	update_chunk_borders(chunk_pos)
 
 func cache_chunk(chunk_pos: Vector2i):
+	if is_paused:
+		return
+	
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
 	var cells_by_terrain = {}
@@ -110,20 +136,24 @@ func cache_chunk(chunk_pos: Vector2i):
 	var object_data = []
 	if chunk_objects.has(chunk_pos):
 		for obj in chunk_objects[chunk_pos]:
-			if is_instance_valid(obj):  # Проверяем, жив ли объект
+			if is_instance_valid(obj):
 				var scene_path = obj.scene_file_path
 				var position = obj.global_position
 				object_data.append(ObjectData.new(scene_path, position))
 				if not object_pool.has(scene_path):
 					object_pool[scene_path] = []
 				object_pool[scene_path].append(obj)
-				obj.get_parent().remove_child(obj)  # Удаляем из сцены, но не освобождаем
+				obj.get_parent().remove_child(obj) # Убираем из сцены, но не удаляем
 		chunk_objects.erase(chunk_pos)
 
 	cached_chunks[chunk_pos] = [cells_by_terrain, Time.get_ticks_msec() / 1000.0, object_data]
 	clear_chunk(chunk_pos)
+	print("ChunkManager: Cached chunk at ", chunk_pos)
 
 func restore_chunk(chunk_pos: Vector2i):
+	if is_paused:
+		return
+	
 	var cells_by_terrain = cached_chunks[chunk_pos][CACHE_CELLS]
 	var object_data = cached_chunks[chunk_pos][CACHE_OBJECTS]
 	apply_chunk(chunk_pos, cells_by_terrain)
@@ -144,21 +174,36 @@ func restore_chunk(chunk_pos: Vector2i):
 		if instance:
 			world_generator.objects_node.add_child(instance)
 			chunk_objects[chunk_pos].append(instance)
+	
+	print("ChunkManager: Restored chunk at ", chunk_pos)
 
 func clear_chunk(chunk_pos: Vector2i):
+	if is_paused:
+		return
+	
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			ground_layer.erase_cell(start_pos + Vector2i(x, y))
-
+	
+	# Перемещаем объекты в пул вместо удаления
 	if chunk_objects.has(chunk_pos):
 		for obj in chunk_objects[chunk_pos]:
-			if is_instance_valid(obj):  # Проверяем, жив ли объект
-				obj.queue_free()  # Освобождаем объект
+			if is_instance_valid(obj):
+				var scene_path = obj.scene_file_path
+				if not object_pool.has(scene_path):
+					object_pool[scene_path] = []
+				object_pool[scene_path].append(obj)
+				obj.get_parent().remove_child(obj)
 		chunk_objects.erase(chunk_pos)
+	
+	print("ChunkManager: Cleared chunk at ", chunk_pos)
 
 func update_chunk_borders(chunk_pos: Vector2i):
+	if is_paused:
+		return
+	
 	var chunk_size = settings["chunk_size"]
 	var border_cells = {}
 	for biome in biomes:
@@ -208,6 +253,9 @@ func get_neighbor_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) ->
 	return positions
 
 func update_border_cell(pos: Vector2i, border_cells: Dictionary):
+	if is_paused:
+		return
+	
 	var noise_value = world_generator.noise_manager.get_cached_noise(pos)
 	var selected_terrain = 0
 	for biome in biomes:

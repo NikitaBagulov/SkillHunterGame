@@ -16,15 +16,16 @@ var plain_text: String
 var dialog_items: Array[DialogItem]
 var dialog_item_index: int = 0
 
-@onready var dialog_ui: Control = $DialogUI
-@onready var content: RichTextLabel = $DialogUI/PanelContainer/RichTextLabel
-@onready var name_label: Label = $DialogUI/NameLabel 
-@onready var portrait_sprite: DialogPortrait = $DialogUI/PortraitSprite
-@onready var dialog_progress_indicator: PanelContainer = $DialogUI/DialogProgressIndicator
-@onready var label: Label = $DialogUI/DialogProgressIndicator/Label
-@onready var timer: Timer = $DialogUI/Timer
-@onready var audio: AudioStreamPlayer = $DialogUI/AudioStreamPlayer
-@onready var choise_options: VBoxContainer = $DialogUI/VBoxContainer
+@onready var dialog_ui: Control = $MarginContainer/DialogUI
+@onready var texture_rect: TextureRect = $TextureRect
+@onready var content: RichTextLabel = $MarginContainer/DialogUI/PanelContainer/RichTextLabel
+@onready var name_label: Label = $MarginContainer/DialogUI/NameLabel
+@onready var portrait_sprite: DialogPortrait = $MarginContainer/DialogUI/PortraitSprite
+@onready var dialog_progress_indicator: PanelContainer = $MarginContainer/DialogUI/HBoxContainer/DialogProgressIndicator
+@onready var label: Label = $MarginContainer/DialogUI/HBoxContainer/DialogProgressIndicator/Label
+@onready var timer: Timer = $Timer
+@onready var audio: AudioStreamPlayer = $AudioStreamPlayer
+@onready var choise_options: VBoxContainer = $MarginContainer/DialogUI/VBoxContainer
 
 func _ready():
 	if Engine.is_editor_hint():
@@ -58,20 +59,24 @@ func _unhandled_input(event):
 			hide_dialog()
 
 func show_dialog(_items: Array[DialogItem]) -> void:
+	visible = true
 	is_active = true
 	dialog_ui.visible = true
 	dialog_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	dialog_items = _items
 	dialog_item_index = 0
+	texture_rect.visible = true
 	get_tree().paused = true
 	await get_tree().process_frame
 	start_dialog()
 	pass
 	
 func hide_dialog() -> void:
+	visible = false
 	is_active = false
 	dialog_ui.visible = false
 	choise_options.visible = false
+	texture_rect.visible = false
 	dialog_ui.process_mode = Node.PROCESS_MODE_DISABLED
 	get_tree().paused = false
 	finished.emit()
@@ -125,6 +130,8 @@ func _dialog_choice_selected(_data: DialogBranch) -> void:
 		
 func show_dialog_button_indicator(_is_visible: bool) -> void:
 	dialog_progress_indicator.visible = _is_visible
+	#dialog_progress_indicator.modulate.a = 1.0 if _is_visible else 0.0
+	#dialog_progress_indicator.modulate.a = 0
 	if dialog_item_index + 1 < dialog_items.size():
 		label.text = "NEXT"
 	else:
