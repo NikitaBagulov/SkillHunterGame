@@ -11,6 +11,18 @@ func _ready():
 		if child is DialogBranch:
 			dialog_branches.append(child)
 
+func get_available_branches() -> Array[DialogBranch]:
+	var available: Array[DialogBranch] = []
+	for branch in dialog_branches:
+		if branch.quest_id:
+			var quest = GlobalQuestManager.instance.get_quest(branch.quest_id)
+			if branch.quest_action == QuestAction.START_QUEST and not GlobalQuestManager.instance.can_start_quest(branch.quest_id):
+				continue
+			if branch.quest_action == QuestAction.COMPLETE_QUEST and (not quest or quest.status != QuestResource.QuestStatus.IN_PROGRESS):
+				continue
+		available.append(branch)
+	return available
+
 func _set_editor_display() -> void:
 	set_related_text()
 

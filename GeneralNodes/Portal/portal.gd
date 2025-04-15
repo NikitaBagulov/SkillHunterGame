@@ -38,23 +38,27 @@ func _on_body_entered(body: Node):
 				var world_instance = target_scene.instantiate()
 				get_tree().root.get_node("MainRoot").add_child(world_instance)
 				get_tree().root.get_node("MainRoot").get_node("StartLocation").visible = false
-				get_tree().root.get_node("MainRoot").get_node("StartLocation").set_process(false)
-				get_tree().root.get_node("MainRoot").get_node("StartLocation").set_physics_process(false)
+				get_tree().root.get_node("MainRoot").get_node("StartLocation").process_mode = Node.PROCESS_MODE_DISABLED
+				get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("GroundedLayer").collision_enabled = false
+				get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("ObjectLayer").collision_enabled = false
 			else:
 				get_tree().root.get_node("MainRoot").get_node("StartLocation").visible = false
-				get_tree().root.get_node("MainRoot").get_node("StartLocation").set_process(false)
-				get_tree().root.get_node("MainRoot").get_node("StartLocation").set_physics_process(false)
-				get_tree().root.get_node("MainRoot").get_node("World").visible = true
-				get_tree().root.get_node("MainRoot").get_node("World").set_process(true)
-				get_tree().root.get_node("MainRoot").get_node("World").set_physics_process(true)
+				get_tree().root.get_node("MainRoot").get_node("StartLocation").process_mode = Node.PROCESS_MODE_DISABLED
+				get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("GroundedLayer").collision_enabled = false
+				get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("ObjectLayer").collision_enabled = false
 				
+				get_tree().root.get_node("MainRoot").get_node("World").visible = true
+				get_tree().root.get_node("MainRoot").get_node("World").process_mode = Node.PROCESS_MODE_INHERIT
+				get_tree().root.get_node("MainRoot").get_node("World").get_node("GroundedLayer").collision_enabled = true
 		else:
 			get_tree().root.get_node("MainRoot").get_node("World").visible = false
-			get_tree().root.get_node("MainRoot").get_node("World").set_process(false)
-			get_tree().root.get_node("MainRoot").get_node("World").set_physics_process(false)
+			get_tree().root.get_node("MainRoot").get_node("World").process_mode = Node.PROCESS_MODE_DISABLED
+			get_tree().root.get_node("MainRoot").get_node("World").get_node("GroundedLayer").collision_enabled = true
+			
 			get_tree().root.get_node("MainRoot").get_node("StartLocation").visible = true
-			get_tree().root.get_node("MainRoot").get_node("StartLocation").set_process(true)
-			get_tree().root.get_node("MainRoot").get_node("StartLocation").set_physics_process(true)
+			get_tree().root.get_node("MainRoot").get_node("StartLocation").process_mode = Node.PROCESS_MODE_INHERIT
+			get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("GroundedLayer").collision_enabled = true
+			get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("ObjectLayer").collision_enabled = true
 		
 		# Устанавливаем позицию игрока после перехода
 		PlayerManager.set_player_position(spawn_position)

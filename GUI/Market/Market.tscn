@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://wj5x18frxhbv"]
+
+[ext_resource type="Script" uid="uid://cfa0pvjusdbc5" path="res://GUI/Market/market_system.gd" id="1_snvfi"]
+[ext_resource type="PackedScene" uid="uid://v82t515btswh" path="res://GUI/Market/market_ui.tscn" id="2_o6nhi"]
+
+[node name="Market" type="CanvasLayer"]
+process_mode = 3
+layer = 3
+script = ExtResource("1_snvfi")
+
+[node name="MarketUi" parent="." instance=ExtResource("2_o6nhi")]
+
+[editable path="MarketUi"]

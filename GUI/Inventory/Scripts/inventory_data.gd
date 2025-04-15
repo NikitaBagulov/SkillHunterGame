@@ -121,11 +121,32 @@ func unequip_item(equipment_index: int) -> void:
 	print("No free inventory slot available!")
 
 func add_item(item: ItemData, count: int = 1) -> bool:
+	# Для EquipableItemData создаём новый слот для каждого предмета
+	if item is EquipableItemData:
+		for i in range(count):  # Добавляем count предметов по одному
+			for j in inventory_slots().size():
+				if slots[j] == null:
+					var new_slot = SlotData.new()
+					new_slot.item_data = item
+					new_slot.quantity = 1  # Всегда 1 для EquipableItemData
+					slots[j] = new_slot
+					new_slot.changed.connect(slot_changed)
+					item_added.emit(new_slot)
+					data_changed.emit()
+					GlobalQuestManager.instance.on_item_collected(item.item_id, 1)
+					return true
+			print("Inventory was full for EquipableItemData!")
+			return false
+		return true
+	
+	# Для остальных предметов сохраняем стакание
 	for slot in slots:
-		if slot and slot.item_data == item:
+		if slot and slot.item_data == item and not slot.item_data is EquipableItemData:
 			slot.quantity += count
 			data_changed.emit()
+			GlobalQuestManager.instance.on_item_collected(item.item_id, count)
 			return true
+			
 	for i in inventory_slots().size():
 		if slots[i] == null:
 			var new_slot = SlotData.new()
@@ -135,8 +156,9 @@ func add_item(item: ItemData, count: int = 1) -> bool:
 			new_slot.changed.connect(slot_changed)
 			item_added.emit(new_slot)
 			data_changed.emit()
+			GlobalQuestManager.instance.on_item_collected(item.item_id, count)
 			return true
-	print("inventory was full!")
+	print("Inventory was full!")
 	return false
 
 func connect_slots() -> void:

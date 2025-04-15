@@ -5,15 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://catt4bbm6hsq" path="res://GUI/Inventory/inventory_slot_ui.tscn" id="3_70leh"]
 
 [node name="SkillForgeUI" type="Control"]
-custom_minimum_size = Vector2(180, 120)
+custom_minimum_size = Vector2(164, 96)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -299.0
-offset_bottom = -152.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 script = ExtResource("1_0n4qx")
 
 [node name="Panel" type="PanelContainer" parent="."]

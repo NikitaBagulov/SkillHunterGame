@@ -21,4 +21,5 @@ modifiers = Array[ExtResource("2_n438a")]([SubResource("Resource_75pnw")])
 name = "Палка"
 description = "В детстве всегда мечтал найти такую!"
 texture = SubResource("AtlasTexture_14r4c")
+cost = 3
 effects = Array[ExtResource("1_q1iot")]([])

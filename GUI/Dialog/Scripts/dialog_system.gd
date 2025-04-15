@@ -85,7 +85,19 @@ func hide_dialog() -> void:
 func start_dialog() -> void:
 	wainting_for_choise = false
 	show_dialog_button_indicator(false)
-	var _data: DialogItem = dialog_items[dialog_item_index]	
+	var _data: DialogItem = dialog_items[dialog_item_index]    
+	
+	# Проверка квестовых действий
+	if _data.quest_id and _data.quest_action != _data.QuestAction.NONE:
+		match _data.quest_action:
+			_data.QuestAction.START_QUEST:
+				if GlobalQuestManager.instance.can_start_quest(_data.quest_id):
+					GlobalQuestManager.instance.add_quest(load("res://QuestSystem/Resources/%s.tres" % _data.quest_id))
+			_data.QuestAction.UPDATE_QUEST:
+				# Предполагается, что прогресс передается через диалог (например, objective_id и value)
+				GlobalQuestManager.instance.update_quest_progress(_data.quest_id, "obj_default", 1)  # Пример
+			_data.QuestAction.COMPLETE_QUEST:
+				GlobalQuestManager.instance.complete_quest(_data.quest_id)
 	
 	if _data is DialogText:
 		set_dialog_text(_data as DialogText)
@@ -110,15 +122,17 @@ func set_dialog_choise(_data: DialogChoise) -> void:
 	for child in choise_options.get_children():
 		child.queue_free()
 		
-	for i in _data.dialog_branches.size():
+	var branches = _data.get_available_branches()
+	for i in branches.size():
+		var branch = branches[i]
 		var _new_choise: Button = Button.new()
-		_new_choise.text = _data.dialog_branches[i].text
+		_new_choise.text = branch.text
 		_new_choise.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		_new_choise.pressed.connect(_dialog_choice_selected.bind(_data.dialog_branches[i]))
+		_new_choise.pressed.connect(branch.on_selected)  # Вызываем on_selected вместо _dialog_choice_selected
 		choise_options.add_child(_new_choise)
 	
 	if Engine.is_editor_hint():
-		return	
+		return    
 	await get_tree().process_frame
 	choise_options.get_child(0).grab_focus()
 		

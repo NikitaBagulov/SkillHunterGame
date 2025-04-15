@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvn1vs88d82t8"]
+
+[ext_resource type="Script" uid="uid://k4ey1ad71vi0" path="res://GUI/Market/market_slot_ui.gd" id="1_rurx4"]
+[ext_resource type="Texture2D" uid="uid://cn0it8pds4y0o" path="res://Items/Sprites/items.png" id="2_cvch8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dkm0m"]
+atlas = ExtResource("2_cvch8")
+region = Rect2(0, 0, 32, 32)
+
+[node name="MarketSlotUi" type="Button"]
+modulate = Color(2.21, 1, 1, 1)
+custom_minimum_size = Vector2(32, 32)
+script = ExtResource("1_rurx4")
+metadata/_custom_type_script = "uid://drjrna8iuxxn0"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_dkm0m")
+stretch_mode = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 8
+text = "99"
+horizontal_alignment = 2

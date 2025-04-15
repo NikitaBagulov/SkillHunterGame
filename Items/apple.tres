@@ -21,4 +21,5 @@ script = ExtResource("2_mqx1b")
 name = "Яблочко"
 description = "Вкуснятина! "
 texture = SubResource("AtlasTexture_wisum")
+cost = 0
 effects = Array[ExtResource("1_utx8t")]([SubResource("Resource_vvh2o")])

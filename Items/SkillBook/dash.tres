@@ -17,5 +17,6 @@ name = "Рывок"
 description = ""
 texture = SubResource("AtlasTexture_vq6ak")
 skill = ExtResource("3_emwby")
+cost = 0
 effects = Array[ExtResource("1_nblw2")]([])
 metadata/_custom_type_script = "uid://hnhu85aguabn"

@@ -6,6 +6,7 @@ signal player_level_up(stats: Stats)
 signal damage_updated(total_damage: int)
 signal health_updated(hp: int, max_hp: int)
 signal position_updated(position: Vector2)  # Новый сигнал для обновления позиции
+signal currency_updated(currency: int)
 
 # --- Флаг инициализации ---
 var _is_initialized: bool = false
@@ -104,9 +105,15 @@ var speed_bonus: int = 0 :
 		speed_bonus = max(value, 0)
 		update_move_speed()  # Обновляем итоговую скорость при изменении бонуса
 
+var currency: int = 100:
+	get:
+		return currency
+	set(value):
+		currency = max(value, 0)
+		currency_updated.emit(currency)
+
 # --- Инициализация ---
 func init() -> void:
-	
 	update_damage(_get_weapon_bonus())
 	update_health(_get_health_bonus())
 	update_move_speed()
@@ -145,6 +152,15 @@ func take_damage(amount: int) -> void:
 func heal(amount: int) -> void:
 	hp += amount
 	player_level_up.emit(self)
+
+func add_currency(amount: int) -> void:
+	currency += amount
+
+func remove_currency(amount: int) -> bool:
+	if currency >= amount:
+		currency -= amount
+		return true
+	return false
 
 # --- Управление опытом и уровнем ---
 func add_experience(amount: int) -> void:
@@ -193,7 +209,8 @@ func serialize() -> Dictionary:
 		"position": [position.x, position.y],  # Сохраняем Vector2 как массив
 		"base_move_speed": base_move_speed,
 		"move_speed": move_speed,
-		"speed_bonus": speed_bonus
+		"speed_bonus": speed_bonus,
+		"currency": currency
 	}
 
 func deserialize(data: Dictionary) -> void:
@@ -210,8 +227,10 @@ func deserialize(data: Dictionary) -> void:
 	base_move_speed = data.get("base_move_speed", 100.0)
 	move_speed = data.get("move_speed", base_move_speed)
 	speed_bonus = data.get("speed_bonus", 0)
+	currency = data.get("currency", 0)
 	
 	# Вызываем сигналы для обновления UI или других систем
 	health_updated.emit(hp, max_hp)
 	damage_updated.emit(total_damage)
 	position_updated.emit(position)
+	currency_updated.emit(currency)

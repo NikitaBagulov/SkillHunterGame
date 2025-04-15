@@ -167,7 +167,7 @@ func get_focused_equipment_slot() -> InventorySlotUI:
 
 func handle_quick_slot_input(event: InputEvent) -> void:
 	for i in range(10):
-		if event.is_action_pressed("quick_slot" + str(i + 1)):
+		if event.is_action_pressed("quick_slot_" + str(i + 1)):
 			if selected_quick_slot == i:
 				data.use_quick_slot(i)
 				update_quick_slot_selection()

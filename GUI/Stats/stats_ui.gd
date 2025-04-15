@@ -8,6 +8,8 @@ class_name StatsUI
 @onready var exp_bar: ProgressBar = $VBoxContainer/ExpBar
 @onready var exp_label: Label = $VBoxContainer/ExpBar/ExpLabel
 @onready var damage_label: Label = $VBoxContainer/DamageLabel
+@onready var currency_label: Label = $VBoxContainer/CurrencyLabel
+
 
 func _ready():
 	connect_updating_ui()
@@ -16,6 +18,7 @@ func connect_updating_ui():
 	PlayerManager.PLAYER_STATS.damage_updated.connect(update_damage_label)
 	PlayerManager.PLAYER_STATS.health_updated.connect(update_hp_label)
 	PlayerManager.PLAYER_STATS.player_level_up.connect(update_stats)
+	PlayerManager.PLAYER_STATS.currency_updated.connect(update_currency_label)
 
 func update_damage_label(value: int):
 	print("Урон ", value)
@@ -33,3 +36,6 @@ func update_stats(stats: Stats) -> void:
 	exp_bar.max_value = stats.exp_to_next_level
 	exp_label.text = "%d EXP" % stats.experience
 	exp_bar.value = stats.experience
+	
+func update_currency_label(currency: int):
+	currency_label.text = "%d 💎" % currency

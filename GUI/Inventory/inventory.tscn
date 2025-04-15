@@ -11,7 +11,6 @@
 
 [node name="Inventory" type="CanvasLayer"]
 process_mode = 3
-visible = false
 script = ExtResource("1_rrc2c")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -41,6 +40,8 @@ alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="TabContainer/InventoryContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
 theme_override_styles/panel = ExtResource("2_nne2g")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/InventoryContainer/HBoxContainer/PanelContainer"]
@@ -116,59 +117,60 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/InventoryContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="PanelContainer2" type="PanelContainer" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("2_nne2g")
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+columns = 4
+
+[node name="Head" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Body" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Pants" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Boots" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Weapon" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Accessory" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Accessory2" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Accessory3" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="SkillForgeUI" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_7xgsu")]
-custom_minimum_size = Vector2(168, 100)
 layout_mode = 2
 
 [node name="StatsUI" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_wkf2s")]
 layout_mode = 2
 size_flags_horizontal = 4
-
-[node name="PanelContainer2" type="PanelContainer" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_styles/panel = ExtResource("2_nne2g")
-
-[node name="GridContainer" type="GridContainer" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-size_flags_vertical = 0
-columns = 4
-
-[node name="Head" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Body" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Pants" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Boots" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Weapon" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Accessory" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Accessory2" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="Accessory3" parent="TabContainer/InventoryContainer/HBoxContainer/VBoxContainer/PanelContainer2/GridContainer" instance=ExtResource("5_w2a1k")]
-unique_name_in_owner = true
-layout_mode = 2
 
 [node name="PanelContainer3" type="PanelContainer" parent="TabContainer/InventoryContainer"]
 process_mode = 3

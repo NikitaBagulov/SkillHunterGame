@@ -10,7 +10,9 @@ region = Rect2(64, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_sen50")
+item_id = "stone"
 name = "Камень"
 description = "Удивительный камушек!"
 texture = SubResource("AtlasTexture_a8php")
+cost = 0
 effects = Array[ExtResource("1_uwciw")]([])

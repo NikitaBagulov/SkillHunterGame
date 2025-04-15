@@ -65,34 +65,52 @@ npc_resource = ExtResource("15_2enee")
 script = ExtResource("18_jcnne")
 text = "Привет, [b]Герой[/b], это ты?"
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="DialogChoise" type="Node" parent="NPC/DialogInteraction"]
 script = ExtResource("17_5gn4o")
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="DialogBranch" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
 script = ExtResource("19_upve5")
 text = "ДА!"
+quest_objective_id = null
+quest_progress_value = null
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
 script = ExtResource("18_jcnne")
 text = "Спасибо, братан!"
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="DialogText2" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
 script = ExtResource("18_jcnne")
 text = "Будь здоров!"
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="DialogBranch2" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
 script = ExtResource("19_upve5")
+quest_objective_id = null
+quest_progress_value = null
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch2"]
 script = ExtResource("18_jcnne")
 text = "Ну ты и лох!"
 npc_info = ExtResource("15_2enee")
+quest_id = null
+quest_action = null
 
 [node name="NpcBehaviorPatrol" parent="NPC" instance=ExtResource("16_nfin8")]
 walk_speed = 20.0

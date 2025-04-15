@@ -3,6 +3,15 @@
 class_name DialogItem extends Node
 
 @export var npc_info: NPCResource
+@export var quest_id: String = ""  # ID квеста, связанного с этим диалогом
+@export var quest_action: QuestAction = QuestAction.NONE  # Действие с квестом
+
+enum QuestAction {
+	NONE,
+	START_QUEST,
+	UPDATE_QUEST,
+	COMPLETE_QUEST
+}
 
 var editor_selection: EditorSelection
 var example_dialog: DialogSystemNode
@@ -62,4 +71,6 @@ func get_parent_global_position() -> Vector2:
 	return Vector2.ZERO
 
 func _set_editor_display() -> void:
+	if quest_id and quest_action != QuestAction.NONE:
+		example_dialog.set_quest_info(quest_id, quest_action)
 	pass

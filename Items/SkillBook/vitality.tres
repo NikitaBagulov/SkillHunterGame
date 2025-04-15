@@ -29,4 +29,5 @@ name = "Виталити"
 description = ""
 texture = SubResource("AtlasTexture_17wxe")
 skill = SubResource("Resource_wt8fx")
+cost = 0
 effects = Array[ExtResource("1_385st")]([])

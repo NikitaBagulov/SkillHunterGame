@@ -26,9 +26,23 @@ func player_interact() -> void:
 	player_interacted.emit()
 	await get_tree().process_frame
 	await get_tree().process_frame
-	DialogSystem.show_dialog(dialog_items)
-	DialogSystem.finished.connect(_on_dialog_finished)
-	pass
+	
+	var filtered_items: Array[DialogItem] = []
+	for item in dialog_items:
+		if item.quest_id:
+			var quest = GlobalQuestManager.instance.get_quest(item.quest_id)
+			match item.quest_action:
+				item.QuestAction.START_QUEST:
+					if not GlobalQuestManager.instance.can_start_quest(item.quest_id):
+						continue
+				item.QuestAction.COMPLETE_QUEST:
+					if not quest or quest.status != QuestResource.QuestStatus.IN_PROGRESS:
+						continue
+		filtered_items.append(item)
+	
+	if filtered_items.size() > 0:
+		DialogSystem.show_dialog(filtered_items)
+		DialogSystem.finished.connect(_on_dialog_finished)
 
 func _on_area_enter(_area: Area2D) -> void:
 	if enabled == false || dialog_items.size() == 0:

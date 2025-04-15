@@ -80,3 +80,8 @@ vertical_alignment = 1
 
 [node name="DamageLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+text = "0 УРОН"
+
+[node name="CurrencyLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "0 💎"

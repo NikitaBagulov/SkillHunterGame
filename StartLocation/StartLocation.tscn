@@ -1,10 +1,22 @@
-[gd_scene load_steps=11 format=4 uid="uid://caosgc7d7xw16"]
+[gd_scene load_steps=23 format=4 uid="uid://caosgc7d7xw16"]
 
 [ext_resource type="Texture2D" uid="uid://bnkk280gsn248" path="res://WorldGenerator/Assets/Tilesets/Grass.png" id="1_yti1o"]
 [ext_resource type="Texture2D" uid="uid://du4wfvyp5hpcv" path="res://WorldGenerator/Assets/Tilesets/Hills.png" id="2_c6pmd"]
 [ext_resource type="Texture2D" uid="uid://u5u5u5o12l8j" path="res://Assets/Background/Tilesets/TilesetProps02.png" id="3_ydv75"]
 [ext_resource type="PackedScene" uid="uid://duxowqns5jvyw" path="res://GeneralNodes/Portal/Portal.tscn" id="4_ydv75"]
 [ext_resource type="PackedScene" uid="uid://cbjs6rm6yvcye" path="res://WorldGenerator/World.tscn" id="5_ydv75"]
+[ext_resource type="PackedScene" uid="uid://dvj4wcffftdj" path="res://Interactebles/Market/Market.tscn" id="6_akljj"]
+[ext_resource type="Script" uid="uid://dns18ehqprxk8" path="res://Items/Scripts/item_data.gd" id="7_p1vyp"]
+[ext_resource type="Resource" uid="uid://big86vbpt0csl" path="res://Items/stone.tres" id="8_lybih"]
+[ext_resource type="Resource" uid="uid://do25tvgo7fgv2" path="res://Items/EquipableItems/Body/wood_body.tres" id="9_exhnx"]
+[ext_resource type="PackedScene" uid="uid://fcpnjvpvt2w6" path="res://NPC/npc.tscn" id="10_x0je8"]
+[ext_resource type="Resource" uid="uid://b6u0vc3ecsfif" path="res://NPC/00_NPCs/npc_01.tres" id="11_f01cd"]
+[ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="12_02ko7"]
+[ext_resource type="Script" uid="uid://j7t0khckxins" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="13_whfd7"]
+[ext_resource type="Script" uid="uid://meb5adohrfil" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="14_qrcob"]
+[ext_resource type="Script" uid="uid://cinls4mh53t30" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="15_1l6vd"]
+[ext_resource type="PackedScene" uid="uid://bxo3oftj1jgxd" path="res://NPC/Scenes/npc_behavior_patrol.tscn" id="16_3x4rv"]
+[ext_resource type="PackedScene" uid="uid://bkkvpo2y4u5p5" path="res://NPC/Scenes/patrol_location.tscn" id="17_cfbss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c6pmd"]
 texture = ExtResource("1_yti1o")
@@ -1222,3 +1234,79 @@ position = Vector2(165, 37)
 target_scene = ExtResource("5_ydv75")
 is_hub_to_world = true
 portal_id = "1"
+
+[node name="Market" parent="." instance=ExtResource("6_akljj")]
+position = Vector2(226, 26)
+
+[node name="MarketInteraction" parent="Market" index="2"]
+market_items = Array[ExtResource("7_p1vyp")]([ExtResource("8_lybih"), ExtResource("9_exhnx")])
+
+[node name="NPC" parent="." instance=ExtResource("10_x0je8")]
+npc_resource = ExtResource("11_f01cd")
+
+[node name="DialogInteraction" parent="NPC" instance=ExtResource("12_02ko7")]
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("13_whfd7")
+text = "Привет, [b]Герой[/b], это ты?"
+npc_info = ExtResource("11_f01cd")
+quest_id = "quest_001"
+quest_action = 1
+
+[node name="DialogChoise" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("14_qrcob")
+npc_info = ExtResource("11_f01cd")
+quest_id = "quest_001"
+quest_action = 1
+
+[node name="DialogBranch" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
+script = ExtResource("15_1l6vd")
+text = "ДА!"
+npc_info = ExtResource("11_f01cd")
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
+script = ExtResource("13_whfd7")
+text = "Спасибо, братан!"
+npc_info = ExtResource("11_f01cd")
+
+[node name="DialogText2" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch"]
+script = ExtResource("13_whfd7")
+text = "Будь здоров!"
+npc_info = ExtResource("11_f01cd")
+
+[node name="DialogBranch2" type="Node" parent="NPC/DialogInteraction/DialogChoise"]
+script = ExtResource("15_1l6vd")
+text = "нет..."
+npc_info = ExtResource("11_f01cd")
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction/DialogChoise/DialogBranch2"]
+script = ExtResource("13_whfd7")
+text = "Ну ты и лох!"
+npc_info = ExtResource("11_f01cd")
+quest_id = "quest_001"
+quest_action = 2
+
+[node name="DialogText2" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("13_whfd7")
+text = "Спасибо, [b]Герой[/b]. Пока!"
+npc_info = ExtResource("11_f01cd")
+quest_id = "quest_001"
+quest_action = 3
+
+[node name="NpcBehaviorPatrol" parent="NPC" instance=ExtResource("16_3x4rv")]
+walk_speed = 20.0
+
+[node name="PatrolLocation" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
+modulate = Color(1, 0, 0, 1)
+wait_time = 1.0
+
+[node name="PatrolLocation2" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(106, -78)
+
+[node name="PatrolLocation3" parent="NPC/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(150, 8)
+
+[editable path="Market"]
+[editable path="Market/MarketInteraction"]
