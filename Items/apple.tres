@@ -18,6 +18,7 @@ region = Rect2(192, 0, 32, 32)
 
 [resource]
 script = ExtResource("2_mqx1b")
+item_id = ""
 name = "Яблочко"
 description = "Вкуснятина! "
 texture = SubResource("AtlasTexture_wisum")

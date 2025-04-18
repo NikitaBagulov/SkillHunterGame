@@ -13,6 +13,7 @@ region = Rect2(16, 240, 16, 16)
 script = ExtResource("2_26bq7")
 skill_item_type = 0
 element = 0
+item_id = ""
 name = "Рывок"
 description = ""
 texture = SubResource("AtlasTexture_vq6ak")

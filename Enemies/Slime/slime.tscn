@@ -726,8 +726,10 @@ _data = {
 collision_layer = 256
 collision_mask = 16
 script = ExtResource("1_pqlav")
+enemy_id = "slime"
 
 [node name="HurtBox" parent="." instance=ExtResource("9_uyvur")]
+damage = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2(0, -5)

@@ -1,5 +1,6 @@
 class_name NPCResource extends Resource
 
+@export var npc_id: String
 @export var npc_name: String = ""
 @export var sprite: Texture
 @export var portrait: Texture

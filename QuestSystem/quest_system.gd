@@ -128,3 +128,15 @@ func on_item_collected(item_id: String, quantity: int) -> void:
 		for objective in quest.objectives:
 			if objective.item_id == item_id and not objective.completed:
 				update_quest_progress(quest.quest_id, objective.objective_id, quantity)
+				
+func on_enemy_killed(enemy_id: String) -> void:
+	for quest in active_quests.values():
+		for objective in quest.objectives:
+			if objective.enemy_id == enemy_id and not objective.completed:
+				update_quest_progress(quest.quest_id, objective.objective_id, 1)
+
+func on_npc_interacted(npc_id: String) -> void:
+	for quest in active_quests.values():
+		for objective in quest.objectives:
+			if objective.npc_id == npc_id and not objective.completed:
+				update_quest_progress(quest.quest_id, objective.objective_id, 1)

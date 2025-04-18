@@ -17,16 +17,18 @@ var dragging: bool = false
 var drag_texture: Control
 var drag_threshhold: float = 16.0
 
-var tooltip: PopupPanel
+var tooltip: Control
 var title_label: Label  # Ссылка на узел названия
 var desc_label: Label   # Ссылка на узел описания
 
 @onready var texture: TextureRect = $TextureRect
 @onready var label: Label = $Label
+@onready var level_label: Label = $LevelLabel
 
 func _ready() -> void:
 	texture.texture = null
 	label.text = ""
+	level_label.text = ""
 	pressed.connect(item_pressed)
 	button_down.connect(on_button_down)
 	button_up.connect(on_button_up)
@@ -34,8 +36,10 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	
 	# Создаем всплывающее окно
-	tooltip = PopupPanel.new()
+	tooltip = Control.new()
+	tooltip.z_index = 100
 	var panel_content = VBoxContainer.new()
+	tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	title_label = Label.new()
 	desc_label = Label.new()
 	title_label.name = "TitleLabel"
@@ -56,13 +60,14 @@ func _process(delta):
 
 func set_slot_data(value: SlotData) -> void:
 	slot_data = value
+	update_slot_display(slot_data)
 	if slot_data == null:
 		texture.texture = null
 		label.text = ""
 		hide_tooltip()
 		return
 	texture.texture = slot_data.item_data.texture
-	if slot_data.item_data is EquipableItemData:
+	if slot_data.item_data is EquipableItemData or slot_data.item_data is SkillItemData:
 		label.text = ""
 	else:
 		label.text = str(slot_data.quantity)
@@ -110,36 +115,46 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	hide_tooltip()
 
-# Показ всплывающего окна
-func show_tooltip(offset: Vector2 = Vector2(10, 10)) -> void:
+func show_tooltip(offset: Vector2 = Vector2(20, 0)) -> void:
 	if slot_data and slot_data.item_data and not tooltip.visible:
 		title_label.text = slot_data.item_data.name
 		desc_label.text = slot_data.item_data.description if slot_data.item_data.description else "No description"
+
 		if slot_data.item_data is EquipableItemData and slot_data.item_data.skill:
 			desc_label.text += "\nSkill: " + slot_data.item_data.skill.get_description()
+
 		
-		tooltip.popup()  # Показываем, чтобы получить размер
-		await get_tree().process_frame  # Ждем кадр для точного размера
-		
-		# Calculate position in global coordinates
+		await get_tree().process_frame  # Нужно, чтобы tooltip.size стал актуальным
+
 		var viewport_size = get_viewport_rect().size
 		var tooltip_size = tooltip.size
-		var pos = get_global_mouse_position()
-		var new_pos = pos + Vector2(30, 30)
-		
-		# Adjust if tooltip would go off-screen
-		if new_pos.x + tooltip_size.x > viewport_size.x:
-			new_pos.x = pos.x - tooltip_size.x - 10  # Place to the left of the slot
-		if new_pos.y + tooltip_size.y > viewport_size.y:
-			new_pos.y = pos.y - tooltip_size.y - 10  # Place above the slot
-		
-		# Ensure tooltip doesn't go off the left or top edge
-		new_pos.x = max(0, new_pos.x)
-		new_pos.y = max(0, new_pos.y)
-		
-		# Convert to local coordinates relative to MarketUI (root of the UI)
-		tooltip.position = new_pos - global_position
+		var mouse_pos = get_global_mouse_position()
 
+		var new_pos = mouse_pos + offset
+
+		# === Корректировка ПРАВОГО края ===
+		if new_pos.x + tooltip_size.x > viewport_size.x:
+			new_pos.x = mouse_pos.x - tooltip_size.x - offset.x  # Сместить влево от курсора
+
+		# === Центровка по вертикали (или как тебе удобно) ===
+		new_pos.y = mouse_pos.y - tooltip_size.y / 2
+
+		# === Границы ===
+		new_pos.x = clamp(new_pos.x, 0, viewport_size.x - tooltip_size.x)
+		new_pos.y = clamp(new_pos.y, 0, viewport_size.y - tooltip_size.y)
+
+		tooltip.global_position = new_pos
+		tooltip.show()
+
+
+func update_slot_display(slot_data: SlotData) -> void:
+	if slot_data and slot_data.item_data is SkillItemData:
+		if slot_data.item_data.skill != null:
+			var skill = slot_data.item_data.skill
+			level_label.text = "Lv." + str(skill.level)
+			level_label.visible = true
+	else:
+		level_label.visible = false
 # Скрытие всплывающего окна
 func hide_tooltip() -> void:
 	tooltip.hide()

@@ -122,7 +122,7 @@ func unequip_item(equipment_index: int) -> void:
 
 func add_item(item: ItemData, count: int = 1) -> bool:
 	# Для EquipableItemData создаём новый слот для каждого предмета
-	if item is EquipableItemData:
+	if item is EquipableItemData or item is SkillItemData:
 		for i in range(count):  # Добавляем count предметов по одному
 			for j in inventory_slots().size():
 				if slots[j] == null:
@@ -141,7 +141,7 @@ func add_item(item: ItemData, count: int = 1) -> bool:
 	
 	# Для остальных предметов сохраняем стакание
 	for slot in slots:
-		if slot and slot.item_data == item and not slot.item_data is EquipableItemData:
+		if slot and slot.item_data == item and not slot.item_data is EquipableItemData and not slot.item_data is SkillItemData:
 			slot.quantity += count
 			data_changed.emit()
 			GlobalQuestManager.instance.on_item_collected(item.item_id, count)

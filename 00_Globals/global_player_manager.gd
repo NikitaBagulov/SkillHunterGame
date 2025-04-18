@@ -22,15 +22,18 @@ var player: Player = null
 ## Флаг состояния спавна игрока
 var player_spawned: bool = false
 
+var can_attack: bool = false
 # --- Инициализация ---
 func _ready() -> void:
+	PLAYER_STATS.init()
+	
 	# Подключаем сигнал изменения экипировки к обновлению текстуры оружия и здоровья
 	INVENTORY_DATA.equipment_changed.connect(_update_weapon_texture)
 	INVENTORY_DATA.equipment_changed.connect(update_equipment_damage)
 	INVENTORY_DATA.equipment_changed.connect(update_health)
 	
 	
-	PLAYER_STATS.init()
+	
 	
 	# Регистрируем данные в Repository
 	Repository.instance.register("player", "stats", PLAYER_STATS, true)
@@ -82,6 +85,7 @@ func set_health(hp: int, max_hp: int) -> void:
 ## Обновляет урон от экипированного оружия
 func update_equipment_damage() -> void:
 	var weapon_bonus = INVENTORY_DATA.get_equipped_weapon_damage_bonus()
+	can_attack = true if weapon_bonus != 0 else false
 	PLAYER_STATS.update_damage(weapon_bonus)
 	if player:
 		player.attack_hurt_box.damage = weapon_bonus

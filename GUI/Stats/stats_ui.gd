@@ -13,6 +13,10 @@ class_name StatsUI
 
 func _ready():
 	connect_updating_ui()
+	update_damage_label(PlayerManager.PLAYER_STATS.total_damage)
+	update_hp_label(PlayerManager.PLAYER_STATS.hp, PlayerManager.PLAYER_STATS.max_hp)
+	update_currency_label(PlayerManager.PLAYER_STATS.currency)
+	update_stats(PlayerManager.PLAYER_STATS)
 
 func connect_updating_ui():
 	PlayerManager.PLAYER_STATS.damage_updated.connect(update_damage_label)

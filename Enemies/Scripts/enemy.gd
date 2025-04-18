@@ -14,6 +14,8 @@ signal enemy_destroyed(hurt_box: HurtBox)
 const DIRECTIONS: Array[Vector2] = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, Vector2.UP]
 
 # --- Настройки ---
+## ID врага
+@export var enemy_id: String
 ## Здоровье врага
 @export var HP: int = 5
 ## Количество опыта за уничтожение врага

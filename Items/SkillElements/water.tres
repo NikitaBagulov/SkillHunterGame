@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SkillItemData" load_steps=5 format=3 uid="uid://b6qxkl2adl22"]
+
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_0tutc"]
+[ext_resource type="Script" uid="uid://hnhu85aguabn" path="res://Items/Scripts/skill_item_data.gd" id="2_d5jfn"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="3_abxid"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2amg"]
+atlas = ExtResource("3_abxid")
+region = Rect2(128, 336, 16, 16)
+
+[resource]
+script = ExtResource("2_d5jfn")
+skill_item_type = 1
+element = 2
+item_id = ""
+name = "Вода"
+description = ""
+texture = SubResource("AtlasTexture_y2amg")
+cost = 0
+effects = Array[ExtResource("1_0tutc")]([])
+metadata/_custom_type_script = "uid://hnhu85aguabn"

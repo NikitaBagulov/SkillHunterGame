@@ -139,8 +139,21 @@ func forge_items(slot_1: SlotData, slot_2: SlotData) -> Dictionary:
 		return combine_skill_with_element(item_1, item_2)
 	elif is_skill_book(item_2) and is_element_item(item_1):
 		return combine_skill_with_element(item_2, item_1)
+	elif can_merge_skills(item_1, item_2):
+		return merge_same_skill_books(item_1, item_2)
 	
 	return {"success": false, "message": "Неверная комбинация!"}
+
+func can_merge_skills(item_1: ItemData, item_2: ItemData) -> bool:
+	if not (is_skill_book(item_1) and is_skill_book(item_2)):
+		return false
+	var skill_1 = item_1.skill
+	var skill_2 = item_2.skill
+	if skill_1 == null or skill_2 == null:
+		return false
+	return skill_1.name == skill_2.name \
+	and skill_1.level == skill_2.level \
+	and skill_1.level < skill_1.max_level
 
 func is_weapon(item: ItemData) -> bool:
 	return item is EquipableItemData and item.type == EquipableItemData.Type.WEAPON
@@ -179,6 +192,32 @@ func attach_skill_to_weapon(weapon: EquipableItemData, skill_book: SkillItemData
 		"message": "Сковано " + new_weapon.name + "!",
 		"output_item": new_weapon
 	}
+
+func merge_same_skill_books(item_1: SkillItemData, item_2: SkillItemData) -> Dictionary:
+	var base_skill = item_1.skill
+	var chance = base_skill.upgrade_success_chance
+	if randf() > chance:
+		return {
+			"success": false,
+			"message": "Улучшение навыка '" + base_skill.name + "' не удалось!"
+		}
+	
+	var new_skill = base_skill.duplicate()
+	new_skill.level += 1
+	
+	var new_item = SkillItemData.new()
+	new_item.skill_item_type = SkillItemData.SkillItemType.SKILL
+	new_item.name = base_skill.name + " [Ур. " + str(new_skill.level) + "]"
+	new_item.description = base_skill.description + " (Улучшен до уровня " + str(new_skill.level) + ")"
+	new_item.texture = item_1.texture
+	new_item.skill = new_skill
+	
+	return {
+		"success": true,
+		"message": "Навык '" + new_item.name + "' улучшен!",
+		"output_item": new_item
+	}
+
 
 # В SkillForgeUI
 func set_input_slot_1_data(value: SlotData) -> void:

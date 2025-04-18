@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://caosgc7d7xw16"]
+[gd_scene load_steps=34 format=4 uid="uid://caosgc7d7xw16"]
 
 [ext_resource type="Texture2D" uid="uid://bnkk280gsn248" path="res://WorldGenerator/Assets/Tilesets/Grass.png" id="1_yti1o"]
 [ext_resource type="Texture2D" uid="uid://du4wfvyp5hpcv" path="res://WorldGenerator/Assets/Tilesets/Hills.png" id="2_c6pmd"]
@@ -7,16 +7,27 @@
 [ext_resource type="PackedScene" uid="uid://cbjs6rm6yvcye" path="res://WorldGenerator/World.tscn" id="5_ydv75"]
 [ext_resource type="PackedScene" uid="uid://dvj4wcffftdj" path="res://Interactebles/Market/Market.tscn" id="6_akljj"]
 [ext_resource type="Script" uid="uid://dns18ehqprxk8" path="res://Items/Scripts/item_data.gd" id="7_p1vyp"]
-[ext_resource type="Resource" uid="uid://big86vbpt0csl" path="res://Items/stone.tres" id="8_lybih"]
-[ext_resource type="Resource" uid="uid://do25tvgo7fgv2" path="res://Items/EquipableItems/Body/wood_body.tres" id="9_exhnx"]
+[ext_resource type="Resource" uid="uid://dytjm4nss7obv" path="res://Items/EquipableItems/Weapon/wood_sword.tres" id="8_aninp"]
+[ext_resource type="Resource" uid="uid://dll4ngjeex25j" path="res://Items/EquipableItems/Weapon/stone_sword.tres" id="9_agfc0"]
+[ext_resource type="Resource" uid="uid://bsguic5irhr50" path="res://Items/EquipableItems/Weapon/gold_sword.tres" id="10_whfd7"]
 [ext_resource type="PackedScene" uid="uid://fcpnjvpvt2w6" path="res://NPC/npc.tscn" id="10_x0je8"]
 [ext_resource type="Resource" uid="uid://b6u0vc3ecsfif" path="res://NPC/00_NPCs/npc_01.tres" id="11_f01cd"]
+[ext_resource type="Resource" uid="uid://cqmmr2564sr53" path="res://Items/EquipableItems/Weapon/iron_sword.tres" id="11_jwsfy"]
 [ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="12_02ko7"]
+[ext_resource type="Resource" uid="uid://dj8dv2lu3oswq" path="res://Items/EquipableItems/Weapon/copper_sword.tres" id="12_agfc0"]
 [ext_resource type="Script" uid="uid://j7t0khckxins" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="13_whfd7"]
+[ext_resource type="Resource" uid="uid://spequ8lgxmdr" path="res://Items/SkillBook/vitality.tres" id="14_7gndj"]
 [ext_resource type="Script" uid="uid://meb5adohrfil" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="14_qrcob"]
 [ext_resource type="Script" uid="uid://cinls4mh53t30" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="15_1l6vd"]
 [ext_resource type="PackedScene" uid="uid://bxo3oftj1jgxd" path="res://NPC/Scenes/npc_behavior_patrol.tscn" id="16_3x4rv"]
+[ext_resource type="Resource" uid="uid://dyty4wvq3nllp" path="res://Items/SkillElements/air.tres" id="16_64hua"]
 [ext_resource type="PackedScene" uid="uid://bkkvpo2y4u5p5" path="res://NPC/Scenes/patrol_location.tscn" id="17_cfbss"]
+[ext_resource type="Resource" uid="uid://ccskoq1dvmuhj" path="res://Items/SkillElements/earth.tres" id="17_jwsfy"]
+[ext_resource type="Resource" uid="uid://bu07pkbyx0spr" path="res://NPC/00_NPCs/npc_02.tres" id="18_02ko7"]
+[ext_resource type="Resource" uid="uid://b6qxkl2adl22" path="res://Items/SkillElements/water.tres" id="18_aqy2e"]
+[ext_resource type="PackedScene" uid="uid://dg0f2lqhqjp6y" path="res://Enemies/Slime/slime.tscn" id="18_f01cd"]
+[ext_resource type="Resource" uid="uid://cs7hbechg25cp" path="res://Items/SkillBook/dash.tres" id="22_3x4rv"]
+[ext_resource type="Resource" uid="uid://b13bmbp0fcr4" path="res://Items/SkillElements/fire.tres" id="23_3x4rv"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c6pmd"]
 texture = ExtResource("1_yti1o")
@@ -1239,7 +1250,25 @@ portal_id = "1"
 position = Vector2(226, 26)
 
 [node name="MarketInteraction" parent="Market" index="2"]
-market_items = Array[ExtResource("7_p1vyp")]([ExtResource("8_lybih"), ExtResource("9_exhnx")])
+market_items = Array[ExtResource("7_p1vyp")]([ExtResource("8_aninp"), ExtResource("9_agfc0"), ExtResource("11_jwsfy"), ExtResource("10_whfd7"), ExtResource("12_agfc0")])
+
+[node name="Market2" parent="." instance=ExtResource("6_akljj")]
+position = Vector2(291, 26)
+
+[node name="Sprite2D" parent="Market2" index="0"]
+modulate = Color(0.629601, 0.670012, 0.652133, 1)
+
+[node name="MarketInteraction" parent="Market2" index="2"]
+market_items = Array[ExtResource("7_p1vyp")]([ExtResource("22_3x4rv"), ExtResource("14_7gndj")])
+
+[node name="Market3" parent="." instance=ExtResource("6_akljj")]
+position = Vector2(358, 25)
+
+[node name="Sprite2D" parent="Market3" index="0"]
+modulate = Color(0.420447, 0.73801, 0.556321, 1)
+
+[node name="MarketInteraction" parent="Market3" index="2"]
+market_items = Array[ExtResource("7_p1vyp")]([ExtResource("23_3x4rv"), ExtResource("16_64hua"), ExtResource("17_jwsfy"), ExtResource("18_aqy2e")])
 
 [node name="NPC" parent="." instance=ExtResource("10_x0je8")]
 npc_resource = ExtResource("11_f01cd")
@@ -1308,5 +1337,41 @@ position = Vector2(106, -78)
 modulate = Color(0, 1, 0, 1)
 position = Vector2(150, 8)
 
+[node name="NPC2" parent="." instance=ExtResource("10_x0je8")]
+position = Vector2(-99, 194)
+npc_resource = ExtResource("18_02ko7")
+
+[node name="DialogInteraction" parent="NPC2" instance=ExtResource("12_02ko7")]
+
+[node name="DialogText" type="Node" parent="NPC2/DialogInteraction"]
+script = ExtResource("13_whfd7")
+text = "Привет, [b]Герой[/b]!
+"
+npc_info = ExtResource("11_f01cd")
+quest_id = "quest_001"
+quest_action = 2
+
+[node name="NpcBehaviorPatrol" parent="NPC2" instance=ExtResource("16_3x4rv")]
+walk_speed = 20.0
+
+[node name="PatrolLocation" parent="NPC2/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
+modulate = Color(1, 0, 0, 1)
+wait_time = 1.0
+
+[node name="PatrolLocation2" parent="NPC2/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
+modulate = Color(1, 1, 0, 1)
+position = Vector2(106, -78)
+
+[node name="PatrolLocation3" parent="NPC2/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
+modulate = Color(0, 1, 0, 1)
+position = Vector2(150, 8)
+
+[node name="Slime" parent="." instance=ExtResource("18_f01cd")]
+position = Vector2(163, 197)
+
 [editable path="Market"]
 [editable path="Market/MarketInteraction"]
+[editable path="Market2"]
+[editable path="Market2/MarketInteraction"]
+[editable path="Market3"]
+[editable path="Market3/MarketInteraction"]

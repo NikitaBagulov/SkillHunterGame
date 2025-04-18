@@ -7,6 +7,8 @@ enum KeyBinding { NONE, Q, E, R, T }
 @export var name: String = ""
 @export var type: SkillType = SkillType.ACTIVE
 @export var level: int = 1
+@export var max_level: int = 5  # Максимальный уровень по умолчанию
+@export var upgrade_success_chance: float = 1.0  # 1.0 = 100% по умолчанию
 @export var element: Element = Element.NONE
 @export var key_binding: KeyBinding = KeyBinding.NONE
 @export_multiline var description: String = ""

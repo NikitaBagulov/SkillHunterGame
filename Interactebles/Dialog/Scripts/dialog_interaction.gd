@@ -60,6 +60,9 @@ func _on_area_exit(_area: Area2D) -> void:
 func _on_dialog_finished() -> void:
 	DialogSystem.finished.disconnect(player_interact)
 	finished.emit()
+	var npc = get_parent()
+	if npc is NPC and npc.npc_resource:
+		GlobalQuestManager.instance.on_npc_interacted(npc.npc_resource.npc_id)
 
 func _check_configuration_warnings() -> PackedStringArray:
 	if !_check_for_dialog_items():

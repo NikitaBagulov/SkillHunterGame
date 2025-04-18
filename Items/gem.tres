@@ -10,6 +10,7 @@ region = Rect2(0, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_bsyxm")
+item_id = ""
 name = "Кристалл"
 description = "Очень дорогой!"
 texture = SubResource("AtlasTexture_0mk44")

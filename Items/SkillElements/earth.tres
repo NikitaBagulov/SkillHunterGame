@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SkillItemData" load_steps=5 format=3 uid="uid://ccskoq1dvmuhj"]
+
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_cp2yf"]
+[ext_resource type="Script" uid="uid://hnhu85aguabn" path="res://Items/Scripts/skill_item_data.gd" id="2_m5ky2"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="3_2yp4p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2amg"]
+atlas = ExtResource("3_2yp4p")
+region = Rect2(160, 336, 16, 16)
+
+[resource]
+script = ExtResource("2_m5ky2")
+skill_item_type = 1
+element = 4
+item_id = ""
+name = "Земля"
+description = ""
+texture = SubResource("AtlasTexture_y2amg")
+cost = 0
+effects = Array[ExtResource("1_cp2yf")]([])
+metadata/_custom_type_script = "uid://hnhu85aguabn"

@@ -34,6 +34,6 @@ func physics(_delta: float) -> State:
 	return null
 	
 func handle_input(_event: InputEvent) -> State:
-	if _event.is_action_pressed("attack"):
+	if _event.is_action_pressed("attack") and PlayerManager.can_attack:
 		return attack
 	return null
