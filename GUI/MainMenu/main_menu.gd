@@ -8,14 +8,17 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Inventory.visible = false
 	Hud.visible = false
+	WorldCamera.make_current()
 	
 	start_button.pressed.connect(_on_start_button_pressed)
 	exit_button.pressed.connect(_on_exit_button_pressed)
 
 func _on_start_button_pressed():
 	
-	await get_tree().change_scene_to_file("res://WorldGenerator/World.tscn")
+	await get_tree().change_scene_to_file("res://main_root.tscn")
 	visible = false
+	Hud.visible = true
+	
 	
 
 func _on_exit_button_pressed():

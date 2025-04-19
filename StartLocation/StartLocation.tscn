@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://caosgc7d7xw16"]
+[gd_scene load_steps=33 format=4 uid="uid://caosgc7d7xw16"]
 
 [ext_resource type="Texture2D" uid="uid://bnkk280gsn248" path="res://WorldGenerator/Assets/Tilesets/Grass.png" id="1_yti1o"]
 [ext_resource type="Texture2D" uid="uid://du4wfvyp5hpcv" path="res://WorldGenerator/Assets/Tilesets/Hills.png" id="2_c6pmd"]
@@ -25,7 +25,6 @@
 [ext_resource type="Resource" uid="uid://ccskoq1dvmuhj" path="res://Items/SkillElements/earth.tres" id="17_jwsfy"]
 [ext_resource type="Resource" uid="uid://bu07pkbyx0spr" path="res://NPC/00_NPCs/npc_02.tres" id="18_02ko7"]
 [ext_resource type="Resource" uid="uid://b6qxkl2adl22" path="res://Items/SkillElements/water.tres" id="18_aqy2e"]
-[ext_resource type="PackedScene" uid="uid://dg0f2lqhqjp6y" path="res://Enemies/Slime/slime.tscn" id="18_f01cd"]
 [ext_resource type="Resource" uid="uid://cs7hbechg25cp" path="res://Items/SkillBook/dash.tres" id="22_3x4rv"]
 [ext_resource type="Resource" uid="uid://b13bmbp0fcr4" path="res://Items/SkillElements/fire.tres" id="23_3x4rv"]
 
@@ -1365,9 +1364,6 @@ position = Vector2(106, -78)
 [node name="PatrolLocation3" parent="NPC2/NpcBehaviorPatrol" instance=ExtResource("17_cfbss")]
 modulate = Color(0, 1, 0, 1)
 position = Vector2(150, 8)
-
-[node name="Slime" parent="." instance=ExtResource("18_f01cd")]
-position = Vector2(163, 197)
 
 [editable path="Market"]
 [editable path="Market/MarketInteraction"]

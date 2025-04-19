@@ -12,7 +12,7 @@ config_version=5
 
 config/name="SkillHunter"
 config/version="0.0.1"
-run/main_scene="uid://bo1he5a2qqx72"
+run/main_scene="uid://j8fseby86tic"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 
 [autoload]

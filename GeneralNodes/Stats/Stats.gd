@@ -5,14 +5,14 @@ class_name Stats
 signal player_level_up(stats: Stats)
 signal damage_updated(total_damage: int)
 signal health_updated(hp: int, max_hp: int)
-signal position_updated(position: Vector2)  # Новый сигнал для обновления позиции
+signal position_updated(position: Vector2)
 signal currency_updated(currency: int)
 
 # --- Флаг инициализации ---
 var _is_initialized: bool = false
 
 # --- Настройки ---
-@export var base_max_hp: int = 6 :
+@export var base_max_hp: int = 100 :
 	get:
 		return base_max_hp
 	set(value):
@@ -35,7 +35,7 @@ var max_hp: int = base_max_hp :
 		if _is_initialized:
 			update_damage(_get_weapon_bonus())
 		else:
-			total_damage = base_damage  # Временное значение до инициализации
+			total_damage = base_damage
 
 @export var level: int = 1 :
 	get:
@@ -67,7 +67,8 @@ var max_hp: int = base_max_hp :
 		print("Stats.position set: ", position)
 		position_updated.emit(position)
 
-## Базовая скорость передвижения
+
+
 @export var base_move_speed: float = 100.0 :
 	get:
 		return base_move_speed
@@ -75,7 +76,6 @@ var max_hp: int = base_max_hp :
 		base_move_speed = max(value, 0.0)
 		update_move_speed()
 
-## Итоговая скорость передвижения (с учетом бонусов)
 var move_speed: float = base_move_speed :
 	get:
 		return move_speed
@@ -83,12 +83,20 @@ var move_speed: float = base_move_speed :
 		move_speed = max(value, 0.0)
 		print("Stats.move_speed set: ", move_speed)
 
+# --- Новое поле для регенерации ---
+@export var hp_regeneration_value: int = 1 :
+	get:
+		return hp_regeneration_value
+	set(value):
+		hp_regeneration_value = max(value, 0)
+		print("Stats.hp_regeneration_value set: ", hp_regeneration_value)
+
 # --- Переменные ---
-var hp: int = max_hp :
+var hp: int = 1 :
 	get:
 		return hp
 	set(value):
-		hp = clampi(hp, 0, max_hp)
+		hp = clampi(value, 0, max_hp)
 		health_updated.emit(hp, max_hp)
 
 var total_damage: int = base_damage :
@@ -103,9 +111,9 @@ var speed_bonus: int = 0 :
 		return speed_bonus
 	set(value):
 		speed_bonus = max(value, 0)
-		update_move_speed()  # Обновляем итоговую скорость при изменении бонуса
+		update_move_speed()
 
-var currency: int = 100:
+var currency: int = 100 :
 	get:
 		return currency
 	set(value):
@@ -120,7 +128,6 @@ func init() -> void:
 	if _is_initialized:
 		return
 	_is_initialized = true
-	
 	print("Stats initialized")
 
 # --- Управление уроном ---
@@ -145,13 +152,18 @@ func update_move_speed() -> void:
 	move_speed = base_move_speed + speed_bonus
 	print("Stats.update_move_speed: base=", base_move_speed, " bonus=", speed_bonus, " total=", move_speed)
 
+# --- Управление регенерацией ---
+func update_regeneration(regeneration_bonus: int) -> void:
+	hp_regeneration_value = max(1, regeneration_bonus)  # Минимальное значение 1
+	print("Stats.hp_regeneration_value updated: ", hp_regeneration_value)
+
 func take_damage(amount: int) -> void:
 	hp -= amount
-	player_level_up.emit(self)
+	health_updated.emit(hp, max_hp)  # Убрали лишний сигнал
 
 func heal(amount: int) -> void:
 	hp += amount
-	player_level_up.emit(self)
+	health_updated.emit(hp, max_hp)  # Убрали лишний сигнал
 
 func add_currency(amount: int) -> void:
 	currency += amount
@@ -165,7 +177,8 @@ func remove_currency(amount: int) -> bool:
 # --- Управление опытом и уровнем ---
 func add_experience(amount: int) -> void:
 	experience += amount
-	player_level_up.emit(self)
+	if experience >= exp_to_next_level:
+		_level_up()
 
 func _level_up() -> void:
 	experience -= exp_to_next_level
@@ -174,12 +187,13 @@ func _level_up() -> void:
 	base_max_hp += 2
 	hp = max_hp
 	base_damage += 1
-	base_move_speed += 5.0  # Увеличиваем базовую скорость при повышении уровня
+	base_move_speed += 5.0
+	hp_regeneration_value += 1  # Увеличиваем регенерацию при повышении уровня
 	player_level_up.emit(self)
 	if _is_initialized:
 		update_health(_get_health_bonus())
 	else:
-		update_health(0)  # Без бонусов до инициализации
+		update_health(0)
 
 func _calculate_next_level_exp() -> int:
 	return int(exp_to_next_level * 1.5)
@@ -195,7 +209,7 @@ func _get_health_bonus() -> int:
 		return PlayerManager.INVENTORY_DATA.get_health_bonus()
 	return 0
 
-# --- Сериализация и десериализация для сохранения ---
+# --- Сериализация и десериализация ---
 func serialize() -> Dictionary:
 	return {
 		"base_max_hp": base_max_hp,
@@ -206,11 +220,12 @@ func serialize() -> Dictionary:
 		"level": level,
 		"experience": experience,
 		"exp_to_next_level": exp_to_next_level,
-		"position": [position.x, position.y],  # Сохраняем Vector2 как массив
+		"position": [position.x, position.y],
 		"base_move_speed": base_move_speed,
 		"move_speed": move_speed,
 		"speed_bonus": speed_bonus,
-		"currency": currency
+		"currency": currency,
+		"hp_regeneration_value": hp_regeneration_value  # Добавили регенерацию
 	}
 
 func deserialize(data: Dictionary) -> void:
@@ -228,8 +243,8 @@ func deserialize(data: Dictionary) -> void:
 	move_speed = data.get("move_speed", base_move_speed)
 	speed_bonus = data.get("speed_bonus", 0)
 	currency = data.get("currency", 0)
+	hp_regeneration_value = data.get("hp_regeneration_value", 1)  # Добавили регенерацию
 	
-	# Вызываем сигналы для обновления UI или других систем
 	health_updated.emit(hp, max_hp)
 	damage_updated.emit(total_damage)
 	position_updated.emit(position)

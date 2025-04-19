@@ -20,6 +20,8 @@ const DIRECTIONS: Array[Vector2] = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, V
 @export var HP: int = 5
 ## Количество опыта за уничтожение врага
 @export var experience_drop: int = 5
+## Использовать только два направления (налево и направо)
+@export var two_directions_only: bool = false
 
 # --- Переменные ---
 ## Текущее кардинальное направление
@@ -42,6 +44,8 @@ func _ready() -> void:
 	state_machine.initialize(self)
 	player = PlayerManager.player
 	hit_box.Damaged.connect(_take_damage)
+	# Устанавливаем начальное направление в зависимости от two_directions_only
+	cardinal_direction = Vector2.RIGHT if two_directions_only else Vector2.DOWN
 
 # --- Обработка физики ---
 func _physics_process(_delta: float) -> void:
@@ -54,8 +58,15 @@ func set_direction(new_direction: Vector2) -> bool:
 	if direction == Vector2.ZERO:
 		return false
 	
-	var direction_id: int = int(round(direction).angle() / TAU * DIRECTIONS.size())
-	var new_cardinal = DIRECTIONS[direction_id]
+	var new_cardinal: Vector2
+	
+	if two_directions_only:
+		# Только два направления: налево или направо
+		new_cardinal = Vector2.RIGHT if direction.x >= 0 else Vector2.LEFT
+	else:
+		# Полные четыре направления
+		var direction_id: int = int(round(direction).angle() / TAU * DIRECTIONS.size())
+		new_cardinal = DIRECTIONS[direction_id]
 	
 	if new_cardinal == cardinal_direction:
 		return false
@@ -72,12 +83,17 @@ func update_animation(state: String) -> void:
 
 ## Возвращает строковое представление направления для анимации
 func _get_animation_direction() -> String:
-	match cardinal_direction:
-		Vector2.DOWN: return "down"
-		Vector2.UP: return "up"
-		Vector2.LEFT: return "side"
-		Vector2.RIGHT: return "side"
-		_: return "down"
+	if two_directions_only:
+		# Только боковые анимации для двух направлений
+		return "side"
+	else:
+		# Полные анимации для четырех направлений
+		match cardinal_direction:
+			Vector2.DOWN: return "down"
+			Vector2.UP: return "up"
+			Vector2.LEFT: return "side"
+			Vector2.RIGHT: return "side"
+			_: return "down"
 
 # --- Обработка урона ---
 ## Применяет урон к врагу и вызывает соответствующие сигналы
