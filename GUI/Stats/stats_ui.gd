@@ -3,9 +3,9 @@ extends PanelContainer
 class_name StatsUI
 
 @onready var level_label: Label = $VBoxContainer/LevelLabel
-@onready var hp_bar: ProgressBar = $VBoxContainer/HPBar
+@onready var hp_bar: TextureProgressBar = $VBoxContainer/HPBar
 @onready var hp_label: Label = $VBoxContainer/HPBar/HPLabel
-@onready var exp_bar: ProgressBar = $VBoxContainer/ExpBar
+@onready var exp_bar: TextureProgressBar = $VBoxContainer/ExpBar
 @onready var exp_label: Label = $VBoxContainer/ExpBar/ExpLabel
 @onready var damage_label: Label = $VBoxContainer/DamageLabel
 @onready var currency_label: Label = $VBoxContainer/CurrencyLabel
@@ -19,6 +19,7 @@ func _ready():
 	update_stats(PlayerManager.PLAYER_STATS)
 
 func connect_updating_ui():
+	PlayerManager.PLAYER_STATS.experience_updated.connect(update_stats)
 	PlayerManager.PLAYER_STATS.damage_updated.connect(update_damage_label)
 	PlayerManager.PLAYER_STATS.health_updated.connect(update_hp_label)
 	PlayerManager.PLAYER_STATS.player_level_up.connect(update_stats)

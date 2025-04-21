@@ -1,9 +1,8 @@
 extends CanvasLayer
 
-var hearts: Array[HeartGUI] = []
 
 @onready var hp_label: Label = $VBoxContainer/VBoxContainer/HPBar/HPLabel
-@onready var hp_bar: ProgressBar = $VBoxContainer/VBoxContainer/HPBar
+@onready var hp_bar: TextureProgressBar = $VBoxContainer/VBoxContainer/HPBar
 @onready var currency_label: Label = $VBoxContainer/VBoxContainer/CurrencyLabel
 
 

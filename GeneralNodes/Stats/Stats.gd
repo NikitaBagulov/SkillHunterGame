@@ -7,6 +7,7 @@ signal damage_updated(total_damage: int)
 signal health_updated(hp: int, max_hp: int)
 signal position_updated(position: Vector2)
 signal currency_updated(currency: int)
+signal experience_updated(stats: Stats)
 
 # --- Флаг инициализации ---
 var _is_initialized: bool = false
@@ -48,6 +49,7 @@ var max_hp: int = base_max_hp :
 		return experience
 	set(value):
 		experience = max(value, 0)
+		experience_updated.emit(self)
 		while experience >= exp_to_next_level:
 			_level_up()
 

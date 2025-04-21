@@ -1,11 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcghc2nf73q1j"]
+[gd_scene load_steps=5 format=3 uid="uid://bcghc2nf73q1j"]
 
 [ext_resource type="Script" uid="uid://csngca5jrps2d" path="res://GUI/Player_HUD/hud.gd" id="1_kq8ir"]
+[ext_resource type="Texture2D" uid="uid://ccmwh188iipj3" path="res://Assets/UI/Pixel UI pack 3/04.png" id="2_8a7xr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nqe5"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_yh20o"]
+atlas = ExtResource("2_8a7xr")
+region = Rect2(0, 128, 48, 16)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n802d"]
-bg_color = Color(0.842944, 0.0516904, 0.0293368, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_8a7xr"]
+atlas = ExtResource("2_8a7xr")
+region = Rect2(48, 128, 48, 16)
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_kq8ir")
@@ -24,13 +28,18 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="HPBar" type="ProgressBar" parent="VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(80, 16)
+[node name="HPBar" type="TextureProgressBar" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 24)
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_styles/background = SubResource("StyleBoxFlat_5nqe5")
-theme_override_styles/fill = SubResource("StyleBoxFlat_n802d")
-show_percentage = false
+nine_patch_stretch = true
+stretch_margin_left = 10
+stretch_margin_top = 6
+stretch_margin_right = 10
+stretch_margin_bottom = 7
+texture_under = SubResource("AtlasTexture_yh20o")
+texture_progress = SubResource("AtlasTexture_8a7xr")
+texture_progress_offset = Vector2(1, 1)
 
 [node name="HPLabel" type="Label" parent="VBoxContainer/VBoxContainer/HPBar"]
 layout_mode = 1
@@ -45,8 +54,10 @@ offset_right = 15.0
 offset_bottom = 9.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "100/100"
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
 
 [node name="CurrencyLabel" type="Label" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
