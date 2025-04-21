@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="EquipableItemData" load_steps=8 format=3 uid="uid://dcupwl7kki6vg"]
+
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_o4qpn"]
+[ext_resource type="Script" uid="uid://dg5bm1eej0e4h" path="res://Items/Scripts/equipable_item_modifier.gd" id="2_vrkvh"]
+[ext_resource type="Script" uid="uid://dx2pmvoupgcfy" path="res://Items/Scripts/equipable_item_data.gd" id="3_08dy1"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="4_36xly"]
+
+[sub_resource type="Resource" id="Resource_lx4gi"]
+script = ExtResource("2_vrkvh")
+type = 3
+value = 2
+metadata/_custom_type_script = "uid://dg5bm1eej0e4h"
+
+[sub_resource type="Resource" id="Resource_0q51j"]
+script = ExtResource("2_vrkvh")
+type = 0
+value = 2
+metadata/_custom_type_script = "uid://dg5bm1eej0e4h"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nf3h1"]
+atlas = ExtResource("4_36xly")
+region = Rect2(48, 96, 16, 16)
+
+[resource]
+script = ExtResource("3_08dy1")
+type = 3
+modifiers = Array[ExtResource("2_vrkvh")]([SubResource("Resource_lx4gi"), SubResource("Resource_0q51j")])
+item_id = ""
+name = "Деревянные ботинки"
+description = ""
+texture = SubResource("AtlasTexture_nf3h1")
+cost = 0
+effects = Array[ExtResource("1_o4qpn")]([])
+metadata/_custom_type_script = "uid://dx2pmvoupgcfy"

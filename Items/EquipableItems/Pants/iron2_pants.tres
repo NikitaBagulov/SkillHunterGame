@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="EquipableItemData" load_steps=7 format=3 uid="uid://cvs5krnuij311"]
+
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_y4ssm"]
+[ext_resource type="Script" uid="uid://dg5bm1eej0e4h" path="res://Items/Scripts/equipable_item_modifier.gd" id="2_7uv6e"]
+[ext_resource type="Script" uid="uid://dx2pmvoupgcfy" path="res://Items/Scripts/equipable_item_data.gd" id="3_jqhu8"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="4_7n6aj"]
+
+[sub_resource type="Resource" id="Resource_uh82d"]
+script = ExtResource("2_7uv6e")
+type = 0
+value = 3
+metadata/_custom_type_script = "uid://dg5bm1eej0e4h"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2q8c"]
+atlas = ExtResource("4_7n6aj")
+region = Rect2(336, 80, 16, 16)
+
+[resource]
+script = ExtResource("3_jqhu8")
+type = 2
+modifiers = Array[ExtResource("2_7uv6e")]([SubResource("Resource_uh82d")])
+item_id = "wood_pants"
+name = "Деревянный шлем"
+description = "Просто и дешево!"
+texture = SubResource("AtlasTexture_h2q8c")
+cost = 2
+effects = Array[ExtResource("1_y4ssm")]([])
+metadata/_custom_type_script = "uid://dx2pmvoupgcfy"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="VitalitySkill" load_steps=2 format=3 uid="uid://bjqxik2qrc2tp"]
+
+[ext_resource type="Script" uid="uid://jbfr5mb8ax8j" path="res://SkillSystem/Skills/vitallity_skill.gd" id="1_lh0d1"]
+
+[resource]
+script = ExtResource("1_lh0d1")
+name = "Виталити"
+type = 1
+level = 1
+max_level = 5
+upgrade_success_chance = 1.0
+element = 4
+key_binding = 0
+description = ""
+base_value = 10
+cooldown = 1.0
+duration = 0.0
