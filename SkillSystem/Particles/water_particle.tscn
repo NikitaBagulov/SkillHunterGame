@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0vljnp7bpc2c"]
+
+[sub_resource type="Gradient" id="Gradient_h541t"]
+colors = PackedColorArray(0, 0.52549, 0.839216, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_74ybd"]
+frequency = 0.0028
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_refnv"]
+width = 4
+height = 5
+color_ramp = SubResource("Gradient_h541t")
+noise = SubResource("FastNoiseLite_74ybd")
+
+[node name="WaterParticle" type="CPUParticles2D"]
+modulate = Color(0.362053, 0.649827, 0.880056, 0.615686)
+amount = 50
+texture = SubResource("NoiseTexture2D_refnv")
+lifetime = 2.0
+emission_shape = 2
+emission_sphere_radius = 32.0
+gravity = Vector2(0, -250)

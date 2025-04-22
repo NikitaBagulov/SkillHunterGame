@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp8v2tmswgt1v"]
+
+[sub_resource type="Gradient" id="Gradient_ff6kg"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[node name="EchoPulseParticle" type="CPUParticles2D"]
+modulate = Color(1, 1, 1, 0.615686)
+amount = 100
+lifetime = 0.3
+emission_shape = 1
+emission_sphere_radius = 10.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 50.0
+angular_velocity_max = 100.0
+orbit_velocity_min = 1.0
+orbit_velocity_max = 1.0
+scale_amount_min = 0.05
+color_ramp = SubResource("Gradient_ff6kg")

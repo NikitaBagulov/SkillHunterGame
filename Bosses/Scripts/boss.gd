@@ -60,6 +60,7 @@ func _ready() -> void:
 	label.text = "%d/%d" % [HP, max_hp]
 	# Воспроизводим анимацию idle при старте
 	animation_player.play("idle")
+	add_to_group("enemies")
 
 # --- Обработка физики ---
 func _physics_process(_delta: float) -> void:
@@ -90,6 +91,7 @@ func change_health(amount: int) -> void:
 	if HP <= 0:
 		print("Boss destroyed, experience: ", experience_drop)
 		boss_destroyed.emit(null)
+		queue_free()
 
 ## Применяет лечение и обновляет шкалу
 func change_heal(amount: int) -> void:
@@ -110,6 +112,7 @@ func update_animation(_state: String) -> void:
 func _take_damage(hurt_box: HurtBox) -> void:
 	if invulnerable:
 		return
+	print("SUCCESS DAMAGE")
 	HP -= hurt_box.damage
 	# Обновляем шкалу здоровья
 	hp_bar.value = HP

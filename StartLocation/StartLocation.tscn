@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://caosgc7d7xw16"]
+[gd_scene load_steps=35 format=4 uid="uid://caosgc7d7xw16"]
 
 [ext_resource type="Texture2D" uid="uid://bnkk280gsn248" path="res://WorldGenerator/Assets/Tilesets/Grass.png" id="1_yti1o"]
 [ext_resource type="Texture2D" uid="uid://du4wfvyp5hpcv" path="res://WorldGenerator/Assets/Tilesets/Hills.png" id="2_c6pmd"]
@@ -15,12 +15,14 @@
 [ext_resource type="Resource" uid="uid://cqmmr2564sr53" path="res://Items/EquipableItems/Weapon/iron_sword.tres" id="11_jwsfy"]
 [ext_resource type="PackedScene" uid="uid://dx762x65pi31b" path="res://Interactebles/Dialog/dialog_interaction.tscn" id="12_02ko7"]
 [ext_resource type="Resource" uid="uid://dj8dv2lu3oswq" path="res://Items/EquipableItems/Weapon/copper_sword.tres" id="12_agfc0"]
+[ext_resource type="Resource" uid="uid://dhkuedwtsl10l" path="res://Items/potion.tres" id="13_agfc0"]
 [ext_resource type="Script" uid="uid://j7t0khckxins" path="res://Interactebles/Dialog/Scripts/dialog_text.gd" id="13_whfd7"]
 [ext_resource type="Resource" uid="uid://spequ8lgxmdr" path="res://Items/SkillBook/vitality.tres" id="14_7gndj"]
 [ext_resource type="Script" uid="uid://meb5adohrfil" path="res://Interactebles/Dialog/Scripts/dialog_choise.gd" id="14_qrcob"]
 [ext_resource type="Script" uid="uid://cinls4mh53t30" path="res://Interactebles/Dialog/Scripts/dialog_branch.gd" id="15_1l6vd"]
 [ext_resource type="PackedScene" uid="uid://bxo3oftj1jgxd" path="res://NPC/Scenes/npc_behavior_patrol.tscn" id="16_3x4rv"]
 [ext_resource type="Resource" uid="uid://dyty4wvq3nllp" path="res://Items/SkillElements/air.tres" id="16_64hua"]
+[ext_resource type="Resource" uid="uid://b18mckj37pvc2" path="res://Items/SkillBook/barrage_swarm.tres" id="16_jwsfy"]
 [ext_resource type="PackedScene" uid="uid://bkkvpo2y4u5p5" path="res://NPC/Scenes/patrol_location.tscn" id="17_cfbss"]
 [ext_resource type="Resource" uid="uid://ccskoq1dvmuhj" path="res://Items/SkillElements/earth.tres" id="17_jwsfy"]
 [ext_resource type="Resource" uid="uid://bu07pkbyx0spr" path="res://NPC/00_NPCs/npc_02.tres" id="18_02ko7"]
@@ -1249,7 +1251,7 @@ portal_id = "1"
 position = Vector2(226, 26)
 
 [node name="MarketInteraction" parent="Market" index="2"]
-market_items = Array[ExtResource("7_p1vyp")]([ExtResource("8_aninp"), ExtResource("9_agfc0"), ExtResource("11_jwsfy"), ExtResource("10_whfd7"), ExtResource("12_agfc0")])
+market_items = Array[ExtResource("7_p1vyp")]([ExtResource("8_aninp"), ExtResource("9_agfc0"), ExtResource("11_jwsfy"), ExtResource("10_whfd7"), ExtResource("12_agfc0"), ExtResource("13_agfc0")])
 
 [node name="Market2" parent="." instance=ExtResource("6_akljj")]
 position = Vector2(291, 26)
@@ -1258,7 +1260,7 @@ position = Vector2(291, 26)
 modulate = Color(0.629601, 0.670012, 0.652133, 1)
 
 [node name="MarketInteraction" parent="Market2" index="2"]
-market_items = Array[ExtResource("7_p1vyp")]([ExtResource("22_3x4rv"), ExtResource("14_7gndj")])
+market_items = Array[ExtResource("7_p1vyp")]([ExtResource("22_3x4rv"), ExtResource("14_7gndj"), ExtResource("16_jwsfy")])
 
 [node name="Market3" parent="." instance=ExtResource("6_akljj")]
 position = Vector2(358, 25)

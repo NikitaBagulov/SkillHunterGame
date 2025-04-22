@@ -30,6 +30,7 @@ PauseMenu="*res://GUI/PauseMenu/pause_menu.tscn"
 DialogSystem="*res://GUI/Dialog/dialog_system.tscn"
 Market="*res://GUI/Market/Market.tscn"
 GlobalQuestSystem="*res://QuestSystem/quest_system.tscn"
+EffectManager="*res://EffectSystem/effect_system.gd"
 
 [display]
 
@@ -47,6 +48,7 @@ project/assembly_name="SkillHunter"
 
 player=""
 PlayerSpawner=""
+emenies=""
 
 [gui]
 

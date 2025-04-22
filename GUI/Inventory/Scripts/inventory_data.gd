@@ -90,7 +90,6 @@ func equip_item(slot: SlotData) -> void:
 		slots[slot_index] = unequipped_slot
 		
 		# Apply passive skill from the newly equipped item (if any)
-		print("USE_SKILL: ", item.skill and item.skill.type == SkillResource.SkillType.PASSIVE)
 		if item.skill and item.skill.type == SkillResource.SkillType.PASSIVE:
 			item.skill.apply_passive(PlayerManager.player)
 		

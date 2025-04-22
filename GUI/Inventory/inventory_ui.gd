@@ -220,15 +220,16 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 		var target_is_forge = target_index >= forge_start and target_index < forge_end
 
 		if target_is_equipment:
-			if hovered_item.slot_type != -1 and source_data.item_data.type != hovered_item.slot_type:
-				print("Item type mismatch for equipment slot")
+			if hovered_item.item_data is EquipableItemData:
+				if hovered_item.slot_type != -1 and source_data.item_data.type != hovered_item.slot_type:
+					print("Item type mismatch for equipment slot")
+					return
+				if is_equipment_slot:
+					data.unequip_item(source_index)
+					source_data = data.get_slot(source_index)
+				data.equip_item(source_data)
+				update_inventory(false)
 				return
-			if is_equipment_slot:
-				data.unequip_item(source_index)
-				source_data = data.get_slot(source_index)
-			data.equip_item(source_data)
-			update_inventory(false)
-			return
 		
 		if target_is_forge:
 			if hovered_item == skill_forge_ui.input_slot_1:

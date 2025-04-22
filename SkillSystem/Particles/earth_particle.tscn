@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ccn0g20mxw640"]
+
+[node name="EarthParticle" type="CPUParticles2D"]
+modulate = Color(0.501344, 0.235895, 0.0864874, 0.615686)
+amount = 200
+lifetime = 0.8
+emission_shape = 2
+emission_sphere_radius = 16.0
+gravity = Vector2(0, 0)
+orbit_velocity_min = 0.1
+orbit_velocity_max = 0.1

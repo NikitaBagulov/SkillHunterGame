@@ -1,15 +1,14 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3 uid="uid://dhkuedwtsl10l"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3 uid="uid://dhkuedwtsl10l"]
 
 [ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_5wjim"]
 [ext_resource type="Script" uid="uid://dns18ehqprxk8" path="res://Items/Scripts/item_data.gd" id="1_77wis"]
 [ext_resource type="Script" uid="uid://4d688yd5ejk" path="res://Items/Item_effect/item_effect_heal.gd" id="2_6s50n"]
-[ext_resource type="AudioStream" uid="uid://bknig1ufuakyu" path="res://Items/Item_effect/Sounds/hp-up.wav" id="3_fh7ix"]
 [ext_resource type="Texture2D" uid="uid://cx1g6wefc7k4a" path="res://Items/Sprites/potions-Sheet.png" id="5_pw2eo"]
 
 [sub_resource type="Resource" id="Resource_olyku"]
 script = ExtResource("2_6s50n")
 heal_amount = 5
-sound = ExtResource("3_fh7ix")
+duration = 0.0
 use_description = ""
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rmkeq"]

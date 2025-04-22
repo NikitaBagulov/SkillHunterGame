@@ -12,8 +12,11 @@ class_name ItemData extends Resource
 
 func use() -> bool:
 	if effects.size() == 0:
+		print("ItemData '%s' has no effects to apply" % name)
 		return false
 	
+	var success = false
 	for effect in effects:
 		effect.use()
-	return true
+		success = true
+	return success

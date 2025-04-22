@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BarrageSwarmSkill" load_steps=2 format=3 uid="uid://dng6p3i4yqqve"]
+
+[ext_resource type="Script" uid="uid://bnw28wyrmlgfs" path="res://SkillSystem/Skills/barrage_swarm.gd" id="1_ueoho"]
+
+[resource]
+script = ExtResource("1_ueoho")
+name = "Рой снарядов"
+type = 0
+level = 1
+max_level = 3
+upgrade_success_chance = 1.0
+element = 0
+key_binding = 1
+description = ""
+base_value = 15
+cooldown = 1.0
+duration = 0.0
+metadata/_custom_type_script = "uid://bnw28wyrmlgfs"

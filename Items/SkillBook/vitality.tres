@@ -12,7 +12,7 @@ region = Rect2(32, 240, 16, 16)
 [resource]
 script = ExtResource("2_3qyok")
 skill_item_type = 0
-element = 4
+element = 0
 item_id = ""
 name = "Виталити"
 description = ""

@@ -185,12 +185,13 @@ height = 106.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmlb5"]
 bg_color = Color(1, 0, 0, 1)
 
-[node name="Demon" type="CharacterBody2D"]
+[node name="Demon" type="CharacterBody2D" groups=["emenies"]]
 collision_layer = 256
 collision_mask = 16
 script = ExtResource("1_p528m")
 
 [node name="HitBox" parent="." instance=ExtResource("2_rut0u")]
+position = Vector2(-1, 73)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 position = Vector2(2, -77)
@@ -198,7 +199,7 @@ shape = SubResource("CapsuleShape2D_ngsvx")
 debug_color = Color(0.642995, 0.523066, 0.0296304, 0.42)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -119)
+position = Vector2(-1, -46)
 texture = ExtResource("2_p528m")
 hframes = 15
 
@@ -213,7 +214,7 @@ metadata/_custom_type_script = "uid://ce1dtysyy0s8k"
 
 [node name="BossIdleState" type="Node" parent="BossStateMachine"]
 script = ExtResource("5_pssxw")
-move_speed = 20.0
+move_speed = 200.0
 direction_change_interval = 3.0
 metadata/_custom_type_script = "uid://oeq4ggj8ooo1"
 
@@ -235,15 +236,15 @@ script = ExtResource("10_st865")
 metadata/_custom_type_script = "uid://c54t0o2ajf7p2"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3, -57)
+position = Vector2(2, 16)
 shape = SubResource("CapsuleShape2D_xmlb5")
 
 [node name="HP_bar" type="ProgressBar" parent="."]
 custom_minimum_size = Vector2(32, 8)
-offset_left = -15.0
-offset_top = -5.0
-offset_right = 17.0
-offset_bottom = 3.0
+offset_left = -16.0
+offset_top = 68.0
+offset_right = 16.0
+offset_bottom = 76.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_xmlb5")
 show_percentage = false
 
@@ -257,13 +258,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Spawn1" type="Node2D" parent="."]
-position = Vector2(-76, -172)
+position = Vector2(-77, -99)
 
 [node name="Spawn2" type="Node2D" parent="."]
-position = Vector2(75, -168)
+position = Vector2(74, -95)
 
 [node name="Spawn3" type="Node2D" parent="."]
-position = Vector2(-90, -126)
+position = Vector2(-91, -53)
 
 [node name="Spawn4" type="Node2D" parent="."]
-position = Vector2(90, -125)
+position = Vector2(89, -52)

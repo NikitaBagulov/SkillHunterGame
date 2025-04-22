@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="SkillItemData" load_steps=6 format=3 uid="uid://b18mckj37pvc2"]
+
+[ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_6tgwt"]
+[ext_resource type="Script" uid="uid://hnhu85aguabn" path="res://Items/Scripts/skill_item_data.gd" id="2_ll8x5"]
+[ext_resource type="Resource" uid="uid://dng6p3i4yqqve" path="res://SkillSystem/SkillResources/barrage_swarm.tres" id="3_8xn7s"]
+[ext_resource type="Texture2D" uid="uid://buwqoxmjearxa" path="res://Items/Sprites/items_sheet.png" id="3_ll8x5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xn7s"]
+atlas = ExtResource("3_ll8x5")
+region = Rect2(48, 240, 16, 16)
+
+[resource]
+script = ExtResource("2_ll8x5")
+skill_item_type = 0
+element = 0
+item_id = ""
+name = "Рой снарядов"
+description = ""
+texture = SubResource("AtlasTexture_8xn7s")
+skill = ExtResource("3_8xn7s")
+cost = 0
+effects = Array[ExtResource("1_6tgwt")]([])
+metadata/_custom_type_script = "uid://hnhu85aguabn"

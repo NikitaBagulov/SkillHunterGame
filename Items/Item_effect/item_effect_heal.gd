@@ -1,8 +1,11 @@
-class_name ItemEffectHeal extends ItemEffect
+# ItemEffectHeal.gd
+class_name ItemEffectHeal
+extends ItemEffect
 
 @export var heal_amount: int = 1
-@export var sound: AudioStream
+@export var duration: float = 0.0  # Длительность эффекта (0 для моментального лечения)
 
-func use() -> void:
-	PlayerManager.player.health.update_hp(heal_amount)
-	Inventory.play_audio(sound)
+func _init():
+	use_description = "Heals for %s HP" % heal_amount
+	# Создаем RegenerationEffect с заданными параметрами
+	effect_resource = RegenerationEffect.new(heal_amount, duration if duration > 0 else -1.0)

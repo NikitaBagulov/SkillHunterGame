@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://0wh21dprvh4t"]
+
+[sub_resource type="Gradient" id="Gradient_7bcoh"]
+colors = PackedColorArray(0.82881, 2.71939e-06, 5.77569e-07, 1, 1, 0.490196, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_deofa"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_645km"]
+width = 4
+height = 4
+bump_strength = 0.0
+color_ramp = SubResource("Gradient_7bcoh")
+noise = SubResource("FastNoiseLite_deofa")
+
+[node name="FireParticle" type="CPUParticles2D"]
+modulate = Color(1, 0.231373, 0.172549, 0.615686)
+position = Vector2(0, -10)
+amount = 50
+texture = SubResource("NoiseTexture2D_645km")
+lifetime = 0.8
+emission_shape = 2
+emission_sphere_radius = 16.0
+gravity = Vector2(0, -250)

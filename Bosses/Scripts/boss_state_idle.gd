@@ -3,7 +3,7 @@ extends BossState
 
 @export var min_duration: float = 2.0  # Минимальное время в состоянии (сек)
 @export var max_duration: float = 4.0  # Максимальное время в состоянии (сек)
-@export var move_speed: float = 50.0   # Скорость движения
+@export var move_speed: float = 500.0   # Скорость движения
 @export var direction_change_interval: float = 1.0  # Интервал смены направления (сек)
 
 var timer: float = 0.0

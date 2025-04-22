@@ -1,5 +1,5 @@
 extends Node2D
-class_name Projectile
+class_name BossProjectile
 
 # Настройки снаряда
 @export var speed: float = 200.0  # Скорость движения

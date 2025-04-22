@@ -1285,6 +1285,8 @@ position = Vector2(0, 9)
 scale = Vector2(1e-05, 1e-05)
 collision_mask = 256
 monitoring = false
+is_player_hurtbox = true
+is_sword_hurtbox = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHurtBox"]
 shape = SubResource("CircleShape2D_v050q")

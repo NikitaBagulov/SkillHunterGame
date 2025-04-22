@@ -83,9 +83,14 @@ func item_pressed() -> void:
 			if !was_used:
 				return
 			slot_data.quantity -= 1
+			if slot_data.quantity <= 0:
+				# Очищаем слот
+				PlayerManager.INVENTORY_DATA.slot_changed()  # Вызываем обновление инвентаря
+				set_slot_data(null)  # Обновляем UI
 			if slot_data == null:
 				return
 			label.text = str(slot_data.quantity)
+			update_slot_display(slot_data)
 
 func on_button_down() -> void:
 	click_pos = get_global_mouse_position()

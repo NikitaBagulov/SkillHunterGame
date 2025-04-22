@@ -23,6 +23,8 @@ const DIRECTIONS: Array[Vector2] = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, V
 ## Использовать только два направления (налево и направо)
 @export var two_directions_only: bool = false
 
+var max_hp: int = HP
+
 # --- Переменные ---
 ## Текущее кардинальное направление
 var cardinal_direction: Vector2 = Vector2.DOWN
@@ -46,6 +48,7 @@ func _ready() -> void:
 	hit_box.Damaged.connect(_take_damage)
 	# Устанавливаем начальное направление в зависимости от two_directions_only
 	cardinal_direction = Vector2.RIGHT if two_directions_only else Vector2.DOWN
+	add_to_group("enemies")
 
 # --- Обработка физики ---
 func _physics_process(_delta: float) -> void:
@@ -94,6 +97,13 @@ func _get_animation_direction() -> String:
 			Vector2.LEFT: return "side"
 			Vector2.RIGHT: return "side"
 			_: return "down"
+
+func change_health(amount: int) -> void:
+	HP = clamp(HP + amount, 0, max_hp)
+	if HP <= 0:
+		print("Boss destroyed, experience: ", experience_drop)
+		enemy_destroyed.emit(null)
+		queue_free()
 
 # --- Обработка урона ---
 ## Применяет урон к врагу и вызывает соответствующие сигналы

@@ -1,12 +1,16 @@
 extends Area2D
 class_name HurtBox
 
+
+
+@export var is_player_hurtbox: bool = false
+@export var is_sword_hurtbox: bool = false
 # --- Настройки ---
 ## Урон, наносимый при столкновении с HitBox (для врагов или по умолчанию)
 @export var damage: int = 1:
 	get:
 		# Если это HurtBox игрока, возвращаем урон из Stats, иначе фиксированное значение
-		return PlayerManager.PLAYER_STATS.total_damage if _is_player_hurtbox() else damage
+		return PlayerManager.PLAYER_STATS.total_damage if _is_player_hurtbox() and is_sword_hurtbox else damage
 	set(value):
 		damage = value  # Сеттер для фиксированного значения (используется врагами)
 
@@ -26,7 +30,7 @@ func _on_area_entered(area: Area2D) -> void:
 # --- Вспомогательные методы ---
 ## Проверяет, принадлежит ли HurtBox игроку
 func _is_player_hurtbox() -> bool:
-	var is_player = get_parent() == PlayerManager.get_player()
+	var is_player = get_parent() == PlayerManager.get_player() or is_player_hurtbox
 	#print("Checking if HurtBox is player's: ", is_player, " (parent: ", get_parent(), ")")
 	return is_player
 
