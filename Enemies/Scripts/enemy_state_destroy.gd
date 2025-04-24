@@ -56,7 +56,7 @@ func _on_animation_finished(_animation: String) -> void:
 	var player = PlayerManager.get_player()
 	if player and player.experience_manager:
 		player.experience_manager.gain_experience(enemy.experience_drop)
-		print("Experience gained: ", enemy.experience_drop)
+		#print("Experience gained: ", enemy.experience_drop)
 	GlobalQuestManager.instance.on_enemy_killed(enemy.enemy_id)
 	enemy.queue_free()
 

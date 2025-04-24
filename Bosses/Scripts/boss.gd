@@ -89,14 +89,14 @@ func change_health(amount: int) -> void:
 	hp_bar.value = HP
 	label.text = "%d/%d" % [HP, max_hp]
 	if HP <= 0:
-		print("Boss destroyed, experience: ", experience_drop)
+		#print("Boss destroyed, experience: ", experience_drop)
 		boss_destroyed.emit(null)
 		queue_free()
 
 ## Применяет лечение и обновляет шкалу
 func change_heal(amount: int) -> void:
 	if amount <= 0:
-		print("Warning: Heal amount must be positive")
+		#print("Warning: Heal amount must be positive")
 		return
 	HP = clamp(HP + amount, 0, max_hp)
 	hp_bar.value = HP
@@ -112,7 +112,7 @@ func update_animation(_state: String) -> void:
 func _take_damage(hurt_box: HurtBox) -> void:
 	if invulnerable:
 		return
-	print("SUCCESS DAMAGE")
+	#print("SUCCESS DAMAGE")
 	HP -= hurt_box.damage
 	# Обновляем шкалу здоровья
 	hp_bar.value = HP
@@ -120,7 +120,7 @@ func _take_damage(hurt_box: HurtBox) -> void:
 	if HP > 0:
 		boss_damaged.emit(hurt_box)
 	else:
-		print("Boss destroyed, experience: ", experience_drop)
+		#print("Boss destroyed, experience: ", experience_drop)
 		boss_destroyed.emit(hurt_box)
 		queue_free()
 

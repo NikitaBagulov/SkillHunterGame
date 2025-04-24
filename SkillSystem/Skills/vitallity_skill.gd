@@ -17,7 +17,7 @@ func apply_passive(player: Player) -> void:
 			stats.update_damage(bonus)
 			#stats.update_damage(player.get_attack_bonus())
 		Element.WATER:
-			print("WATER: Not implemented")
+			#print("WATER: Not implemented")
 			pass
 		Element.AIR:
 			stats.speed_bonus += bonus

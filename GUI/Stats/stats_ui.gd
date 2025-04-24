@@ -26,11 +26,11 @@ func connect_updating_ui():
 	PlayerManager.PLAYER_STATS.currency_updated.connect(update_currency_label)
 
 func update_damage_label(value: int):
-	print("Урон ", value)
+	#print("Урон ", value)
 	damage_label.text = "Урон: " + str(value)
 	
 func update_hp_label(hp: int, max_hp: int):
-	#print("HP ", hp, max_hp)
+	##print("HP ", hp, max_hp)
 	hp_bar.max_value = max_hp
 	hp_bar.value = hp
 

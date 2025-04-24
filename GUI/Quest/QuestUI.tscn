@@ -4,7 +4,6 @@
 
 [node name="QuestUi" type="CanvasLayer"]
 layer = 3
-visible = false
 script = ExtResource("1_q51co")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -26,8 +25,15 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="QuestList" type="VBoxContainer" parent="MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+clip_contents = false
 layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="QuestList" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 alignment = 1
 

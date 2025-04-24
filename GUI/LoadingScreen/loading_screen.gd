@@ -39,5 +39,5 @@ func hide_loading() -> void:
 
 func _input(event: InputEvent) -> void:
 	if is_loading_complete and event is InputEventKey and event.pressed:
-		print(event)
+		#print(event)
 		hide_loading()  # Скрываем экран при нажатии любой клавиши

@@ -36,5 +36,3 @@ func _update_wait_time_label() -> void:
 		var label = $Sprite2D/Label2 as Label
 		if label:
 			label.text = "wait: " + str(snappedf(wait_time, 0.1)) + "s"
-		else:
-			print("Предупреждение: Label2 не найден под Sprite2D")

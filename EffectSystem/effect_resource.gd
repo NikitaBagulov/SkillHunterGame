@@ -28,7 +28,7 @@ func apply_effect(entity: Node) -> void:
 				particles.get_tree().create_timer(duration, false).timeout.connect(
 					func():
 						if is_instance_valid(particles):
-							print("Freeing particles for effect '%s'" % name)
+							#print("Freeing particles for effect '%s'" % name)
 							particles.queue_free()
 				)
 			else:
@@ -39,7 +39,7 @@ func apply_effect(entity: Node) -> void:
 							particles.get_tree().create_timer(particles.lifetime, false).timeout.connect(
 								func():
 									if is_instance_valid(particles):
-										print("Freeing particles for effect '%s'" % name)
+										#print("Freeing particles for effect '%s'" % name)
 										particles.queue_free()
 							)
 				)

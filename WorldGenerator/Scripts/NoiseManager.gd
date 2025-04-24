@@ -25,5 +25,16 @@ func get_cached_noise(pos: Vector2i) -> float:
 	noise_cache[pos] = value
 	return value
 
+func get_chunk_noise(chunk_pos: Vector2i, chunk_size: Vector2i) -> Dictionary:
+	var noise_values = {}
+	var start_pos = chunk_pos * chunk_size
+	
+	for x in range(chunk_size.x):
+		for y in range(chunk_size.y):
+			var pos = start_pos + Vector2i(x, y)
+			noise_values[pos] = get_cached_noise(pos)
+	
+	return noise_values
+
 func get_density_noise(pos: Vector2) -> float:
 	return (density_noise.get_noise_2d(pos.x, pos.y) + 1.0) / 2.0

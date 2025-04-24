@@ -6,10 +6,12 @@ func _init(_value: float = 5.0, _duration: float = -1.0):  # -1.0 для пас�
 	super._init("Regeneration", _value, _duration)
 
 func apply_effect(entity: Node) -> void:
-	print("Applied Regeneration effect to %s with value %s" % [entity.name, value])
+	pass
+	#print("Applied Regeneration effect to %s with value %s" % [entity.name, value])
 
 func remove_effect(entity: Node) -> void:
-	print("Removed Regeneration effect from %s" % entity.name)
+	pass
+	#print("Removed Regeneration effect from %s" % entity.name)
 
 func process_effect(entity: Node, delta: float) -> void:
 	var timer: float = 0.0

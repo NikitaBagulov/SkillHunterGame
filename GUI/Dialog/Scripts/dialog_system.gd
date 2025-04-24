@@ -108,8 +108,8 @@ func set_dialog_text(_data: DialogText) -> void:
 	content.text = _data.text
 	choise_options.visible = false
 	name_label.text = _data.npc_info.npc_name
-	portrait_sprite.texture = _data.npc_info.portrait
-	portrait_sprite.audio_pitch_base = _data.npc_info.dialog_audio_pitch
+	#portrait_sprite.texture = _data.npc_info.portrait
+	#portrait_sprite.audio_pitch_base = _data.npc_info.dialog_audio_pitch
 	content.visible_characters = 0 
 	text_length = content.get_total_character_count()
 	plain_text = content.get_parsed_text()
@@ -139,8 +139,11 @@ func set_dialog_choise(_data: DialogChoise) -> void:
 		
 func _dialog_choice_selected(_data: DialogBranch) -> void:
 	choise_options.visible = false
-	show_dialog(_data.dialog_items)
-	pass
+	# Вместо show_dialog используем текущую цепочку
+	dialog_items = _data.dialog_items + dialog_items.slice(dialog_item_index + 1)
+	dialog_item_index = 0
+	start_dialog()
+
 		
 func show_dialog_button_indicator(_is_visible: bool) -> void:
 	dialog_progress_indicator.visible = _is_visible

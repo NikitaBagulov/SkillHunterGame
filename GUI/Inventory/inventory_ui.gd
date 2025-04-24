@@ -189,17 +189,17 @@ func connect_item_signals(item: InventorySlotUI) -> void:
 
 func _on_item_drop(item: InventorySlotUI) -> void:
 	if item == null or item.slot_data == null:
-		print("No item or slot data")
+		#print("No item or slot data")
 		return
 
 	var source_index = get_slot_global_index(item)
 	if source_index == -1:
-		print("Invalid source index for slot: ", item)
+		#print("Invalid source index for slot: ", item)
 		return
 
 	var source_data = data.get_slot(source_index)
 	if source_data == null:
-		print("No source data at index: ", source_index, " UI data: ", item.slot_data)
+		#print("No source data at index: ", source_index, " UI data: ", item.slot_data)
 		return
 
 	var equipment_start = data.inventory_slot_count
@@ -213,7 +213,7 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 	if hovered_item != null and hovered_item != item:
 		var target_index = get_slot_global_index(hovered_item)
 		if target_index == -1:
-			print("Invalid target index for slot: ", hovered_item)
+			#print("Invalid target index for slot: ", hovered_item)
 			return
 		
 		var target_is_equipment = target_index >= equipment_start and target_index < equipment_end
@@ -222,7 +222,7 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 		if target_is_equipment:
 			if hovered_item.item_data is EquipableItemData:
 				if hovered_item.slot_type != -1 and source_data.item_data.type != hovered_item.slot_type:
-					print("Item type mismatch for equipment slot")
+					#print("Item type mismatch for equipment slot")
 					return
 				if is_equipment_slot:
 					data.unequip_item(source_index)
@@ -235,15 +235,15 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 			if hovered_item == skill_forge_ui.input_slot_1:
 				var item_data = source_data.item_data
 				if not (item_data is EquipableItemData and item_data.type == EquipableItemData.Type.WEAPON) and not (item_data is SkillItemData and item_data.skill_item_type == SkillItemData.SkillItemType.SKILL):
-					print("Invalid item for input_slot_1")
+					#print("Invalid item for input_slot_1")
 					return
 			elif hovered_item == skill_forge_ui.input_slot_2:
 				var item_data = source_data.item_data
 				if not (item_data is SkillItemData and (item_data.skill_item_type == SkillItemData.SkillItemType.SKILL or item_data.skill_item_type == SkillItemData.SkillItemType.ELEMENT)):
-					print("Invalid item for input_slot_2")
+					#print("Invalid item for input_slot_2")
 					return
 			elif hovered_item == skill_forge_ui.output_slot and data.slots[target_index] != null:
-				print("Output slot is already occupied")
+				#print("Output slot is already occupied")
 				return
 
 		if is_equipment_slot:

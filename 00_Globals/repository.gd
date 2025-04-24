@@ -235,7 +235,7 @@ func log_message(message: String) -> void:
 	change_log.append("[%s] %s" % [timestamp, message])
 	if change_log.size() > 100:  # Ограничение лога
 		change_log.pop_front()
-	print(message)
+	#print(message)
 
 # Получение лога изменений
 func get_change_log() -> Array[String]:

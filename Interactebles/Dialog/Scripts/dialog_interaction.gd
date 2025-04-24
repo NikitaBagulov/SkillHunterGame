@@ -57,12 +57,13 @@ func _on_area_exit(_area: Area2D) -> void:
 	PlayerManager.interact_pressed.disconnect(player_interact)
 	pass
 
-func _on_dialog_finished() -> void:
+func _on_dialog_finished():
 	DialogSystem.finished.disconnect(player_interact)
 	finished.emit()
 	var npc = get_parent()
 	if npc is NPC and npc.npc_resource:
 		GlobalQuestManager.instance.on_npc_interacted(npc.npc_resource.npc_id)
+	#clear_completed_quest_dialogs()  # Добавьте эту строку
 
 func _check_configuration_warnings() -> PackedStringArray:
 	if !_check_for_dialog_items():
@@ -75,3 +76,13 @@ func _check_for_dialog_items() -> bool:
 		if child is DialogItem:
 			return true
 	return false 
+
+func clear_completed_quest_dialogs():
+	var new_items: Array[DialogItem] = []
+	for item in dialog_items:
+		if item.quest_id and item.quest_action == item.QuestAction.COMPLETE_QUEST:
+			var quest = GlobalQuestManager.instance.get_quest(item.quest_id)
+			if quest and quest.status == QuestResource.QuestStatus.COMPLETED:
+				continue  # Пропускаем уже завершенные квесты
+		new_items.append(item)
+	dialog_items = new_items

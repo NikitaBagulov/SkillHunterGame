@@ -7,27 +7,21 @@ func initialize(wg: WorldGenerator):
 
 func spawn_player():
 	if world_generator.player:
-		print("Игрок уже спавнен!")
+		#print("Игрок уже спавнен!")
 		return
-	var safe_position = find_safe_spawn_position()
+	var safe_position = self.global_position
 	if safe_position:
 		PlayerManager.spawn_player(world_generator)
 
 		world_generator.player = PlayerManager.get_player()
 		PlayerManager.set_player_position(safe_position)
 
-		PlayerManager.set_player(world_generator.player)
+		PlayerManager.set_player(PlayerManager.player)
 		
 		WorldCamera.global_position = safe_position  # Устанавливаем позицию камеры
 		WorldCamera.make_current()  # Убеждаемся, что эта камера активна
 		WorldCamera.force_update_scroll()
-		#var bounds = world_generator.chunk_manager.get_current_bounds()
-		#WorldCamera.update_limits(bounds)
-		print("Камера центрирована на игроке в: ", safe_position)
-		
-		print("Игрок спавнен в: ", safe_position)
-	else:
-		print("Не удалось найти безопасную позицию для спавна!")
+
 
 func find_safe_spawn_position() -> Vector2:
 	var attempts = 1000
@@ -50,5 +44,5 @@ func find_safe_spawn_position() -> Vector2:
 			var world_pos = world_generator.ground_layer.map_to_local(pos)
 			return world_pos
 	
-	print("Предупреждение: Не найдено безопасное место для спавна после ", attempts, " попыток!")
+	#print("Предупреждение: Не найдено безопасное место для спавна после ", attempts, " попыток!")
 	return Vector2.ZERO

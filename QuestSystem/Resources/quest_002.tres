@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="QuestResource" load_steps=5 format=3 uid="uid://b1g6xsq2q8ici"]
+
+[ext_resource type="Script" uid="uid://ds2nu8uhhs22y" path="res://QuestSystem/quest_objective.gd" id="1_rhic8"]
+[ext_resource type="Script" uid="uid://cpulxy51npe3d" path="res://QuestSystem/quest_resource.gd" id="2_t2dwd"]
+
+[sub_resource type="Resource" id="Resource_55v28"]
+script = ExtResource("1_rhic8")
+objective_id = "obj4"
+description = "Добыть 1 кристалл стихии (любой: огонь, вода, земля, воздух)"
+target_value = 1
+current_value = 0
+completed = false
+item_id = "element"
+enemy_id = ""
+npc_id = ""
+metadata/_custom_type_script = "uid://ds2nu8uhhs22y"
+
+[sub_resource type="Resource" id="Resource_rhic8"]
+script = ExtResource("1_rhic8")
+objective_id = "obj5"
+description = "Найти навык (любой)"
+target_value = 1
+current_value = 0
+completed = false
+item_id = "skill"
+enemy_id = ""
+npc_id = ""
+metadata/_custom_type_script = "uid://ds2nu8uhhs22y"
+
+[resource]
+script = ExtResource("2_t2dwd")
+quest_id = "quest_002"
+title = "Начало"
+description = "Лим хочет, чтобы я убил несколько врагов, нашел навык и добыл стихию. Не сложное ли задание для начала..."
+objectives = Array[ExtResource("1_rhic8")]([SubResource("Resource_55v28"), SubResource("Resource_rhic8")])
+status = 0
+rewards = Array[Resource]([])
+required_quest_id = "quest_001"
+metadata/_custom_type_script = "uid://cpulxy51npe3d"

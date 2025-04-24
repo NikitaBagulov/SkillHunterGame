@@ -8,6 +8,7 @@ enum QuestStatus { AVAILABLE, IN_PROGRESS, COMPLETED }
 @export var objectives: Array[QuestObjective]
 @export var status: QuestStatus = QuestStatus.AVAILABLE
 @export var rewards: Array[Resource]
+@export var required_quest_id: String = ""
 
 func update_objective(objective_id: String, value: int) -> bool:
 	for objective in objectives:

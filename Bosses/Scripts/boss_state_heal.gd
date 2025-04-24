@@ -16,7 +16,7 @@ func enter() -> void:
 	# Применяем лечение
 	await boss.animation_player.animation_finished
 	boss.change_health(heal_amount)
-	print("Boss healed, HP: ", boss.HP)
+	#print("Boss healed, HP: ", boss.HP)
 
 func process(delta: float) -> BossState:
 	timer -= delta

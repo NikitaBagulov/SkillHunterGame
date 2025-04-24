@@ -117,7 +117,7 @@ func unequip_item(equipment_index: int) -> void:
 			PlayerManager._update_weapon_texture()
 			PlayerManager.update_health()  # Обновляем здоровье
 			return
-	print("No free inventory slot available!")
+	#print("No free inventory slot available!")
 
 func add_item(item: ItemData, count: int = 1) -> bool:
 	# Для EquipableItemData создаём новый слот для каждого предмета
@@ -134,7 +134,7 @@ func add_item(item: ItemData, count: int = 1) -> bool:
 					data_changed.emit()
 					GlobalQuestManager.instance.on_item_collected(item.item_id, 1)
 					return true
-			print("Inventory was full for EquipableItemData!")
+			#print("Inventory was full for EquipableItemData!")
 			return false
 		return true
 	
@@ -157,7 +157,7 @@ func add_item(item: ItemData, count: int = 1) -> bool:
 			data_changed.emit()
 			GlobalQuestManager.instance.on_item_collected(item.item_id, count)
 			return true
-	print("Inventory was full!")
+	#print("Inventory was full!")
 	return false
 
 func connect_slots() -> void:
@@ -259,7 +259,7 @@ func get_equipped_weapon_damage_bonus() -> int:
 
 func get_slot(index: int) -> SlotData:
 	if index < 0 || index >= slots.size():
-		print("ERROR: Invalid slot index", index)
+		#print("ERROR: Invalid slot index", index)
 		return null
 	return slots[index]
 
@@ -321,7 +321,7 @@ func _dict_to_slot(dict: Dictionary) -> SlotData:
 
 	var new_slot := SlotData.new()
 	new_slot.item_data = load(dict["item"])
-	print(new_slot.item_data)
+	#print(new_slot.item_data)
 	new_slot.quantity = dict.get("quantity", 1)
 	new_slot.changed.connect(slot_changed)
 	return new_slot

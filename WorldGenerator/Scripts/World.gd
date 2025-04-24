@@ -17,7 +17,8 @@ var tile_set
 	"noise_offset": Vector2(0, 0),
 	"chunk_cache_time": 120.0,
 	"chunk_load_interval": 0.05,
-	"density_noise_frequency": 0.05
+	"density_noise_frequency": 0.05,
+	"active_distance": 2
 }
 
 var noise_manager = NoiseManager.new()
@@ -62,7 +63,7 @@ func _ready():
 	else:
 		stop_world()
 	
-	print("WorldGenerator: Initialized, visible: ", visible)
+	#print("WorldGenerator: Initialized, visible: ", visible)
 
 func initialize_timers():
 	if not update_timer:
@@ -77,16 +78,16 @@ func initialize_timers():
 		load_timer.connect("timeout", Callable(chunk_manager, "load_next_chunk"))
 		add_child(load_timer)
 	
-	print("WorldGenerator: Timers initialized")
+	#print("WorldGenerator: Timers initialized")
 
 func start_world_deferred():
 	await get_tree().process_frame # Ждём кадр для завершения _ready
 	start_world()
-	print("WorldGenerator: Start world deferred")
+	#print("WorldGenerator: Start world deferred")
 
 func start_world():
 	if not is_initialized:
-		print("WorldGenerator: Not initialized yet, delaying start_world")
+		#print("WorldGenerator: Not initialized yet, delaying start_world")
 		return
 	
 	if not update_timer or not load_timer:
@@ -107,7 +108,7 @@ func start_world():
 			WorldCamera.set_target(PlayerManager.get_player())
 			WorldCamera.make_current()
 	
-	print("WorldGenerator: Started, timers active")
+	#print("WorldGenerator: Started, timers active")
 
 func stop_world():
 	if update_timer and not update_timer.is_stopped():
@@ -116,7 +117,7 @@ func stop_world():
 		load_timer.stop()
 	
 	chunk_manager.pause_loading()
-	print("WorldGenerator: Stopped, timers paused")
+	#print("WorldGenerator: Stopped, timers paused")
 
 func _notification(what):
 	if what == NOTIFICATION_VISIBILITY_CHANGED:
@@ -124,11 +125,11 @@ func _notification(what):
 			start_world_deferred()
 		else:
 			stop_world()
-		print("WorldGenerator: Visibility changed to ", visible)
+		#print("WorldGenerator: Visibility changed to ", visible)
 
 func start_initial_chunks():
 	if not is_initialized:
-		print("WorldGenerator: Skipping chunk generation, not initialized")
+		#print("WorldGenerator: Skipping chunk generation, not initialized")
 		return
 	
 	var render_distance = generation_settings["initial_load_distance"]
@@ -145,7 +146,7 @@ func start_initial_chunks():
 		for y in range(-render_distance, render_distance + 1):
 			chunk_manager.loaded_chunks[Vector2i(x, y)] = true
 	
-	print("WorldGenerator: Initial chunks loaded")
+	#print("WorldGenerator: Initial chunks loaded")
 
 func check_player_position():
 	if not visible:
@@ -161,6 +162,7 @@ func check_player_position():
 	if player_chunk != last_player_chunk:
 		last_player_chunk = player_chunk
 		chunk_manager.update_chunks(player_chunk)
+		chunk_manager.pregenerate_chunks(player_chunk, generation_settings["render_distance"] + 2)
 	
 	if ground_layer is LevelTileMap:
 		ground_layer.update_bounds()
@@ -185,14 +187,13 @@ func spawn_return_portal():
 		return
 	
 	portal.target_scene = hub_scene
-	portal.spawn_position = Vector2(50, 50)
+	portal.spawn_position = Vector2(0, -30)
 	portal.is_hub_to_world = false
 	portal.portal_id = "world_to_hub_1"
-	portal.global_position = Vector2(200, 200)
-	
+	portal.global_position = Vector2(0, 0)
 	if not is_instance_valid(objects_node):
 		push_error("WorldGenerator: ObjectsNode is invalid or freed!")
 		return
 	
 	objects_node.call_deferred("add_child", portal)
-	print("WorldGenerator: Spawned return portal at ", portal.global_position, " with target scene: ", hub_scene.resource_path)
+	#print("WorldGenerator: Spawned return portal at ", portal.global_position, " with target scene: ", hub_scene.resource_path)

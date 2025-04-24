@@ -18,6 +18,7 @@ region = Rect2(240, 80, 16, 16)
 script = ExtResource("3_e25fy")
 type = 1
 modifiers = Array[ExtResource("2_fey1j")]([SubResource("Resource_75pnw")])
+item_id = ""
 name = "Палка"
 description = "В детстве всегда мечтал найти такую!"
 texture = SubResource("AtlasTexture_14r4c")

@@ -4,7 +4,7 @@ extends Node
 ## Сцена игрока для инстанцирования
 const PLAYER_SCENE = preload("res://Player/Scenes/player.tscn")
 ## Данные инвентаря игрока
-@export var INVENTORY_DATA: InventoryData = preload("res://GUI/Inventory/player_inventory.tres")
+var INVENTORY_DATA: InventoryData = preload("res://GUI/Inventory/player_inventory.tres")
 ## Статистика игрока
 @export var PLAYER_STATS: Stats = Stats.new()
 
@@ -41,7 +41,7 @@ func _ready() -> void:
 	
 	# Сигнализируем о готовности
 	manager_ready.emit()
-	print("GlobalPlayerManager ready")
+	#print("GlobalPlayerManager ready")
 
 # --- Управление игроком ---
 ## Устанавливает экземпляр игрока и отправляет сигнал
@@ -58,7 +58,7 @@ func get_player() -> Player:
 ## Создает и добавляет экземпляр игрока в указанный узел или корень сцены
 func spawn_player(parent_node: Node = null) -> void:
 	if player_spawned:
-		print("Player is already spawned!")
+		#print("Player is already spawned!")
 		return
 	
 	player = PLAYER_SCENE.instantiate()

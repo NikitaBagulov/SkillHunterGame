@@ -535,18 +535,18 @@ size = Vector2i(2, 2)
 y_sort_enabled = true
 script = ExtResource("1_2fcgd")
 generation_settings = {
-"active_distance": 4,
+"active_distance": 1,
 "chunk_cache_time": 120.0,
 "chunk_load_interval": 0.05,
-"chunk_size": Vector2i(3, 3),
+"chunk_size": Vector2i(12, 12),
 "density_noise_frequency": 0.05,
-"initial_load_distance": 4,
+"initial_load_distance": 1,
 "noise_frequency": 0.005,
 "noise_octaves": 3,
 "noise_offset": Vector2(0, 0),
 "noise_seed": 0,
 "noise_type": 3,
-"render_distance": 8,
+"render_distance": 2,
 "tile_scale": 1.0
 }
 

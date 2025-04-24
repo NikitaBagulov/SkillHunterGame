@@ -9,10 +9,10 @@ func apply_effect(entity: Node) -> void:
 	if entity is Player:
 		entity.stats.max_hp += int(value)
 		entity.stats.hp += int(value)
-	print("Applied HealthBoost effect to %s with value %s" % [entity.name, value])
+	#print("Applied HealthBoost effect to %s with value %s" % [entity.name, value])
 
 func remove_effect(entity: Node) -> void:
 	if entity is Player:
 		entity.stats.max_hp -= int(value)
 		entity.stats.hp = min(entity.stats.hp, entity.stats.max_hp)
-	print("Removed HealthBoost effect from %s" % entity.name)
+	#print("Removed HealthBoost effect from %s" % entity.name)

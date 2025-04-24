@@ -25,7 +25,7 @@ func execute(player: Player) -> bool:
 		for i in range(projectile_count):
 			spawn_projectile()
 		return true
-	print("Skill '%s' is not ACTIVE, cannot execute" % name)
+	#print("Skill '%s' is not ACTIVE, cannot execute" % name)
 	return false
 	
 func spawn_projectile():

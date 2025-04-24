@@ -1,4 +1,3 @@
-@tool
 @icon("res://IconGodotNode/node/icon_interrogation.png")
 class_name GlobalQuestManager extends Node
 
@@ -14,8 +13,10 @@ signal quest_completed(quest: QuestResource)
 @onready var quest_ui_scene: PackedScene = preload("res://GUI/Quest/QuestUI.tscn")
 var quest_ui: QuestUI
 
-# Хранилище активных квестов
 var active_quests: Dictionary = {}  # {quest_id: QuestResource}
+var completed_quests: Dictionary = {}  # {quest_id: QuestResource}
+
+var inventory: InventoryData
 
 func _ready() -> void:
 	# Установка синглтона
@@ -30,7 +31,9 @@ func _ready() -> void:
 	# Подключение к Repository
 	if Repository.instance:
 		_load_from_repository()
-
+		
+	inventory = preload("res://GUI/Inventory/player_inventory.tres")
+	
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("quest_menu"):  # Клавиша J
 		_toggle_quest_ui()
@@ -74,7 +77,14 @@ func complete_quest(quest_id: String) -> void:
 	var quest: QuestResource = active_quests[quest_id]
 	quest.status = QuestResource.QuestStatus.COMPLETED
 	active_quests.erase(quest_id)
-	Repository.instance.remove_data("quests", quest_id)
+	completed_quests[quest_id] = quest  # Сохраняем в завершенные квесты
+	Repository.instance.remove_data("quests", quest_id)  # Удаляем из активных в Repository
+	
+	# Добавляем награды в инвентарь
+	for reward in quest.rewards:
+		if reward is ItemData:
+			inventory.add_item(reward, 1)  # Добавляем каждый предмет с количеством 1
+	
 	quest_completed.emit(quest)
 	
 	if quest_ui and quest_ui.visible:
@@ -92,9 +102,12 @@ func start_quest_from_dialog(quest_id: String, dialog_items: Array[DialogItem]) 
 
 # Проверка условий для начала квеста в диалоге
 func can_start_quest(quest_id: String) -> bool:
-	if active_quests.has(quest_id):
+	var quest_resource: QuestResource = load("res://QuestSystem/Resources/%s.tres" % quest_id)
+	if active_quests.has(quest_id) or completed_quests.has(quest_id):
 		return false
-	# Здесь можно добавить дополнительные проверки условий
+	if quest_resource and quest_resource.required_quest_id != "":
+		if not completed_quests.has(quest_resource.required_quest_id):
+			return false
 	return true
 
 # Загрузка квестов из Repository
@@ -119,6 +132,16 @@ func _toggle_quest_ui() -> void:
 func get_active_quests() -> Array[QuestResource]:
 	var result: Array[QuestResource] = []
 	for quest in active_quests.values():
+		if quest is QuestResource:
+			result.append(quest)
+	return result
+
+func get_all_quests() -> Array[QuestResource]:
+	var result: Array[QuestResource] = []
+	for quest in active_quests.values():
+		if quest is QuestResource:
+			result.append(quest)
+	for quest in completed_quests.values():
 		if quest is QuestResource:
 			result.append(quest)
 	return result

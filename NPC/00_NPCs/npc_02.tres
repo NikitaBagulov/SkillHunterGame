@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("2_bdmun")
 npc_id = "npc_2"
-npc_name = "Bobiki"
+npc_name = "Лим"
 sprite = ExtResource("3_hgnq3")
 portrait = ExtResource("1_hgnq3")
 dialog_audio_pitch = 0.5

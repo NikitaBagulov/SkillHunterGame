@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SkillItemData" load_steps=6 format=3 uid="uid://spequ8lgxmdr"]
+[gd_resource type="Resource" load_steps=6 format=3 uid="uid://spequ8lgxmdr"]
 
 [ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_385st"]
 [ext_resource type="Script" uid="uid://hnhu85aguabn" path="res://Items/Scripts/skill_item_data.gd" id="2_3qyok"]

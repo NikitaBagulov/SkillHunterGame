@@ -10,4 +10,4 @@ var stats: Stats = PlayerManager.PLAYER_STATS
 func gain_experience(amount: int) -> void:
 	if stats:
 		stats.add_experience(amount)
-		print("Experience gained: ", amount)
+		#print("Experience gained: ", amount)

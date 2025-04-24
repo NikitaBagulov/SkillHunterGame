@@ -66,7 +66,7 @@ var max_hp: int = base_max_hp :
 		return position
 	set(value):
 		position = value
-		print("Stats.position set: ", position)
+		#print("Stats.position set: ", position)
 		position_updated.emit(position)
 
 
@@ -83,7 +83,7 @@ var move_speed: float = base_move_speed :
 		return move_speed
 	set(value):
 		move_speed = max(value, 0.0)
-		print("Stats.move_speed set: ", move_speed)
+		#print("Stats.move_speed set: ", move_speed)
 
 # --- Новое поле для регенерации ---
 @export var hp_regeneration_value: int = 1 :
@@ -91,7 +91,7 @@ var move_speed: float = base_move_speed :
 		return hp_regeneration_value
 	set(value):
 		hp_regeneration_value = max(value, 0)
-		print("Stats.hp_regeneration_value set: ", hp_regeneration_value)
+		#print("Stats.hp_regeneration_value set: ", hp_regeneration_value)
 
 # --- Переменные ---
 var hp: int = 1 :
@@ -130,7 +130,7 @@ func init() -> void:
 	if _is_initialized:
 		return
 	_is_initialized = true
-	print("Stats initialized")
+	#print("Stats initialized")
 
 # --- Управление уроном ---
 func update_damage(weapon_bonus: int) -> void:
@@ -146,18 +146,18 @@ func update_health(health_bonus: int) -> void:
 		hp = int(max_hp * hp_ratio)
 	else:
 		hp = clampi(hp, 0, max_hp)
-	print(health_bonus, " ", hp, " ", max_hp)
+	#print(health_bonus, " ", hp, " ", max_hp)
 	health_updated.emit(hp, max_hp)
 
 # --- Управление скоростью ---
 func update_move_speed() -> void:
 	move_speed = base_move_speed + speed_bonus
-	print("Stats.update_move_speed: base=", base_move_speed, " bonus=", speed_bonus, " total=", move_speed)
+	#print("Stats.update_move_speed: base=", base_move_speed, " bonus=", speed_bonus, " total=", move_speed)
 
 # --- Управление регенерацией ---
 func update_regeneration(regeneration_bonus: int) -> void:
 	hp_regeneration_value = max(1, regeneration_bonus)  # Минимальное значение 1
-	print("Stats.hp_regeneration_value updated: ", hp_regeneration_value)
+	#print("Stats.hp_regeneration_value updated: ", hp_regeneration_value)
 
 func take_damage(amount: int) -> void:
 	hp -= amount

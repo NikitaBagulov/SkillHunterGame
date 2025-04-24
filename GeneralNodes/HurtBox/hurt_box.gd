@@ -31,10 +31,10 @@ func _on_area_entered(area: Area2D) -> void:
 ## Проверяет, принадлежит ли HurtBox игроку
 func _is_player_hurtbox() -> bool:
 	var is_player = get_parent() == PlayerManager.get_player() or is_player_hurtbox
-	#print("Checking if HurtBox is player's: ", is_player, " (parent: ", get_parent(), ")")
+	##print("Checking if HurtBox is player's: ", is_player, " (parent: ", get_parent(), ")")
 	return is_player
 
 ## Обновляет урон, если это HurtBox игрока
 #func _on_damage_updated(new_damage: int) -> void:
 	#if _is_player_hurtbox():
-		#print("Player HurtBox damage updated to: %d" % new_damage)
+		##print("Player HurtBox damage updated to: %d" % new_damage)

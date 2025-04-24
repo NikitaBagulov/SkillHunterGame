@@ -66,7 +66,7 @@ func find_target() -> void:
 
 # Обработка столкновения HurtBox с HitBox
 func _on_hurt_box_area_entered(area: Area2D) -> void:
-	print("Swarm area: ", area)
+	#print("Swarm area: ", area)
 	if area.get_parent() is Enemy or area.get_parent() is Boss:
 		var body = area.get_parent()
 		match element:
@@ -79,7 +79,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 			SkillResource.Element.EARTH:
 				if is_instance_valid(projectile_owner):
 					EffectManager.apply_effect(projectile_owner, ShieldEffect.new(damage * 2, 5.0))
-		print("Projectile hit %s, dealt %s damage" % [body.name, damage])
+		#print("Projectile hit %s, dealt %s damage" % [body.name, damage])
 		animation_player.play("explosion")
 		await animation_player.animation_finished
 		queue_free()  # Удаляем снаряд после анимации

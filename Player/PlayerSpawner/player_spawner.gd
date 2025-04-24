@@ -2,7 +2,7 @@
 @tool # Делает скрипт работающим в редакторе
 extends Node2D
 
-var spawn_position: Vector2 = self.position
+var spawn_position: Vector2 = $".".global_position
 
 @onready var global_player_manager = PlayerManager
 @onready var sprite = $SpawnIndicator
@@ -16,8 +16,6 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		if sprite:
 			sprite.hide()
-		else:
-			print("PlayerSpawner: No sprite to hide in game mode")
 	
 	# Проверяем наличие GlobalPlayerManager
 	if not global_player_manager:
@@ -25,13 +23,13 @@ func _ready() -> void:
 		return
 	
 	# Ждем готовности GlobalPlayerManager
-	print("PlayerSpawner: Waiting for GlobalPlayerManager ready signal...")
+	#print("PlayerSpawner: Waiting for GlobalPlayerManager ready signal...")
 	#if PlayerManager.player == null:
 	spawn_player()
 	global_player_manager.manager_ready.connect(_on_manager_ready)
 
 func _on_manager_ready() -> void:
-	print("PlayerSpawner: GlobalPlayerManager ready, initiating spawn...")
+	#print("PlayerSpawner: GlobalPlayerManager ready, initiating spawn...")
 	spawn_player()
 
 func spawn_player() -> void:
@@ -42,28 +40,28 @@ func spawn_player() -> void:
 		return
 	
 	# Используем GlobalPlayerManager для спавна игрока
-	print("PlayerSpawner: Spawning player with parent node: ", parent_node.name)
+	#print("PlayerSpawner: Spawning player with parent node: ", parent_node.name)
 	PlayerManager.spawn_player(parent_node)
 	
 	# Проверяем успешность спавна
 	var player = PlayerManager.get_player()
 	if player:
-		print("PlayerSpawner: Player spawned successfully at ", player.position)
-		PlayerManager.set_player_position(spawn_position)
+		#print("PlayerSpawner: Player spawned successfully at ", player.position)
+		PlayerManager.set_player_position($".".global_position)
 	else:
 		push_warning("PlayerSpawner: Failed to get player instance after spawn!")
 		return
 	
 	# Настройка камеры
 	if WorldCamera:
-		print("PlayerSpawner: Setting WorldCamera position to ", spawn_position)
+		#print("PlayerSpawner: Setting WorldCamera position to ", spawn_position)
 		WorldCamera.global_position = spawn_position
 		WorldCamera.make_current()
 		WorldCamera.force_update_scroll()
 		
 		if player:
 			WorldCamera.set_target(player)
-			print("PlayerSpawner: WorldCamera target set to player")
+			#print("PlayerSpawner: WorldCamera target set to player")
 		else:
 			push_warning("PlayerSpawner: Cannot set camera target, player is null")
 	else:

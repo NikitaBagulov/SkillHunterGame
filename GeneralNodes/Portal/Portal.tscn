@@ -38,3 +38,14 @@ collision_layer = 16
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2"]
 shape = SubResource("CircleShape2D_p36jf")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(0, -10)
+amount = 200
+emission_shape = 2
+emission_sphere_radius = 10.0
+gravity = Vector2(0, 0)
+orbit_velocity_min = 0.01
+orbit_velocity_max = 1.0
+radial_accel_min = -100.0
+radial_accel_max = -100.0

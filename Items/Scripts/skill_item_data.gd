@@ -8,4 +8,5 @@ enum SkillItemType { SKILL, ELEMENT }
 
 func _init():
 	if skill_item_type == SkillItemType.ELEMENT and element == SkillResource.Element.NONE:
-		print("Warning: SkillItemData created as ELEMENT with no element specified!")
+		pass
+		#print("Warning: SkillItemData created as ELEMENT with no element specified!")

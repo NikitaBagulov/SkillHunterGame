@@ -101,7 +101,7 @@ func _get_animation_direction() -> String:
 func change_health(amount: int) -> void:
 	HP = clamp(HP + amount, 0, max_hp)
 	if HP <= 0:
-		print("Boss destroyed, experience: ", experience_drop)
+		#print("Boss destroyed, experience: ", experience_drop)
 		enemy_destroyed.emit(null)
 		queue_free()
 
@@ -115,5 +115,5 @@ func _take_damage(hurt_box: HurtBox) -> void:
 	if HP > 0:
 		enemy_damaged.emit(hurt_box)
 	else:
-		print("Enemy destroyed, experience: ", experience_drop)
+		#print("Enemy destroyed, experience: ", experience_drop)
 		enemy_destroyed.emit(hurt_box)

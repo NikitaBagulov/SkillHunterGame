@@ -19,13 +19,11 @@ enum KeyBinding { NONE, Q, E, R, T }
 @export var duration: float = 0.0
 
 func _init():
-	print("Skill '%s' initialized (Type: %s, Element: %s)" % [
-		name, SkillType.keys()[type], Element.keys()[element]
-	])
+	pass
 
 func execute(player: Player) -> bool:
 	if type != SkillType.ACTIVE:
-		print("Skill '%s' is not ACTIVE, cannot execute" % name)
+		#print("Skill '%s' is not ACTIVE, cannot execute" % name)
 		return false
 	
 	# Применяем эффект стихии
@@ -34,7 +32,7 @@ func execute(player: Player) -> bool:
 
 func apply_passive(player: Player) -> void:
 	if type != SkillType.PASSIVE:
-		print("Skill '%s' is not PASSIVE, cannot apply passive" % name)
+		#print("Skill '%s' is not PASSIVE, cannot apply passive" % name)
 		return
 	
 	# Применяем пассивный эффект стихии
@@ -50,7 +48,7 @@ func apply_passive(player: Player) -> void:
 
 func remove_passive(player: Player) -> void:
 	if type != SkillType.PASSIVE:
-		print("Skill '%s' is not PASSIVE, cannot remove passive" % name)
+		#print("Skill '%s' is not PASSIVE, cannot remove passive" % name)
 		return
 	
 	# Удаляем пассивный эффект

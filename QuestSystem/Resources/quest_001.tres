@@ -1,36 +1,13 @@
-[gd_resource type="Resource" script_class="QuestResource" load_steps=6 format=3 uid="uid://dw48uh5ayyy3w"]
+[gd_resource type="Resource" script_class="QuestResource" load_steps=5 format=3 uid="uid://dw48uh5ayyy3w"]
 
 [ext_resource type="Script" uid="uid://ds2nu8uhhs22y" path="res://QuestSystem/quest_objective.gd" id="1_m48a6"]
 [ext_resource type="Script" uid="uid://cpulxy51npe3d" path="res://QuestSystem/quest_resource.gd" id="2_7lsyy"]
-
-[sub_resource type="Resource" id="Resource_m48a6"]
-script = ExtResource("1_m48a6")
-objective_id = "obj1"
-description = "Собрать травы"
-target_value = 2
-current_value = 0
-completed = false
-item_id = "stone"
-enemy_id = ""
-npc_id = ""
-metadata/_custom_type_script = "uid://ds2nu8uhhs22y"
-
-[sub_resource type="Resource" id="Resource_7lsyy"]
-script = ExtResource("1_m48a6")
-objective_id = "obj2"
-description = "убить лоха"
-target_value = 1
-current_value = 0
-completed = false
-item_id = ""
-enemy_id = "slime"
-npc_id = ""
-metadata/_custom_type_script = "uid://ds2nu8uhhs22y"
+[ext_resource type="Resource" uid="uid://dytjm4nss7obv" path="res://Items/EquipableItems/Weapon/wood_sword.tres" id="2_55v28"]
 
 [sub_resource type="Resource" id="Resource_55v28"]
 script = ExtResource("1_m48a6")
 objective_id = "obj3"
-description = "поговорить с бобиком"
+description = "Поговорить с Лимом"
 target_value = 1
 current_value = 0
 completed = false
@@ -42,9 +19,10 @@ metadata/_custom_type_script = "uid://ds2nu8uhhs22y"
 [resource]
 script = ExtResource("2_7lsyy")
 quest_id = "quest_001"
-title = "Тест"
-description = "ТЕст"
-objectives = Array[ExtResource("1_m48a6")]([SubResource("Resource_m48a6"), SubResource("Resource_7lsyy"), SubResource("Resource_55v28")])
+title = "Разговор с Лимом"
+description = "Нужно отыскать Лима и поговорить с ним. Может научусь чему новому."
+objectives = Array[ExtResource("1_m48a6")]([SubResource("Resource_55v28")])
 status = 0
-rewards = Array[Resource]([])
+rewards = Array[Resource]([ExtResource("2_55v28")])
+required_quest_id = ""
 metadata/_custom_type_script = "uid://cpulxy51npe3d"
