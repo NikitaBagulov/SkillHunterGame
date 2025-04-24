@@ -60,6 +60,7 @@ func _on_body_entered(body: Node):
 			get_tree().root.get_node("MainRoot").get_node("StartLocation").get_node("ObjectLayer").collision_enabled = true
 		
 		# Устанавливаем позицию игрока после перехода
-		PlayerManager.set_player_position(spawn_position)
+		PlayerManager.set_player_position(spawn_position + Vector2(0, 50))
 		PlayerManager.player_spawned = false
+		print("position: ", self.global_position, PlayerManager.player.global_position)
 		#print("Portal: Setting player spawn position to ", spawn_position)

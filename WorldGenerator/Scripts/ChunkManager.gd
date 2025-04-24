@@ -4,6 +4,12 @@ const CACHE_CELLS = 0
 const CACHE_TIMESTAMP = 1
 const CACHE_OBJECTS = 2
 
+const TileCategory = {
+	EMPTY = -1,
+	NON_TERRAIN = -2,
+	ERROR = -3
+}
+
 var loaded_chunks = {}
 var cached_chunks = {}
 var chunk_queue = []
@@ -14,7 +20,6 @@ var ground_layer: TileMapLayer
 var settings = {}
 var biomes = []
 var is_paused: bool = false
-var active_chunks = {}
 var visible_chunks = {}
 
 # Словарь для хранения статистики времени выполнения
@@ -24,7 +29,9 @@ var profiling_data = {
 	"update_chunks": {"total": 0.0, "count": 0},
 	"update_chunk_borders": {"total": 0.0, "count": 0},
 	"load_next_chunk": {"total": 0.0, "count": 0},
-	"cache_chunk": {"total": 0.0, "count": 0.0}
+	"cache_chunk": {"total": 0.0, "count": 0.0},
+	"clear_chunk": {"total": 0.0, "count": 0},
+	"set_cells": {"total": 0.0, "count": 0}
 }
 
 func _ready():
@@ -42,7 +49,6 @@ func initialize(wg: WorldGenerator, gl: TileMapLayer, gen_settings: Dictionary, 
 	settings = gen_settings
 	biomes = biome_settings.biomes
 	is_paused = not wg.visible
-	#print("ChunkManager: Initialized, paused: ", is_paused)
 
 func pause_loading():
 	is_paused = true
@@ -58,25 +64,20 @@ func update_chunks(player_chunk: Vector2i):
 	if is_paused:
 		return
 	
-	var new_active_chunks = {}
 	var new_visible_chunks = {}
-	var active_distance = settings["active_distance"]
 	var render_distance = settings["render_distance"]
 	
 	for x in range(player_chunk.x - render_distance, player_chunk.x + render_distance + 1):
 		for y in range(player_chunk.y - render_distance, player_chunk.y + render_distance + 1):
 			var chunk_pos = Vector2i(x, y)
 			var distance = abs(chunk_pos.x - player_chunk.x) + abs(chunk_pos.y - player_chunk.y)
-			if distance <= active_distance:
-				new_active_chunks[chunk_pos] = true
 			if distance <= render_distance:
 				new_visible_chunks[chunk_pos] = true
-			
-			if not (active_chunks.has(chunk_pos) or visible_chunks.has(chunk_pos)) and not chunk_queue.has(chunk_pos):
-				if cached_chunks.has(chunk_pos):
-					restore_chunk(chunk_pos)
-				else:
-					chunk_queue.append(chunk_pos)
+				if not visible_chunks.has(chunk_pos) and not chunk_queue.has(chunk_pos):
+					if cached_chunks.has(chunk_pos):
+						restore_chunk(chunk_pos)
+					else:
+						chunk_queue.append(chunk_pos)
 	
 	if chunk_queue.size() > 100:
 		chunk_queue.resize(50)
@@ -94,13 +95,12 @@ func update_chunks(player_chunk: Vector2i):
 		clear_chunk(chunk_pos)
 		cached_chunks.erase(chunk_pos)
 	
-	active_chunks = new_active_chunks
 	visible_chunks = new_visible_chunks
 	
-	var duration = (Time.get_ticks_usec() - start_time) / 1000.0 # В миллисекундах
+	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["update_chunks"]["total"] += duration
 	profiling_data["update_chunks"]["count"] += 1
-	#print("ChunkManager: Updated chunks, active: ", active_chunks.size(), " visible: ", visible_chunks.size(), " queued: ", chunk_queue.size())
+	#print("ChunkManager: Updated chunks, visible: ", visible_chunks.size(), " queued: ", chunk_queue.size())
 
 func load_next_chunk():
 	var start_time = Time.get_ticks_usec()
@@ -142,7 +142,12 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 				selected_terrain = biome[0]
 				break
 		if selected_terrain != -1:
-			cells_by_terrain[selected_terrain].append(pos)
+			var terrain = BetterTerrain.get_terrain(ground_layer.tile_set, selected_terrain)
+			if terrain.valid:
+				cells_by_terrain[selected_terrain].append(pos)
+		else:
+			# Резервный террейн (Grass)
+			cells_by_terrain[0].append(pos)
 	var biomes_duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["generate_chunk"]["stages"]["biomes"]["total"] += biomes_duration
 	profiling_data["generate_chunk"]["stages"]["biomes"]["count"] += 1
@@ -156,9 +161,9 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 	profiling_data["generate_chunk"]["stages"]["apply"]["count"] += 1
 	await get_tree().process_frame
 	
-	# Шаг 4: Генерация объектов (только для активных чанков)
+	# Шаг 4: Генерация объектов (для видимых чанков)
 	start_time = Time.get_ticks_usec()
-	if active_chunks.has(chunk_pos):
+	if visible_chunks.has(chunk_pos):
 		world_generator.object_spawner.generate_objects(chunk_pos)
 	var objects_duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["generate_chunk"]["stages"]["objects"]["total"] += objects_duration
@@ -169,22 +174,94 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 	profiling_data["generate_chunk"]["count"] += 1
 	#print("ChunkManager: Generated chunk at ", chunk_pos)
 
+func set_cells(tm: TileMapLayer, coords: Array, type: int) -> bool:
+	var start_time = Time.get_ticks_usec()
+	if !tm or !tm.tile_set or type < TileCategory.EMPTY:
+		return false
+	
+	var result = BetterTerrain.set_cells(tm, coords, type)
+	if result and type != TileCategory.EMPTY:
+		BetterTerrain.update_terrain_cells(tm, coords, true)
+	
+	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
+	profiling_data["set_cells"]["total"] += duration
+	profiling_data["set_cells"]["count"] += 1
+	return result
+
 func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 	var start_time = Time.get_ticks_usec()
 	if is_paused:
 		return
 	
-	# Устанавливаем тайлы без автотайлинга
+	var chunk_cells = []
 	for terrain_index in cells_by_terrain.keys():
 		if cells_by_terrain[terrain_index].size() > 0:
-			ground_layer.set_cells_terrain_connect(cells_by_terrain[terrain_index], 0, terrain_index, false)
-	loaded_chunks[chunk_pos] = true  # Отмечаем чанк как загруженный
-	# Обновляем границы с автотайлингом
+			chunk_cells.append_array(cells_by_terrain[terrain_index])
+			set_cells(ground_layer, cells_by_terrain[terrain_index], terrain_index)
+	
+	# Batch update terrain cells once
+	BetterTerrain.update_terrain_cells(ground_layer, chunk_cells, true)
+	
+	loaded_chunks[chunk_pos] = true
 	update_chunk_borders(chunk_pos)
 	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["apply_chunk"]["total"] += duration
 	profiling_data["apply_chunk"]["count"] += 1
+
+func update_chunk_borders(chunk_pos: Vector2i):
+	var start_time = Time.get_ticks_usec()
+	if is_paused:
+		return
+	
+	var chunk_size = settings["chunk_size"]
+	var border_cells = {}
+	for biome in biomes:
+		border_cells[biome[0]] = []
+	
+	var border_positions = get_border_positions(chunk_pos, chunk_size)
+	border_positions.append_array(get_neighbor_border_positions(chunk_pos, chunk_size))
+	
+	for pos in border_positions:
+		update_border_cell(pos, border_cells)
+	
+	var chunk_cells = []
+	for terrain_index in border_cells.keys():
+		if border_cells[terrain_index].size() > 0:
+			chunk_cells.append_array(border_cells[terrain_index])
+			set_cells(ground_layer, border_cells[terrain_index], terrain_index)
+	
+	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
+	profiling_data["update_chunk_borders"]["total"] += duration
+	profiling_data["update_chunk_borders"]["count"] += 1
+
+func clear_chunk(chunk_pos: Vector2i):
+	var start_time = Time.get_ticks_usec()
+	if is_paused:
+		return
+	
+	var chunk_size = settings["chunk_size"]
+	var start_pos = chunk_pos * chunk_size
+	var cells_to_clear = []
+	for x in range(chunk_size.x):
+		for y in range(chunk_size.y):
+			cells_to_clear.append(start_pos + Vector2i(x, y))
+	
+	set_cells(ground_layer, cells_to_clear, TileCategory.EMPTY)
+	
+	if chunk_objects.has(chunk_pos):
+		for obj in chunk_objects[chunk_pos]:
+			if is_instance_valid(obj):
+				var scene_path = obj.scene_file_path
+				if not object_pool.has(scene_path):
+					object_pool[scene_path] = []
+				object_pool[scene_path].append(obj)
+				obj.get_parent().remove_child(obj)
+		chunk_objects.erase(chunk_pos)
+	
+	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
+	profiling_data["clear_chunk"]["total"] += duration
+	profiling_data["clear_chunk"]["count"] += 1
 
 func cache_chunk(chunk_pos: Vector2i):
 	var start_time = Time.get_ticks_usec()
@@ -224,7 +301,6 @@ func cache_chunk(chunk_pos: Vector2i):
 
 	cached_chunks[chunk_pos] = [cells_by_terrain, Time.get_ticks_msec() / 1000.0, object_data]
 	clear_chunk(chunk_pos)
-	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["cache_chunk"]["total"] += duration
 	profiling_data["cache_chunk"]["count"] += 1
@@ -259,57 +335,6 @@ func restore_chunk(chunk_pos: Vector2i):
 	profiling_data["restore_chunk"] = profiling_data.get("restore_chunk", {"total": 0.0, "count": 0})
 	profiling_data["restore_chunk"]["total"] += duration
 	profiling_data["restore_chunk"]["count"] += 1
-
-func clear_chunk(chunk_pos: Vector2i):
-	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
-	
-	var chunk_size = settings["chunk_size"]
-	var start_pos = chunk_pos * chunk_size
-	for x in range(chunk_size.x):
-		for y in range(chunk_size.y):
-			ground_layer.erase_cell(start_pos + Vector2i(x, y))
-	
-	if chunk_objects.has(chunk_pos):
-		for obj in chunk_objects[chunk_pos]:
-			if is_instance_valid(obj):
-				var scene_path = obj.scene_file_path
-				if not object_pool.has(scene_path):
-					object_pool[scene_path] = []
-				object_pool[scene_path].append(obj)
-				obj.get_parent().remove_child(obj)
-		chunk_objects.erase(chunk_pos)
-	
-	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
-	profiling_data["clear_chunk"] = profiling_data.get("clear_chunk", {"total": 0.0, "count": 0})
-	profiling_data["clear_chunk"]["total"] += duration
-	profiling_data["clear_chunk"]["count"] += 1
-	#print("ChunkManager: Cleared chunk at ", chunk_pos)
-
-func update_chunk_borders(chunk_pos: Vector2i):
-	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
-	
-	var chunk_size = settings["chunk_size"]
-	var border_cells = {}
-	for biome in biomes:
-		border_cells[biome[0]] = []
-	
-	var border_positions = get_border_positions(chunk_pos, chunk_size)
-	border_positions.append_array(get_neighbor_border_positions(chunk_pos, chunk_size))
-	
-	for pos in border_positions:
-		update_border_cell(pos, border_cells)
-	
-	for terrain_index in border_cells.keys():
-		if border_cells[terrain_index].size() > 0:
-			ground_layer.set_cells_terrain_connect(border_cells[terrain_index], 0, terrain_index, false)
-	
-	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
-	profiling_data["update_chunk_borders"]["total"] += duration
-	profiling_data["update_chunk_borders"]["count"] += 1
 
 func get_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) -> Array:
 	var start_time = Time.get_ticks_usec()
@@ -412,7 +437,6 @@ func pregenerate_chunks(player_chunk: Vector2i, pregen_distance: int):
 			var distance = abs(chunk_pos.x - player_chunk.x) + abs(chunk_pos.y - player_chunk.y)
 			if distance > render_distance and not cached_chunks.has(chunk_pos) and not chunk_queue.has(chunk_pos):
 				chunk_queue.append(chunk_pos)
-				pass
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["pregenerate_chunks"] = profiling_data.get("pregenerate_chunks", {"total": 0.0, "count": 0})
 	profiling_data["pregenerate_chunks"]["total"] += duration

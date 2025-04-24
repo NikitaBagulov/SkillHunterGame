@@ -5,10 +5,10 @@ class_name WorldGenerator extends Node2D
 
 var tile_set
 
+
 @export var generation_settings = {
 	"chunk_size": Vector2i(8, 8),
 	"render_distance": 4,
-	"initial_load_distance": 1,
 	"tile_scale": 1.0,
 	"noise_type": FastNoiseLite.TYPE_PERLIN,
 	"noise_frequency": 0.005,
@@ -16,9 +16,8 @@ var tile_set
 	"noise_seed": 0,
 	"noise_offset": Vector2(0, 0),
 	"chunk_cache_time": 120.0,
-	"chunk_load_interval": 0.05,
 	"density_noise_frequency": 0.05,
-	"active_distance": 2
+	"chunk_load_interval": 0.05
 }
 
 var noise_manager = NoiseManager.new()
@@ -102,7 +101,7 @@ func start_world():
 	start_initial_chunks()
 	
 	if PlayerManager.get_player() and visible:
-		player_spawner.spawn_player()
+		#player_spawner.spawn_player()
 		spawn_return_portal()
 		if is_instance_valid(WorldCamera):
 			WorldCamera.set_target(PlayerManager.get_player())
@@ -128,23 +127,31 @@ func _notification(what):
 		#print("WorldGenerator: Visibility changed to ", visible)
 
 func start_initial_chunks():
-	if not is_initialized:
-		#print("WorldGenerator: Skipping chunk generation, not initialized")
+	if not is_initialized or chunk_manager.is_paused:
 		return
 	
-	var render_distance = generation_settings["initial_load_distance"]
-	var chunk_size = generation_settings["chunk_size"]
+	var render_distance = generation_settings["render_distance"]
 	
+	# Очищаем очередь, чтобы избежать дублирования
+	chunk_manager.chunk_queue.clear()
+	
+	# Добавляем чанки в радиусе render_distance в очередь
 	for x in range(-render_distance, render_distance + 1):
 		for y in range(-render_distance, render_distance + 1):
 			var chunk_pos = Vector2i(x, y)
-			if not chunk_manager.loaded_chunks.has(chunk_pos):
-				chunk_manager.generate_chunk(chunk_pos)
+			if not chunk_manager.loaded_chunks.has(chunk_pos) and not chunk_manager.chunk_queue.has(chunk_pos):
+				chunk_manager.chunk_queue.append(chunk_pos)
 	
-	chunk_manager.loaded_chunks.clear()
+	# Обновляем visible_chunks
 	for x in range(-render_distance, render_distance + 1):
 		for y in range(-render_distance, render_distance + 1):
-			chunk_manager.loaded_chunks[Vector2i(x, y)] = true
+			var chunk_pos = Vector2i(x, y)
+			chunk_manager.visible_chunks[chunk_pos] = true
+	
+	# Запускаем загрузку чанков
+	while not chunk_manager.chunk_queue.is_empty():
+		chunk_manager.load_next_chunk()
+		await get_tree().process_frame
 	
 	#print("WorldGenerator: Initial chunks loaded")
 
@@ -178,6 +185,10 @@ func update_objects_visibility():
 			obj.visible = WorldCamera.is_in_view(obj.global_position)
 
 func spawn_return_portal():
+	for child in objects_node.get_children():
+		if child is Portal and child.portal_id == "world_to_hub_1":
+			#print("WorldGenerator: Removing existing portal with ID 'world_to_hub_1' at ", child.global_position)
+			child.queue_free()
 	var portal_scene = preload("res://GeneralNodes/Portal/Portal.tscn")
 	var portal = portal_scene.instantiate()
 	
@@ -187,7 +198,7 @@ func spawn_return_portal():
 		return
 	
 	portal.target_scene = hub_scene
-	portal.spawn_position = Vector2(0, -30)
+	portal.spawn_position =  Vector2(250, 250)
 	portal.is_hub_to_world = false
 	portal.portal_id = "world_to_hub_1"
 	portal.global_position = Vector2(0, 0)

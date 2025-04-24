@@ -1907,7 +1907,7 @@ tile_map_data = PackedByteArray("AAAVAAoAAgABAAEAAAAWAAoAAgACAAEAAAAWAAsAAgACAAE
 tile_set = SubResource("TileSet_rdbtx")
 
 [node name="Portal" parent="." instance=ExtResource("4_ydv75")]
-position = Vector2(1110, 325)
+position = Vector2(342, 141)
 target_scene = ExtResource("5_ydv75")
 is_hub_to_world = true
 portal_id = "1"

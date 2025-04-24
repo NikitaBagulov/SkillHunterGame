@@ -32,17 +32,19 @@ func find_safe_spawn_position() -> Vector2:
 		var x = player_chunk.x * chunk_size.x + randi() % chunk_size.x
 		var y = player_chunk.y * chunk_size.y + randi() % chunk_size.y
 		var pos = Vector2i(x, y)
+		
 		var noise_value = world_generator.noise_manager.get_cached_noise(pos)
-		var terrain_index = -1
 		
-		for biome in world_generator.biome_settings.biomes:
-			if noise_value >= biome[2] and noise_value <= biome[3]:
-				terrain_index = biome[0]
-				break
-		
-		if terrain_index != 0:
-			var world_pos = world_generator.ground_layer.map_to_local(pos)
-			return world_pos
+		# Определим, является ли это безопасной зоной по шуму
+		if is_safe_noise_value(noise_value):
+			# Просто преобразуем тайловую позицию в мировую
+			return pos * world_generator.ground_layer.tile_set.tile_size
 	
-	#print("Предупреждение: Не найдено безопасное место для спавна после ", attempts, " попыток!")
-	return Vector2.ZERO
+	return Vector2.ZERO  # Если не нашлось безопасного места
+
+func is_safe_noise_value(noise_value: float) -> bool:
+	# Биомы с terrain_index = 0 считаются водой, они небезопасны
+	for biome in world_generator.biome_settings.biomes:
+		if noise_value >= biome[2] and noise_value <= biome[3]:
+			return biome[0] != 0  # Только не-вода
+	return false

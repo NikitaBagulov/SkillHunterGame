@@ -33,9 +33,9 @@ func process_chunk(chunk_pos: Vector2i, start_pos: Vector2i, chunk_size: Vector2
 	var dominant_biome = biome_info.dominant_biome
 	var possible_positions = biome_info.valid_positions
 	
-	spawn_objects(dominant_biome, possible_positions, chunk_pos, false)  # Обычные объекты
-	spawn_objects(dominant_biome, possible_positions, chunk_pos, true)   # Спавнеры врагов
-	spawn_structures(dominant_biome, chunk_pos)
+#s	spawn_objects(dominant_biome, possible_positions, chunk_pos, false)  # Обычные объекты
+	#spawn_objects(dominant_biome, possible_positions, chunk_pos, true)   # Спавнеры врагов
+	#spawn_structures(dominant_biome, chunk_pos)
 	await get_tree().process_frame  # Даём движку время на обработку
 
 # Универсальная функция спавна объектов

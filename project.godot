@@ -31,6 +31,7 @@ DialogSystem="*res://GUI/Dialog/dialog_system.tscn"
 Market="*res://GUI/Market/Market.tscn"
 EffectManager="*res://EffectSystem/effect_system.gd"
 GlobalQuestSystem="*res://QuestSystem/GlobalQuestSystem.tscn"
+BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [display]
 
@@ -43,6 +44,10 @@ window/stretch/mode="viewport"
 [dotnet]
 
 project/assembly_name="SkillHunter"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
 
 [global_group]
 
