@@ -3,6 +3,9 @@ class_name WorldGenerator extends Node2D
 @onready var ground_layer = $GroundedLayer
 @onready var biome_settings: BiomeSettings = $BiomeSettings
 
+@onready var loading_screen: LoadingScreen = $LoadingScreen
+
+
 var tile_set
 
 
@@ -80,13 +83,12 @@ func initialize_timers():
 	#print("WorldGenerator: Timers initialized")
 
 func start_world_deferred():
-	await get_tree().process_frame # Ждём кадр для завершения _ready
 	start_world()
 	#print("WorldGenerator: Start world deferred")
 
 func start_world():
 	if not is_initialized:
-		#print("WorldGenerator: Not initialized yet, delaying start_world")
+		print("WorldGenerator: Not initialized yet, delaying start_world")
 		return
 	
 	if not update_timer or not load_timer:
@@ -98,16 +100,16 @@ func start_world():
 		load_timer.start()
 	
 	chunk_manager.resume_loading()
+	
+	# Показываем экран загрузки перед генерацией
+	loading_screen.show_loading()
 	start_initial_chunks()
 	
 	if PlayerManager.get_player() and visible:
-		#player_spawner.spawn_player()
 		spawn_return_portal()
 		if is_instance_valid(WorldCamera):
 			WorldCamera.set_target(PlayerManager.get_player())
 			WorldCamera.make_current()
-	
-	#print("WorldGenerator: Started, timers active")
 
 func stop_world():
 	if update_timer and not update_timer.is_stopped():
@@ -148,12 +150,20 @@ func start_initial_chunks():
 			var chunk_pos = Vector2i(x, y)
 			chunk_manager.visible_chunks[chunk_pos] = true
 	
-	# Запускаем загрузку чанков
+	# Вычисляем общее количество чанков и инициализируем счетчик
+	var total_chunks = chunk_manager.chunk_queue.size()
+	var loaded_chunks_count = 0
+	
+	# Запускаем загрузку чанков с обновлением прогресса
 	while not chunk_manager.chunk_queue.is_empty():
 		chunk_manager.load_next_chunk()
-		await get_tree().process_frame
+		loaded_chunks_count += 1
+		var progress = (loaded_chunks_count / float(total_chunks)) * 100.0
+		loading_screen.set_progress(progress)
+		await get_tree().process_frame  # Даем кадру обработаться для обновления UI
 	
-	#print("WorldGenerator: Initial chunks loaded")
+	# Устанавливаем прогресс на 100% и скрываем экран
+	loading_screen.set_progress(100.0)
 
 func check_player_position():
 	if not visible:

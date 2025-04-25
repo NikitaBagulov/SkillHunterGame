@@ -22,6 +22,9 @@ var biomes = []
 var is_paused: bool = false
 var visible_chunks = {}
 
+var player_direction: Vector2 = Vector2.ZERO
+var last_player_chunk: Vector2i = Vector2i.ZERO
+
 # Словарь для хранения статистики времени выполнения
 var profiling_data = {
 	"generate_chunk": {"total": 0.0, "count": 0, "stages": {}},
@@ -48,7 +51,33 @@ func initialize(wg: WorldGenerator, gl: TileMapLayer, gen_settings: Dictionary, 
 	ground_layer = gl
 	settings = gen_settings
 	biomes = biome_settings.biomes
+	biomes.sort_custom(func(a, b): return a[2] < b[2])
 	is_paused = not wg.visible
+
+func find_biome(noise_value: float) -> int:
+	var left = 0
+	var right = biomes.size() - 1
+	while left <= right:
+		var mid = (left + right) / 2
+		if noise_value >= biomes[mid][2] and noise_value <= biomes[mid][3]:
+			return biomes[mid][0]
+		elif noise_value < biomes[mid][2]:
+			right = mid - 1
+		else:
+			left = mid + 1
+	return 0 # Резервный террейн
+
+func update_player_direction(current_chunk: Vector2i):
+	if last_player_chunk != current_chunk:
+		player_direction = Vector2((current_chunk - last_player_chunk)).normalized()
+		last_player_chunk = current_chunk
+
+func calculate_priority(chunk_pos: Vector2i, player_chunk: Vector2i) -> float:
+	var direction_to_chunk = Vector2((chunk_pos - player_chunk)).normalized()
+	return player_direction.dot(direction_to_chunk)
+
+func calculate_distance(chunk_pos: Vector2i, player_chunk: Vector2i) -> int:
+	return abs(chunk_pos.x - player_chunk.x) + abs(chunk_pos.y - player_chunk.y)
 
 func pause_loading():
 	is_paused = true
@@ -64,44 +93,49 @@ func update_chunks(player_chunk: Vector2i):
 	if is_paused:
 		return
 	
-	var new_visible_chunks = {}
+	# Обновляем направление движения игрока
+	update_player_direction(player_chunk)
+	
 	var render_distance = settings["render_distance"]
+	var new_visible_chunks = {}
 	
-	for x in range(player_chunk.x - render_distance, player_chunk.x + render_distance + 1):
-		for y in range(player_chunk.y - render_distance, player_chunk.y + render_distance + 1):
+	var min_x = player_chunk.x - render_distance
+	var max_x = player_chunk.x + render_distance + 1
+	var min_y = player_chunk.y - render_distance
+	var max_y = player_chunk.y + render_distance + 1
+	
+	for x in range(min_x, max_x + 1):
+		for y in range(min_y, max_y + 1):
 			var chunk_pos = Vector2i(x, y)
-			var distance = abs(chunk_pos.x - player_chunk.x) + abs(chunk_pos.y - player_chunk.y)
-			if distance <= render_distance:
-				new_visible_chunks[chunk_pos] = true
-				if not visible_chunks.has(chunk_pos) and not chunk_queue.has(chunk_pos):
-					if cached_chunks.has(chunk_pos):
-						restore_chunk(chunk_pos)
-					else:
-						chunk_queue.append(chunk_pos)
+			new_visible_chunks[chunk_pos] = true
+			if not loaded_chunks.has(chunk_pos) and not chunk_queue.has(chunk_pos):
+				if cached_chunks.has(chunk_pos):
+					restore_chunk(chunk_pos)
+				else:
+					chunk_queue.append(chunk_pos)
 	
-	if chunk_queue.size() > 100:
-		chunk_queue.resize(50)
-	
-	var current_time = Time.get_ticks_msec() / 1000.0
-	for chunk_pos in visible_chunks.keys():
+	# Сортируем очередь по приоритету
+	#chunk_queue.sort_custom(func(a, b):
+		#var prio_a = calculate_priority(a, player_chunk)
+		#var prio_b = calculate_priority(b, player_chunk)
+		#return prio_a > prio_b
+	#)
+	chunk_queue.sort_custom(func(a, b):
+		var dist_a = calculate_distance(a, player_chunk)
+		var dist_b = calculate_distance(b, player_chunk)
+		return dist_a < dist_b
+	)
+	for chunk_pos in loaded_chunks.keys():
 		if not new_visible_chunks.has(chunk_pos):
 			cache_chunk(chunk_pos)
-	
-	var to_remove = []
-	for chunk_pos in cached_chunks.keys():
-		if current_time - cached_chunks[chunk_pos][CACHE_TIMESTAMP] > settings["chunk_cache_time"]:
-			to_remove.append(chunk_pos)
-	for chunk_pos in to_remove:
-		clear_chunk(chunk_pos)
-		cached_chunks.erase(chunk_pos)
+			loaded_chunks.erase(chunk_pos)
 	
 	visible_chunks = new_visible_chunks
 	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["update_chunks"]["total"] += duration
 	profiling_data["update_chunks"]["count"] += 1
-	#print("ChunkManager: Updated chunks, visible: ", visible_chunks.size(), " queued: ", chunk_queue.size())
-
+	
 func load_next_chunk():
 	var start_time = Time.get_ticks_usec()
 	if is_paused or chunk_queue.is_empty():
@@ -121,58 +155,26 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 	var chunk_size = settings["chunk_size"]
 	var cells_by_terrain = {}
 	
-	# Шаг 1: Генерация шума
-	var start_time = Time.get_ticks_usec()
+	# Генерируем шум для всего чанка сразу
 	var noise_values = world_generator.noise_manager.get_chunk_noise(chunk_pos, chunk_size)
-	var noise_duration = (Time.get_ticks_usec() - start_time) / 1000.0
-	profiling_data["generate_chunk"]["stages"]["noise"]["total"] += noise_duration
-	profiling_data["generate_chunk"]["stages"]["noise"]["count"] += 1
-	await get_tree().process_frame
 	
-	# Шаг 2: Определение биомов
-	start_time = Time.get_ticks_usec()
+	# Инициализация биомов
 	for biome in biomes:
 		cells_by_terrain[biome[0]] = []
 	
 	for pos in noise_values.keys():
 		var noise_value = noise_values[pos]
-		var selected_terrain = -1
-		for biome in biomes:
-			if noise_value >= biome[2] and noise_value <= biome[3]:
-				selected_terrain = biome[0]
-				break
-		if selected_terrain != -1:
-			var terrain = BetterTerrain.get_terrain(ground_layer.tile_set, selected_terrain)
-			if terrain.valid:
-				cells_by_terrain[selected_terrain].append(pos)
-		else:
-			# Резервный террейн (Grass)
-			cells_by_terrain[0].append(pos)
-	var biomes_duration = (Time.get_ticks_usec() - start_time) / 1000.0
-	profiling_data["generate_chunk"]["stages"]["biomes"]["total"] += biomes_duration
-	profiling_data["generate_chunk"]["stages"]["biomes"]["count"] += 1
-	await get_tree().process_frame
+		var selected_terrain = find_biome(noise_value)
+		cells_by_terrain[selected_terrain].append(pos)
 	
-	# Шаг 3: Применение чанка
-	start_time = Time.get_ticks_usec()
 	apply_chunk(chunk_pos, cells_by_terrain)
-	var apply_duration = (Time.get_ticks_usec() - start_time) / 1000.0
-	profiling_data["generate_chunk"]["stages"]["apply"]["total"] += apply_duration
-	profiling_data["generate_chunk"]["stages"]["apply"]["count"] += 1
-	await get_tree().process_frame
 	
-	# Шаг 4: Генерация объектов (для видимых чанков)
-	start_time = Time.get_ticks_usec()
 	if visible_chunks.has(chunk_pos):
 		world_generator.object_spawner.generate_objects(chunk_pos)
-	var objects_duration = (Time.get_ticks_usec() - start_time) / 1000.0
-	profiling_data["generate_chunk"]["stages"]["objects"]["total"] += objects_duration
-	profiling_data["generate_chunk"]["stages"]["objects"]["count"] += 1
 	
 	var total_duration = (Time.get_ticks_usec() - start_time_total) / 1000.0
 	profiling_data["generate_chunk"]["total"] += total_duration
 	profiling_data["generate_chunk"]["count"] += 1
-	#print("ChunkManager: Generated chunk at ", chunk_pos)
 
 func set_cells(tm: TileMapLayer, coords: Array, type: int) -> bool:
 	var start_time = Time.get_ticks_usec()
@@ -193,17 +195,21 @@ func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 	if is_paused:
 		return
 	
-	var chunk_cells = []
+	var all_cells = []
 	for terrain_index in cells_by_terrain.keys():
 		if cells_by_terrain[terrain_index].size() > 0:
-			chunk_cells.append_array(cells_by_terrain[terrain_index])
+			all_cells.append_array(cells_by_terrain[terrain_index])
+	
+	# Один вызов set_cells для всех ячеек
+	set_cells(ground_layer, all_cells, TileCategory.EMPTY) # Сначала очищаем
+	for terrain_index in cells_by_terrain.keys():
+		if cells_by_terrain[terrain_index].size() > 0:
 			set_cells(ground_layer, cells_by_terrain[terrain_index], terrain_index)
 	
-	# Batch update terrain cells once
-	BetterTerrain.update_terrain_cells(ground_layer, chunk_cells, true)
+	# Обновляем террейн один раз для всех ячеек
+	BetterTerrain.update_terrain_cells(ground_layer, all_cells, true)
 	
 	loaded_chunks[chunk_pos] = true
-	update_chunk_borders(chunk_pos)
 	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["apply_chunk"]["total"] += duration

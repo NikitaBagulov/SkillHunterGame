@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cbjs6rm6yvcye"]
+[gd_scene load_steps=21 format=3 uid="uid://cbjs6rm6yvcye"]
 
 [ext_resource type="Script" uid="uid://bu5n1yhksnoqp" path="res://WorldGenerator/Scripts/World.gd" id="1_2fcgd"]
 [ext_resource type="Texture2D" uid="uid://de5covq7pbx4b" path="res://WorldGenerator/Assets/Tilesets/Spring - simplified.png" id="2_m5ojv"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://be65es5mdmstx" path="res://WorldGenerator/Scripts/StructureResource.gd" id="10_x6w1v"]
 [ext_resource type="PackedScene" uid="uid://2jhrki0am1ms" path="res://WorldGenerator/Structures/camp.tscn" id="11_khbli"]
 [ext_resource type="PackedScene" uid="uid://dv7010105eerr" path="res://Enemies/Goblin/goblin.tscn" id="11_lxghc"]
+[ext_resource type="PackedScene" uid="uid://6x8uftbvc1m1" path="res://GUI/LoadingScreen/LoadingScreen.tscn" id="13_lxghc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g4edv"]
 texture = ExtResource("2_m5ojv")
@@ -940,16 +941,16 @@ y_sort_enabled = true
 script = ExtResource("1_2fcgd")
 generation_settings = {
 "chunk_cache_time": 120.0,
-"chunk_load_interval": 0.1,
-"chunk_size": Vector2i(6, 6),
+"chunk_load_interval": 0.05,
+"chunk_size": Vector2i(10, 8),
 "density_noise_frequency": 0.05,
 "noise_frequency": 0.005,
-"noise_octaves": 3,
+"noise_octaves": 2,
 "noise_offset": Vector2(0, 0),
 "noise_seed": 0,
 "noise_type": 3,
-"render_distance": 6,
-"tile_scale": 2.0
+"render_distance": 3,
+"tile_scale": 1.0
 }
 
 [node name="GroundedLayer" type="TileMapLayer" parent="."]
@@ -967,3 +968,5 @@ structure_resources = Array[ExtResource("10_x6w1v")]([SubResource("Resource_yfu0
 [node name="UpdateTimer" type="Timer" parent="."]
 
 [node name="LoadTimer" type="Timer" parent="."]
+
+[node name="LoadingScreen" parent="." instance=ExtResource("13_lxghc")]

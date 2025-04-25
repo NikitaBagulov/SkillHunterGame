@@ -32,7 +32,7 @@ func hide_loading() -> void:
 	animation_player.play("fade_out")
 	await animation_player.animation_finished
 	visible = false
-	Inventory.visible = true
+	Inventory.visible = false
 	is_loading_complete = false
 	set_process_input(false)  # Отключаем обработку ввода
 	get_tree().set_pause(false)
