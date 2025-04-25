@@ -132,38 +132,39 @@ func start_initial_chunks():
 	if not is_initialized or chunk_manager.is_paused:
 		return
 	
-	var render_distance = generation_settings["render_distance"]
-	
-	# Очищаем очередь, чтобы избежать дублирования
+	var render_distance = generation_settings["render_distance"] + 5
 	chunk_manager.chunk_queue.clear()
 	
-	# Добавляем чанки в радиусе render_distance в очередь
 	for x in range(-render_distance, render_distance + 1):
 		for y in range(-render_distance, render_distance + 1):
 			var chunk_pos = Vector2i(x, y)
 			if not chunk_manager.loaded_chunks.has(chunk_pos) and not chunk_manager.chunk_queue.has(chunk_pos):
 				chunk_manager.chunk_queue.append(chunk_pos)
 	
-	# Обновляем visible_chunks
 	for x in range(-render_distance, render_distance + 1):
 		for y in range(-render_distance, render_distance + 1):
 			var chunk_pos = Vector2i(x, y)
 			chunk_manager.visible_chunks[chunk_pos] = true
 	
-	# Вычисляем общее количество чанков и инициализируем счетчик
 	var total_chunks = chunk_manager.chunk_queue.size()
 	var loaded_chunks_count = 0
 	
-	# Запускаем загрузку чанков с обновлением прогресса
 	while not chunk_manager.chunk_queue.is_empty():
 		chunk_manager.load_next_chunk()
 		loaded_chunks_count += 1
 		var progress = (loaded_chunks_count / float(total_chunks)) * 100.0
 		loading_screen.set_progress(progress)
-		await get_tree().process_frame  # Даем кадру обработаться для обновления UI
+		await get_tree().process_frame
 	
-	# Устанавливаем прогресс на 100% и скрываем экран
+	# Спавн объектов в видимой области
+	var chunk_size = generation_settings["chunk_size"]
+	var min_pos = Vector2i(-render_distance * chunk_size.x, -render_distance * chunk_size.y)
+	var max_pos = Vector2i(render_distance * chunk_size.x, render_distance * chunk_size.y)
+	object_spawner.generate_objects_in_area(min_pos, max_pos, false)  # Обычные объекты
+	object_spawner.generate_objects_in_area(min_pos, max_pos, true)   # Спавнеры врагов
+	
 	loading_screen.set_progress(100.0)
+	print("WorldGenerator: Initial chunks loaded")
 
 func check_player_position():
 	if not visible:

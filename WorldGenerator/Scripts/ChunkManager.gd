@@ -93,38 +93,32 @@ func update_chunks(player_chunk: Vector2i):
 	if is_paused:
 		return
 	
-	# Обновляем направление движения игрока
 	update_player_direction(player_chunk)
-	
 	var render_distance = settings["render_distance"]
 	var new_visible_chunks = {}
 	
-	var min_x = player_chunk.x - render_distance
-	var max_x = player_chunk.x + render_distance + 1
-	var min_y = player_chunk.y - render_distance
-	var max_y = player_chunk.y + render_distance + 1
-	
-	for x in range(min_x, max_x + 1):
-		for y in range(min_y, max_y + 1):
+	# Используем массив вместо словаря для оптимизации
+	var chunks_to_check = []
+	for x in range(player_chunk.x - render_distance, player_chunk.x + render_distance + 1):
+		for y in range(player_chunk.y - render_distance, player_chunk.y + render_distance + 1):
 			var chunk_pos = Vector2i(x, y)
+			chunks_to_check.append(chunk_pos)
 			new_visible_chunks[chunk_pos] = true
-			if not loaded_chunks.has(chunk_pos) and not chunk_queue.has(chunk_pos):
-				if cached_chunks.has(chunk_pos):
-					restore_chunk(chunk_pos)
-				else:
-					chunk_queue.append(chunk_pos)
 	
-	# Сортируем очередь по приоритету
-	#chunk_queue.sort_custom(func(a, b):
-		#var prio_a = calculate_priority(a, player_chunk)
-		#var prio_b = calculate_priority(b, player_chunk)
-		#return prio_a > prio_b
-	#)
-	chunk_queue.sort_custom(func(a, b):
-		var dist_a = calculate_distance(a, player_chunk)
-		var dist_b = calculate_distance(b, player_chunk)
-		return dist_a < dist_b
-	)
+	for chunk_pos in chunks_to_check:
+		if not loaded_chunks.has(chunk_pos) and not chunk_queue.has(chunk_pos):
+			if cached_chunks.has(chunk_pos):
+				restore_chunk(chunk_pos)
+			else:
+				chunk_queue.append(chunk_pos)
+	
+	# Сортировка только если очередь большая
+	if chunk_queue.size() > 10:
+		chunk_queue.sort_custom(func(a, b): 
+			var dist_a = calculate_distance(a, player_chunk)
+			var dist_b = calculate_distance(b, player_chunk)
+			return dist_a < dist_b)
+	
 	for chunk_pos in loaded_chunks.keys():
 		if not new_visible_chunks.has(chunk_pos):
 			cache_chunk(chunk_pos)
@@ -155,10 +149,8 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 	var chunk_size = settings["chunk_size"]
 	var cells_by_terrain = {}
 	
-	# Генерируем шум для всего чанка сразу
 	var noise_values = world_generator.noise_manager.get_chunk_noise(chunk_pos, chunk_size)
 	
-	# Инициализация биомов
 	for biome in biomes:
 		cells_by_terrain[biome[0]] = []
 	
@@ -168,9 +160,6 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 		cells_by_terrain[selected_terrain].append(pos)
 	
 	apply_chunk(chunk_pos, cells_by_terrain)
-	
-	if visible_chunks.has(chunk_pos):
-		world_generator.object_spawner.generate_objects(chunk_pos)
 	
 	var total_duration = (Time.get_ticks_usec() - start_time_total) / 1000.0
 	profiling_data["generate_chunk"]["total"] += total_duration

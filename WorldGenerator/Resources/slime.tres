@@ -7,9 +7,9 @@
 script = ExtResource("1_ko8w6")
 scenes = Array[PackedScene]([ExtResource("1_3gma6")])
 biome = "Grass"
-probability = 0.065
+probability = 0.005
 density_noise_scale = 0.1
-min_distance = 250.0
+min_distance = 50.0
 offset_range = 8.0
-max_objects_per_chunk = 1
+max_objects_per_area = 1
 is_enemy = true
