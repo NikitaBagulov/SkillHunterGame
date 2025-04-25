@@ -14,6 +14,9 @@ config/name="SkillHunter"
 config/version="0.0.1"
 run/main_scene="uid://j8fseby86tic"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0.0313726, 0.0627451, 0.0705882, 1)
+boot_splash/image="uid://dhnqmc0tts6dg"
+config/icon="uid://dhnqmc0tts6dg"
 
 [autoload]
 
@@ -35,8 +38,8 @@ BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [display]
 
-window/size/viewport_width=720
-window/size/viewport_height=405
+window/size/viewport_width=640
+window/size/viewport_height=360
 window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="viewport"
@@ -48,6 +51,15 @@ project/assembly_name="SkillHunter"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://EffectSystem/": "green",
+"res://QuestSystem/": "green",
+"res://SkillSystem/": "green",
+"res://WorldGenerator/": "green"
+}
 
 [global_group]
 

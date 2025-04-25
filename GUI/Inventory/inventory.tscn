@@ -11,6 +11,7 @@
 
 [node name="Inventory" type="CanvasLayer"]
 process_mode = 3
+follow_viewport_enabled = true
 script = ExtResource("1_rrc2c")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -27,15 +28,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="InventoryContainer" type="VBoxContainer" parent="TabContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/separation = 120
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/InventoryContainer"]
 layout_mode = 2
-theme_override_constants/separation = 20
 alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="TabContainer/InventoryContainer/HBoxContainer"]
