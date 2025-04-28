@@ -151,9 +151,6 @@ theme_override_colors/default_color = Color(0.439216, 0.396078, 0.321569, 1)
 theme_override_fonts/normal_font = ExtResource("3_bj0oj")
 theme_override_fonts/bold_font = ExtResource("4_wmui0")
 bbcode_enabled = true
-text = "Example [b]Text[/b]!!!
-[wave] Wave!!! [/wave]
-[shake] [color=orangered]Shake!!![/color] [/shake]"
 fit_content = true
 scroll_active = false
 
