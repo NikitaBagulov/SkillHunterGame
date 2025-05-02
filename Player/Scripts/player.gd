@@ -46,14 +46,9 @@ func _initialize_player():
 	# Синхронизируем начальную позицию
 	PlayerManager.PLAYER_STATS.position = global_position
 	PlayerManager.PLAYER_STATS.position_updated.connect(_on_position_updated)
-	
-	# Регистрируем Stats в Repository
+
 	Repository.instance.register("player", "stats", PlayerManager.PLAYER_STATS, true)
-	
-	# Обновляем текстуру оружия
-	#change_weapon_texture(PlayerManager.INVENTORY_DATA.get_equipped_weapon_texture())
-	
-	# Уведомляем о начальном состоянии
+
 	PlayerManager.PLAYER_STATS.player_level_up.emit(PlayerManager.PLAYER_STATS)
 
 func _process(delta):

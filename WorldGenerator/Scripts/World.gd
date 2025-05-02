@@ -16,7 +16,7 @@ var tile_set
 	"noise_type": FastNoiseLite.TYPE_PERLIN,
 	"noise_frequency": 0.005,
 	"noise_octaves": 3,
-	"noise_seed": 0,
+	"noise_seed": randi(),
 	"noise_offset": Vector2(0, 0),
 	"chunk_cache_time": 120.0,
 	"density_noise_frequency": 0.05,
@@ -99,8 +99,6 @@ func start_world():
 	if load_timer.is_stopped():
 		load_timer.start()
 	
-	chunk_manager.resume_loading()
-	
 	# Показываем экран загрузки перед генерацией
 	loading_screen.show_loading()
 	start_initial_chunks()
@@ -116,9 +114,6 @@ func stop_world():
 		update_timer.stop()
 	if load_timer and not update_timer.is_stopped():
 		load_timer.stop()
-	
-	chunk_manager.pause_loading()
-	#print("WorldGenerator: Stopped, timers paused")
 
 func _notification(what):
 	if what == NOTIFICATION_VISIBILITY_CHANGED:
@@ -126,10 +121,9 @@ func _notification(what):
 			start_world_deferred()
 		else:
 			stop_world()
-		#print("WorldGenerator: Visibility changed to ", visible)
 
 func start_initial_chunks():
-	if not is_initialized or chunk_manager.is_paused:
+	if not is_initialized:
 		return
 	
 	var render_distance = generation_settings["render_distance"] + 5
@@ -213,6 +207,7 @@ func spawn_return_portal():
 	portal.is_hub_to_world = false
 	portal.portal_id = "world_to_hub_1"
 	portal.global_position = Vector2(0, 0)
+	portal.add_to_group("hub_portal")
 	if not is_instance_valid(objects_node):
 		push_error("WorldGenerator: ObjectsNode is invalid or freed!")
 		return

@@ -183,6 +183,10 @@ libraries = {
 &"": SubResource("AnimationLibrary_uc5hg")
 }
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="AnimationPlayer"]
+max_distance = 300.0
+bus = &"SFX"
+
 [node name="HurtBox" parent="." instance=ExtResource("3_7m5iv")]
 damage = 5
 

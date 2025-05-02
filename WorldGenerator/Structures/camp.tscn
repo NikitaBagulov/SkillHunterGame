@@ -1,17 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://2jhrki0am1ms"]
+[gd_scene load_steps=10 format=3 uid="uid://2jhrki0am1ms"]
 
+[ext_resource type="Script" uid="uid://lm2sgi5v5dp8" path="res://WorldGenerator/Structures/camp.gd" id="1_4l1x1"]
 [ext_resource type="Texture2D" uid="uid://4spgu8d3agtf" path="res://WorldGenerator/Assets/Outdoor decoration/Outdoor_Decor_Free.png" id="1_pmenx"]
 [ext_resource type="PackedScene" uid="uid://c8hv2oxtho7xx" path="res://Interactebles/TreasureChest/TreasureChest.tscn" id="2_6f08h"]
-[ext_resource type="Resource" uid="uid://dsxrg0fp328b6" path="res://Items/apple.tres" id="2_as460"]
+[ext_resource type="Script" uid="uid://c5fuh5tgork7q" path="res://Interactebles/TreasureChest/loot_resource.gd" id="3_4l1x1"]
+[ext_resource type="Resource" uid="uid://cwag0bqx3jrgt" path="res://Interactebles/TreasureChest/LootItemResources/dash.tres" id="4_x4hyk"]
+[ext_resource type="Resource" uid="uid://d2bmdtlycqduw" path="res://Interactebles/TreasureChest/LootItemResources/barrage_swarm.tres" id="5_mm6c3"]
+[ext_resource type="Resource" uid="uid://cahq40wxy11c8" path="res://Interactebles/TreasureChest/LootItemResources/copper_sword.tres" id="6_4g7i8"]
+[ext_resource type="Resource" uid="uid://ch5k2ceen3xya" path="res://Interactebles/TreasureChest/LootItemResources/potion.tres" id="7_bue56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7bf0"]
 size = Vector2(22, 6)
 
 [node name="Camp" type="Node2D"]
+script = ExtResource("1_4l1x1")
 
 [node name="TreasureChest" parent="." instance=ExtResource("2_6f08h")]
 position = Vector2(28, -8)
-item_data = ExtResource("2_as460")
+loot_table = Array[ExtResource("3_4l1x1")]([ExtResource("4_x4hyk"), ExtResource("5_mm6c3"), ExtResource("6_4g7i8"), ExtResource("7_bue56")])
 
 [node name="Wood" type="StaticBody2D" parent="."]
 light_mask = 0
@@ -42,3 +48,10 @@ region_rect = Rect2(0, 112, 32, 16)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Wood2"]
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_w7bf0")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(29, 7)
+scale = Vector2(3.6, 2)
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

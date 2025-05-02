@@ -3,6 +3,8 @@ extends Control
 @onready var start_button: Button = $MarginContainer/HBoxContainer/VBoxContainer/StartButton
 @onready var exit_button: Button = $MarginContainer/HBoxContainer/VBoxContainer/ExitButton
 
+@export var music: AudioStream
+
 func _ready():
 	# Подключаем обработчики событий к кнопкам
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -12,6 +14,7 @@ func _ready():
 	
 	start_button.pressed.connect(_on_start_button_pressed)
 	exit_button.pressed.connect(_on_exit_button_pressed)
+	AudioManager.play_music(music)
 
 func _on_start_button_pressed():
 	

@@ -1,8 +1,16 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://dhkuedwtsl10l"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3 uid="uid://dhkuedwtsl10l"]
 
 [ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_5wjim"]
 [ext_resource type="Script" uid="uid://dns18ehqprxk8" path="res://Items/Scripts/item_data.gd" id="1_77wis"]
+[ext_resource type="Script" uid="uid://4d688yd5ejk" path="res://Items/Item_effect/item_effect_heal.gd" id="2_eu55q"]
 [ext_resource type="Texture2D" uid="uid://cx1g6wefc7k4a" path="res://Items/Sprites/potions-Sheet.png" id="5_pw2eo"]
+
+[sub_resource type="Resource" id="Resource_pw2eo"]
+script = ExtResource("2_eu55q")
+heal_amount = 1
+duration = 1.0
+use_description = "HEAL"
+metadata/_custom_type_script = "uid://4d688yd5ejk"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rmkeq"]
 atlas = ExtResource("5_pw2eo")
@@ -15,4 +23,4 @@ name = "Зелье"
 description = "Намешали кисель..."
 texture = SubResource("AtlasTexture_rmkeq")
 cost = 10
-effects = Array[ExtResource("1_5wjim")]([])
+effects = Array[ExtResource("1_5wjim")]([SubResource("Resource_pw2eo")])

@@ -14,6 +14,7 @@ func remove_effect(entity: Node) -> void:
 	#print("Removed Regeneration effect from %s" % entity.name)
 
 func process_effect(entity: Node, delta: float) -> void:
+	print(entity, delta)
 	var timer: float = 0.0
 	timer += delta
 	if timer >= 1.0:

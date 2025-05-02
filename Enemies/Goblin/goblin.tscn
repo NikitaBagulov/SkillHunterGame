@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dv7010105eerr"]
+[gd_scene load_steps=45 format=3 uid="uid://dv7010105eerr"]
 
 [ext_resource type="Script" uid="uid://bttvluxjegrnh" path="res://Enemies/Scripts/enemy.gd" id="1_a1ea2"]
 [ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="2_yuf7p"]
@@ -13,9 +13,11 @@
 [ext_resource type="Script" uid="uid://cggnggk7m1eq0" path="res://Enemies/Scripts/enemy_state_stun.gd" id="11_1gm6n"]
 [ext_resource type="Script" uid="uid://bn3njn5an8f3o" path="res://Enemies/Scripts/enemy_state_destroy.gd" id="12_l6ub2"]
 [ext_resource type="Script" uid="uid://mhgh1ilnd0tn" path="res://Enemies/Scripts/drop_data.gd" id="13_4btce"]
-[ext_resource type="Resource" uid="uid://hoismocbk86k" path="res://Items/gem.tres" id="14_ihrej"]
+[ext_resource type="Resource" uid="uid://cs7hbechg25cp" path="res://Items/SkillBook/dash.tres" id="14_p257j"]
 [ext_resource type="Script" uid="uid://lt2hdyb0cu7w" path="res://Enemies/Scripts/enemy_state_chase.gd" id="15_3lvh1"]
+[ext_resource type="Resource" uid="uid://dhkuedwtsl10l" path="res://Items/potion.tres" id="15_l2k1h"]
 [ext_resource type="Texture2D" uid="uid://dlutp0ayihmko" path="res://Enemies/Slime/DestroySmoke.png" id="15_s3i5d"]
+[ext_resource type="Resource" uid="uid://b18mckj37pvc2" path="res://Items/SkillBook/barrage_swarm.tres" id="16_l2k1h"]
 [ext_resource type="PackedScene" uid="uid://bi5drlmr351u3" path="res://Enemies/VisionArea.tscn" id="17_kulay"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dwa5g"]
@@ -614,10 +616,26 @@ _data = {
 
 [sub_resource type="Resource" id="Resource_hi8dh"]
 script = ExtResource("13_4btce")
-item = ExtResource("14_ihrej")
+item = ExtResource("14_p257j")
+probability = 1.0
+min_amount = 1
+max_amount = 1
+
+[sub_resource type="Resource" id="Resource_4i25o"]
+script = ExtResource("13_4btce")
+item = ExtResource("15_l2k1h")
 probability = 100.0
 min_amount = 1
-max_amount = 3
+max_amount = 1
+metadata/_custom_type_script = "uid://mhgh1ilnd0tn"
+
+[sub_resource type="Resource" id="Resource_p7r07"]
+script = ExtResource("13_4btce")
+item = ExtResource("16_l2k1h")
+probability = 1.0
+min_amount = 1
+max_amount = 1
+metadata/_custom_type_script = "uid://mhgh1ilnd0tn"
 
 [sub_resource type="Animation" id="Animation_6iv8l"]
 length = 0.001
@@ -753,7 +771,7 @@ next_state = NodePath("../Idle")
 
 [node name="Destroy" type="Node" parent="EnemyStateMachine"]
 script = ExtResource("12_l6ub2")
-drops = Array[ExtResource("13_4btce")]([SubResource("Resource_hi8dh")])
+drops = Array[ExtResource("13_4btce")]([SubResource("Resource_hi8dh"), SubResource("Resource_4i25o"), SubResource("Resource_p7r07")])
 
 [node name="Chase" type="Node" parent="EnemyStateMachine" node_paths=PackedStringArray("vision_area", "attack_area", "next_state")]
 script = ExtResource("15_3lvh1")
@@ -781,3 +799,10 @@ position = Vector2(0, -12)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionArea"]
 polygon = PackedVector2Array(-16, 0, 16, 0, 128, 128, -128, 128)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-1.875, -5.625)
+scale = Vector2(2.0625, 2.3125)
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://j8fseby86tic"]
+[gd_scene load_steps=3 format=3 uid="uid://j8fseby86tic"]
 
 [ext_resource type="Script" uid="uid://df6j7b5advmla" path="res://GUI/MainMenu/main_menu.gd" id="1_ywh7r"]
+[ext_resource type="AudioStream" uid="uid://bncdp007wbctq" path="res://Sounds/Chill RPG theme (RPG).wav" id="2_t6o3j"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -10,6 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ywh7r")
+music = ExtResource("2_t6o3j")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -40,20 +42,18 @@ alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme_override_constants/separation = 20
 alignment = 1
 
 [node name="StartButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(128, 32)
+custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 text = "Начать
 
 "
 
 [node name="ExitButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(128, 32)
+custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 text = "Выйти
 

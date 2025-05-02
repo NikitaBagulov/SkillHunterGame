@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://bx7k3yspke326"]
+[gd_scene load_steps=53 format=3 uid="uid://bx7k3yspke326"]
 
 [ext_resource type="Script" uid="uid://b1ohjwdi1kmgy" path="res://Player/Scripts/player.gd" id="1_83mit"]
 [ext_resource type="Texture2D" uid="uid://ccmjntki5id8e" path="res://Player/Sprites/Pack Content/Front animations/spr_player_front_idle.png" id="2_xbkxk"]
@@ -19,8 +19,10 @@
 [ext_resource type="Script" uid="uid://2joegeoak3lp" path="res://Player/Scripts/player_interaction_host.gd" id="15_4a10s"]
 [ext_resource type="PackedScene" uid="uid://csx73sqot3jqh" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="15_jvqnq"]
 [ext_resource type="Script" uid="uid://baeiuwivsgufa" path="res://Player/Scripts/state_stun.gd" id="17_1mfyy"]
+[ext_resource type="AudioStream" uid="uid://bed000vx36dkr" path="res://Sounds/Footsteps Loop 1 (Rpg).wav" id="17_drxtx"]
 [ext_resource type="PackedScene" uid="uid://bgt7thfgw0ugh" path="res://GeneralNodes/HitBox/hit_box.tscn" id="18_hihgb"]
 [ext_resource type="AudioStream" uid="uid://b28vo48gqqkkw" path="res://Player/Sprites/hit_player.wav" id="19_ho8js"]
+[ext_resource type="Script" uid="uid://cr1wcci272be3" path="res://Player/Scripts/state_dead.gd" id="19_p0l7e"]
 [ext_resource type="PackedScene" uid="uid://bl6xxjegdtc3b" path="res://GeneralNodes/ItemMagnet/ItemMagnet.tscn" id="23_scpv6"]
 [ext_resource type="Script" uid="uid://5h10aqdhukub" path="res://SkillSystem/SkillManager.gd" id="23_y8cp1"]
 [ext_resource type="PackedScene" uid="uid://b4kjay8wgnv8p" path="res://GeneralNodes/HealthComponent/HealthComponent.tscn" id="25_g5pib"]
@@ -1222,12 +1224,17 @@ script = ExtResource("5_e5cws")
 
 [node name="Walk" type="Node" parent="StateMachine"]
 script = ExtResource("6_48nr7")
+walk_sound = ExtResource("17_drxtx")
 
 [node name="Attack" type="Node" parent="StateMachine"]
 script = ExtResource("14_ya0hw")
 
 [node name="Stun" type="Node" parent="StateMachine"]
 script = ExtResource("17_1mfyy")
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("19_p0l7e")
+metadata/_custom_type_script = "uid://cr1wcci272be3"
 
 [node name="ExperienceManager" type="Node" parent="."]
 script = ExtResource("27_174at")
@@ -1257,6 +1264,7 @@ debug_color = Color(0.794478, 0.425468, 3.85046e-07, 0.42)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Audio"]
 max_polyphony = 6
+bus = &"SFX"
 
 [node name="ItemMagnet" parent="." instance=ExtResource("23_scpv6")]
 position = Vector2(0, 5)

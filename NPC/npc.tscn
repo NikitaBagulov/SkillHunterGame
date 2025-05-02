@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://crkew6pdof7xt" path="res://Enemies/Slime/Shadow.png" id="3_rotdr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uyg0a"]
-radius = 6.0
+radius = 8.0
 height = 24.0
 
 [sub_resource type="Animation" id="Animation_haga3"]
@@ -129,7 +129,7 @@ _data = {
 
 [node name="NPC" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
-collision_layer = 0
+collision_layer = 16
 collision_mask = 16
 script = ExtResource("1_ouep6")
 metadata/_edit_horizontal_guides_ = [-47.0]
@@ -146,11 +146,11 @@ scale = Vector2(1.15625, 0.75)
 texture = ExtResource("3_rotdr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-rotation = 1.5708
+position = Vector2(0, -6)
 shape = SubResource("CapsuleShape2D_uyg0a")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_oep3i")
+&"": SubResource("AnimationLibrary_oep3i")
 }
 autoplay = "idle_down"

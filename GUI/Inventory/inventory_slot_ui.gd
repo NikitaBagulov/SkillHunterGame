@@ -37,6 +37,8 @@ func _ready() -> void:
 	
 	# Создаем всплывающее окно
 	tooltip = Control.new()
+	var bg = ColorRect.new()
+	bg.color = Color(80, 80, 80, 150)
 	tooltip.z_index = 100
 	var panel_content = VBoxContainer.new()
 	tooltip.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -46,6 +48,7 @@ func _ready() -> void:
 	desc_label.name = "DescLabel"
 	panel_content.add_child(title_label)
 	panel_content.add_child(desc_label)
+	tooltip.add_child(bg)
 	tooltip.add_child(panel_content)
 	tooltip.hide()
 	add_child(tooltip)

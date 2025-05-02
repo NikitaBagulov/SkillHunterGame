@@ -14,6 +14,7 @@ region = Rect2(32, 48, 48, 32)
 radius = 5.09902
 
 [node name="Portal" type="Area2D"]
+z_index = 1
 script = ExtResource("1_kvxcf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

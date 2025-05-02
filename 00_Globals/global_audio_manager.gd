@@ -38,7 +38,7 @@ func _initialize_music_players() -> void:
 func play_music(audio: AudioStream) -> void:
 	if not audio or audio == music_players[current_music_player].stream:
 		return
-	
+
 	var new_player = music_players[current_music_player]
 	var old_player = music_players[1 - current_music_player]  # Переключение между 0 и 1
 	

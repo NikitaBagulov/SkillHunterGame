@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LootItemResource" load_steps=3 format=3 uid="uid://ch5k2ceen3xya"]
+
+[ext_resource type="Resource" uid="uid://dhkuedwtsl10l" path="res://Items/potion.tres" id="1_hdj0u"]
+[ext_resource type="Script" uid="uid://c5fuh5tgork7q" path="res://Interactebles/TreasureChest/loot_resource.gd" id="2_u8brl"]
+
+[resource]
+script = ExtResource("2_u8brl")
+item_data = ExtResource("1_hdj0u")
+chance = 1.0
+min_quantity = 1
+max_quantity = 1
+metadata/_custom_type_script = "uid://c5fuh5tgork7q"

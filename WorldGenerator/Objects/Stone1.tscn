@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4n6ens3wukdd"]
+
+[ext_resource type="Texture2D" uid="uid://4spgu8d3agtf" path="res://WorldGenerator/Assets/Outdoor decoration/Outdoor_Decor_Free.png" id="1_ts46s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c4v10"]
+atlas = ExtResource("1_ts46s")
+region = Rect2(16, 32, 16, 16)
+
+[node name="Stone" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_c4v10")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenEnabler2D" parent="."]
+enable_node_path = NodePath("../Sprite2D")

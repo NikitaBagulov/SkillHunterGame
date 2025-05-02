@@ -10,6 +10,7 @@ class_name StatsUI
 @onready var damage_label: Label = $VBoxContainer/DamageLabel
 @onready var currency_label: Label = $VBoxContainer/CurrencyLabel
 
+@export var level_up_sound: AudioStream
 
 func _ready():
 	connect_updating_ui()
@@ -37,6 +38,7 @@ func update_hp_label(hp: int, max_hp: int):
 	hp_label.text = "%d/%d HP" % [hp, max_hp]
 
 func update_stats(stats: Stats) -> void:
+	PlayerManager.play_audio(level_up_sound)
 	level_label.text = "Level: %d" % stats.level
 	exp_bar.max_value = stats.exp_to_next_level
 	exp_label.text = "%d EXP" % stats.experience

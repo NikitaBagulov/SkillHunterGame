@@ -1,6 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://com0xblx33ruv"]
 
 [ext_resource type="Script" uid="uid://crdsu2iqk3aq7" path="res://Bosses/Scripts/boss.gd" id="1_p528m"]
+[ext_resource type="AudioStream" uid="uid://c7inodpxlwv7b" path="res://Sounds/Monster death (Rpg).wav" id="2_can40"]
 [ext_resource type="Texture2D" uid="uid://db8cp5m0h7d5d" path="res://Assets/Bosses/Agis/Agis.png" id="2_p528m"]
 [ext_resource type="PackedScene" uid="uid://bgt7thfgw0ugh" path="res://GeneralNodes/HitBox/hit_box.tscn" id="2_rut0u"]
 [ext_resource type="Script" uid="uid://ce1dtysyy0s8k" path="res://Bosses/Scripts/boss_state_machine.gd" id="4_ngsvx"]
@@ -178,17 +179,17 @@ _data = {
 &"idle": SubResource("Animation_rut0u")
 }
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xmlb5"]
-radius = 25.0
-height = 106.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmlb5"]
-bg_color = Color(1, 0, 0, 1)
+[sub_resource type="CircleShape2D" id="CircleShape2D_st865"]
+radius = 300.0
 
 [node name="Demon" type="CharacterBody2D" groups=["emenies"]]
-collision_layer = 256
+y_sort_enabled = true
+collision_layer = 272
 collision_mask = 16
 script = ExtResource("1_p528m")
+boss_id = "demon"
+boss_name = "Тень Кузницы"
+boss_death_sound = ExtResource("2_can40")
 
 [node name="HitBox" parent="." instance=ExtResource("2_rut0u")]
 position = Vector2(-1, 73)
@@ -208,14 +209,21 @@ libraries = {
 &"": SubResource("AnimationLibrary_ngsvx")
 }
 
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(2, 16)
+polygon = PackedVector2Array(-41, -22, -65, -35, -104, -67, -89, -127, -41, -137, -2, -175, 39, -136, 87, -121, 104, -70, 56, -33, 16, -13, 19, 44, -1, 51, -21, 42, -22, 1)
+
 [node name="BossStateMachine" type="Node" parent="."]
 script = ExtResource("4_ngsvx")
 metadata/_custom_type_script = "uid://ce1dtysyy0s8k"
 
-[node name="BossIdleState" type="Node" parent="BossStateMachine"]
+[node name="BossIdleState" type="Node" parent="BossStateMachine" node_paths=PackedStringArray("next_states")]
 script = ExtResource("5_pssxw")
-move_speed = 200.0
+min_duration = 1.0
+max_duration = 2.0
+move_speed = 50.0
 direction_change_interval = 3.0
+next_states = [NodePath("../BossExplosionState"), NodePath("../BossExplosionState"), NodePath("../BossShootState"), NodePath("../BossHealState"), NodePath("../BossExplosionState"), NodePath("../BossExplosionState"), NodePath("../BossShootState")]
 metadata/_custom_type_script = "uid://oeq4ggj8ooo1"
 
 [node name="BossExplosionState" type="Node" parent="BossStateMachine"]
@@ -235,28 +243,6 @@ metadata/_custom_type_script = "uid://cpml8tp7e0aen"
 script = ExtResource("10_st865")
 metadata/_custom_type_script = "uid://c54t0o2ajf7p2"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2, 16)
-shape = SubResource("CapsuleShape2D_xmlb5")
-
-[node name="HP_bar" type="ProgressBar" parent="."]
-custom_minimum_size = Vector2(32, 8)
-offset_left = -16.0
-offset_top = 68.0
-offset_right = 16.0
-offset_bottom = 76.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_xmlb5")
-show_percentage = false
-
-[node name="Label" type="Label" parent="HP_bar"]
-layout_mode = 0
-offset_right = 32.0
-offset_bottom = 12.0
-theme_override_font_sizes/font_size = 8
-text = "100/100"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Spawn1" type="Node2D" parent="."]
 position = Vector2(-77, -99)
 
@@ -268,3 +254,18 @@ position = Vector2(-91, -53)
 
 [node name="Spawn4" type="Node2D" parent="."]
 position = Vector2(89, -52)
+
+[node name="BossHPHUD" type="Area2D" parent="."]
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossHPHUD"]
+shape = SubResource("CircleShape2D_st865")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+process_mode = 3
+position = Vector2(3, -46)
+scale = Vector2(11.5, 11.8)
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

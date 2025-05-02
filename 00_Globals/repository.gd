@@ -125,7 +125,7 @@ func deserialize(serialized_data: Dictionary) -> bool:
 	
 	var version = serialized_data.get("version", "0.0.0")
 	data.clear()
-	data = {"player": {}, "inventory": {}, "settings": {}, "world": {}}
+	data = {"player": {}, "inventory": {}, "settings": {}, "world": {}, "quests": {}}
 	
 	var categories = serialized_data.get("categories", {})
 	for category in categories.keys():
@@ -141,12 +141,20 @@ func deserialize(serialized_data: Dictionary) -> bool:
 
 # Вспомогательные методы
 func _serialize_value(value: Variant) -> Variant:
-	if value is Resource:
-		return value.get_path() if value.resource_path else value
-	elif value is Object and value.has_method("serialize"):
+	if value is Object and value.has_method("serialize"):
 		var serialized = value.serialize()
 		if serialized is Dictionary:
-			serialized["serialized_type"] = value.get_class()
+			# Проверяем, есть ли скрипт и class_name
+			var class_name_text = value.get_class()
+			if value.get_script() and value.get_script().has_source_code():
+				var script = value.get_script()
+				# Извлекаем class_name из скрипта
+				var source = script.get_source_code()
+				var class_name_match = RegEx.create_from_string("class_name\\s+(\\w+)").search(source)
+				if class_name_match:
+					class_name_text = class_name_match.get_string(1)
+			serialized["serialized_type"] = class_name_text
+			log_message("Serializing object with class_name: %s" % class_name_text)
 		return serialized
 	elif value is Array or value is Dictionary:
 		return _deep_serialize(value)
@@ -179,10 +187,11 @@ func _deserialize_custom_object(data: Dictionary, version: String) -> Variant:
 			instance = Stats.new()
 		"InventoryData":
 			instance = InventoryData.new()
+		"QuestResource":
+			instance = QuestResource.new()
 		# Добавьте другие типы по необходимости
 		_:
 			log_message("Unsupported serialized_type: %s" % type_name)
-			return null
 	
 	if instance and instance.has_method("deserialize"):
 		instance.deserialize(serialized_data)

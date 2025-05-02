@@ -35,6 +35,7 @@ Market="*res://GUI/Market/Market.tscn"
 EffectManager="*res://EffectSystem/effect_system.gd"
 GlobalQuestSystem="*res://QuestSystem/GlobalQuestSystem.tscn"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+EventBus="*res://00_Globals/event_bus.gd"
 
 [display]
 
@@ -55,9 +56,11 @@ enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
 [file_customization]
 
 folder_colors={
+"res://Assets/": "orange",
 "res://EffectSystem/": "green",
 "res://QuestSystem/": "green",
 "res://SkillSystem/": "green",
+"res://Sounds/": "orange",
 "res://WorldGenerator/": "green"
 }
 
@@ -187,8 +190,14 @@ quest_menu={
 2d_physics/layer_5="Walls"
 2d_physics/layer_9="Enemy"
 
+[physics]
+
+2d/run_on_separate_thread=true
+2d/solver/solver_iterations=8
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_repeat=1
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

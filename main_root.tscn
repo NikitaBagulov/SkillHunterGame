@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://bo1he5a2qqx72"]
+[gd_scene load_steps=5 format=3 uid="uid://bo1he5a2qqx72"]
 
+[ext_resource type="Script" uid="uid://de8sb87qktwfx" path="res://main_root.gd" id="1_ayyf6"]
 [ext_resource type="PackedScene" uid="uid://caosgc7d7xw16" path="res://StartLocation/StartLocation.tscn" id="1_rehs3"]
 [ext_resource type="PackedScene" uid="uid://dng0df4mnd6hq" path="res://Player/PlayerSpawner/PlayerSpawner.tscn" id="2_ayyf6"]
+[ext_resource type="AudioStream" uid="uid://bncdp007wbctq" path="res://Sounds/Chill RPG theme (RPG).wav" id="2_sm51x"]
 
 [node name="MainRoot" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_ayyf6")
+music = ExtResource("2_sm51x")
 
 [node name="StartLocation" parent="." instance=ExtResource("1_rehs3")]
 

@@ -117,3 +117,19 @@ func _take_damage(hurt_box: HurtBox) -> void:
 	else:
 		#print("Enemy destroyed, experience: ", experience_drop)
 		enemy_destroyed.emit(hurt_box)
+
+
+func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
+	print("in camera")
+	sprite.visible = true
+	#self.set_physics_process(true) 
+	state_machine.set_physics_process(true)
+	state_machine.set_process(true)
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	print("not in camera")
+	sprite.visible = false
+	#self.set_physics_process(false) 
+	state_machine.set_physics_process(false)
+	state_machine.set_process(false)

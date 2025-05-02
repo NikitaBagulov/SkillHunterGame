@@ -5,6 +5,10 @@ signal item_added(slot: SlotData)
 signal item_removed(slot: SlotData)
 signal data_changed  # Добавляем сигнал changed, который используется в InventoryUI
 
+signal quick_slots_updated
+signal quick_slot_selected(index: int)
+
+
 @export var slots: Array[SlotData]
 
 var inventory_slot_count: int = 20

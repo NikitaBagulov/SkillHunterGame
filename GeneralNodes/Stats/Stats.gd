@@ -1,5 +1,5 @@
-extends Resource
-class_name Stats
+class_name Stats extends Resource
+
 
 # --- Сигналы ---
 signal player_level_up(stats: Stats)
@@ -8,12 +8,12 @@ signal health_updated(hp: int, max_hp: int)
 signal position_updated(position: Vector2)
 signal currency_updated(currency: int)
 signal experience_updated(stats: Stats)
-
+signal player_died
 # --- Флаг инициализации ---
 var _is_initialized: bool = false
 
 # --- Настройки ---
-@export var base_max_hp: int = 100 :
+@export var base_max_hp: int = 6 :
 	get:
 		return base_max_hp
 	set(value):
@@ -100,6 +100,8 @@ var hp: int = 1 :
 	set(value):
 		hp = clampi(value, 0, max_hp)
 		health_updated.emit(hp, max_hp)
+		if value <=0:
+			player_died.emit()
 
 var total_damage: int = base_damage :
 	get:
@@ -127,6 +129,8 @@ func init() -> void:
 	update_damage(_get_weapon_bonus())
 	update_health(_get_health_bonus())
 	update_move_speed()
+	update_regeneration(1)
+	currency_updated.emit(currency)
 	if _is_initialized:
 		return
 	_is_initialized = true
@@ -164,6 +168,7 @@ func take_damage(amount: int) -> void:
 	health_updated.emit(hp, max_hp)  # Убрали лишний сигнал
 
 func heal(amount: int) -> void:
+	print("HP: ", hp, max_hp)
 	hp += amount
 	health_updated.emit(hp, max_hp)  # Убрали лишний сигнал
 

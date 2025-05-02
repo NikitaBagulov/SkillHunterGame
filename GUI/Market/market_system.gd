@@ -14,15 +14,18 @@ func _ready():
 	market_ui.close_requested.connect(_on_close_requested)
 
 func show_market(items: Array[ItemData]) -> void:
+	market_ui.inventory_data = PlayerManager.INVENTORY_DATA
 	if is_market_open:
 		return
 	is_market_open = true
 	market_ui.set_market_items(items)
 	market_ui.visible = true
+	
 	get_tree().paused = true
 	PlayerManager.INVENTORY_DATA.data_changed.connect(market_ui.update_inventory)
 
 func hide_market() -> void:
+	market_ui.inventory_data = PlayerManager.INVENTORY_DATA
 	if not is_market_open:
 		return
 	is_market_open = false

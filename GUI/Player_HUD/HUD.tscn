@@ -1,11 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcghc2nf73q1j"]
+[gd_scene load_steps=8 format=3 uid="uid://bcghc2nf73q1j"]
 
 [ext_resource type="Script" uid="uid://csngca5jrps2d" path="res://GUI/Player_HUD/hud.gd" id="1_kq8ir"]
 [ext_resource type="Texture2D" uid="uid://ccmwh188iipj3" path="res://Assets/UI/Pixel UI pack 3/04.png" id="2_8a7xr"]
+[ext_resource type="StyleBox" uid="uid://cbruqhq5ju0qj" path="res://GUI/Inventory/inventory_quick.tres" id="3_6qjdn"]
+[ext_resource type="PackedScene" uid="uid://catt4bbm6hsq" path="res://GUI/Inventory/inventory_slot_ui.tscn" id="4_o8ek1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yh20o"]
 atlas = ExtResource("2_8a7xr")
 region = Rect2(0, 128, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6qjdn"]
+atlas = ExtResource("2_8a7xr")
+region = Rect2(48, 144, 48, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8a7xr"]
 atlas = ExtResource("2_8a7xr")
@@ -20,15 +26,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="HPBar" type="TextureProgressBar" parent="VBoxContainer/VBoxContainer"]
+[node name="HPBar" type="TextureProgressBar" parent="VBoxContainer/VBoxContainer2/VBoxContainer"]
 custom_minimum_size = Vector2(128, 24)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -38,10 +49,10 @@ stretch_margin_top = 6
 stretch_margin_right = 10
 stretch_margin_bottom = 7
 texture_under = SubResource("AtlasTexture_yh20o")
-texture_progress = SubResource("AtlasTexture_8a7xr")
+texture_progress = SubResource("AtlasTexture_6qjdn")
 texture_progress_offset = Vector2(1, 1)
 
-[node name="HPLabel" type="Label" parent="VBoxContainer/VBoxContainer/HPBar"]
+[node name="HPLabel" type="Label" parent="VBoxContainer/VBoxContainer2/VBoxContainer/HPBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -59,5 +70,105 @@ text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="CurrencyLabel" type="Label" parent="VBoxContainer/VBoxContainer"]
+[node name="CurrencyLabel" type="Label" parent="VBoxContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="BossHPContainer" type="VBoxContainer" parent="VBoxContainer/VBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_constants/separation = -5
+alignment = 1
+
+[node name="BossNameLabel" type="Label" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/BossHPContainer"]
+layout_mode = 2
+text = "Boss"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossHPBar" type="TextureProgressBar" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/BossHPContainer"]
+custom_minimum_size = Vector2(128, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+nine_patch_stretch = true
+stretch_margin_left = 10
+stretch_margin_top = 6
+stretch_margin_right = 10
+stretch_margin_bottom = 7
+texture_under = SubResource("AtlasTexture_yh20o")
+texture_progress = SubResource("AtlasTexture_8a7xr")
+texture_progress_offset = Vector2(1, 1)
+
+[node name="BossHPLabel" type="Label" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/BossHPContainer/BossHPBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -9.0
+offset_right = 15.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="PanelContainer3" type="PanelContainer" parent="VBoxContainer/VBoxContainer2/VBoxContainer2"]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_styles/panel = ExtResource("3_6qjdn")
+
+[node name="QuickSlotContainer" type="GridContainer" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3"]
+layout_mode = 2
+size_flags_vertical = 0
+columns = 10
+
+[node name="QuickSlot1" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot2" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot3" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot4" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot5" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot6" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot7" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot8" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot9" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="QuickSlot10" parent="VBoxContainer/VBoxContainer2/VBoxContainer2/PanelContainer3/QuickSlotContainer" instance=ExtResource("4_o8ek1")]
+unique_name_in_owner = true
 layout_mode = 2

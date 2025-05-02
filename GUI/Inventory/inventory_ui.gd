@@ -6,7 +6,7 @@ var focus_index: int = 0
 var hovered_item: InventorySlotUI
 var selected_quick_slot: int = 0
 
-@export var data: InventoryData
+var data: InventoryData = PlayerManager.INVENTORY_DATA
 
 @onready var head_slot: InventorySlotUI = %Head
 @onready var body_slot: InventorySlotUI = %Body
@@ -22,7 +22,7 @@ var selected_quick_slot: int = 0
 	%QuickSlot6, %QuickSlot7, %QuickSlot8, %QuickSlot9, %QuickSlot10
 ]
 
-@onready var skill_forge_ui = $"../../../VBoxContainer/HBoxContainer/SkillForgeUI"
+@onready var skill_forge_ui = $"../../../VBoxContainer/SkillForgeUI"
 
 var equip_colors = {
 	"head": Color(0, 0, 1),
@@ -42,14 +42,38 @@ func _ready() -> void:
 	Inventory.hidden.connect(clear_inventory)
 	Inventory.showen.connect(update_inventory)
 	initialize_inventory_slots()
-	data.changed.connect(on_inventory_changed)
-	data.equipment_changed.connect(on_inventory_changed)
+	connect_inventory_signals()
 	clear_inventory()
 	update_quick_slot_selection()
 	set_equip_colors()
 	set_slot_types()
 	if skill_forge_ui:
 		skill_forge_ui.ready_completed.connect(update_forge_slots)
+	
+	SaveManager.load_completed.connect(_on_load_completed)
+
+func connect_inventory_signals() -> void:
+	if data.is_connected("changed", on_inventory_changed):
+		data.changed.disconnect(on_inventory_changed)
+	if data.is_connected("equipment_changed", on_inventory_changed):
+		data.equipment_changed.disconnect(on_inventory_changed)
+	
+	data.changed.connect(on_inventory_changed)
+	data.equipment_changed.connect(on_inventory_changed)
+
+func _on_load_completed(success: bool) -> void:
+	if not success:
+		print("[InventoryUI] Load failed")
+		return
+	
+	print("[InventoryUI] Load completed, restoring state")
+	restore_state()
+
+func restore_state() -> void:
+	data = PlayerManager.INVENTORY_DATA
+	connect_inventory_signals()
+	update_inventory(false)
+	print("[InventoryUI] Restored with %d slots" % data.slots.size())
 
 func _input(event: InputEvent) -> void:
 	handle_quick_slot_input(event)
@@ -170,6 +194,7 @@ func handle_quick_slot_input(event: InputEvent) -> void:
 		if event.is_action_pressed("quick_slot_" + str(i + 1)):
 			if selected_quick_slot == i:
 				data.use_quick_slot(i)
+				EventBus.quick_slots_updated.emit()
 				update_quick_slot_selection()
 			else:
 				selected_quick_slot = i
@@ -188,18 +213,18 @@ func connect_item_signals(item: InventorySlotUI) -> void:
 		item.mouse_exited.connect(_on_item_mouse_exited)
 
 func _on_item_drop(item: InventorySlotUI) -> void:
-	if item == null or item.slot_data == null:
-		#print("No item or slot data")
+	if item == null or !is_instance_valid(item) or !item is InventorySlotUI:
+		return
+
+	if item.slot_data == null:
 		return
 
 	var source_index = get_slot_global_index(item)
 	if source_index == -1:
-		#print("Invalid source index for slot: ", item)
 		return
 
 	var source_data = data.get_slot(source_index)
-	if source_data == null:
-		#print("No source data at index: ", source_index, " UI data: ", item.slot_data)
+	if source_data == null or source_data.item_data == null:
 		return
 
 	var equipment_start = data.inventory_slot_count
@@ -210,40 +235,52 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 	var forge_end = forge_start + 3
 	var is_forge_slot = source_index >= forge_start and source_index < forge_end
 
-	if hovered_item != null and hovered_item != item:
+	if hovered_item != null and hovered_item != item and hovered_item is InventorySlotUI:
 		var target_index = get_slot_global_index(hovered_item)
 		if target_index == -1:
-			#print("Invalid target index for slot: ", hovered_item)
 			return
 		
 		var target_is_equipment = target_index >= equipment_start and target_index < equipment_end
 		var target_is_forge = target_index >= forge_start and target_index < forge_end
 
 		if target_is_equipment:
-			if hovered_item.item_data is EquipableItemData:
-				if hovered_item.slot_type != -1 and source_data.item_data.type != hovered_item.slot_type:
-					#print("Item type mismatch for equipment slot")
-					return
-				if is_equipment_slot:
-					data.unequip_item(source_index)
-					source_data = data.get_slot(source_index)
-				data.equip_item(source_data)
-				update_inventory(false)
+			var target_slot_type = hovered_item.slot_type
+			var source_item_type = source_data.item_data.type
+
+			print("Target slot type:", target_slot_type)
+			print("Source item type:", source_item_type)
+
+			if target_slot_type != source_item_type:
+				print("Ошибка: Типы не совпадают. Отмена перемещения.")
 				return
+
+			if hovered_item.slot_data != null and hovered_item.slot_data.item_data != null:
+				var slot_target_index = get_slot_global_index(hovered_item)
+				data.unequip_item(slot_target_index)
+
+			if is_equipment_slot:
+				data.unequip_item(source_index)
+
+			data.swap_item_by_index(source_index, target_index)
+			var target_data = data.get_slot(target_index)
+			data.equip_item(target_data)
+
+			update_inventory(false)
+			return
 		
 		if target_is_forge:
 			if hovered_item == skill_forge_ui.input_slot_1:
 				var item_data = source_data.item_data
 				if not (item_data is EquipableItemData and item_data.type == EquipableItemData.Type.WEAPON) and not (item_data is SkillItemData and item_data.skill_item_type == SkillItemData.SkillItemType.SKILL):
-					#print("Invalid item for input_slot_1")
+					print("Invalid item for input_slot_1")
 					return
 			elif hovered_item == skill_forge_ui.input_slot_2:
 				var item_data = source_data.item_data
 				if not (item_data is SkillItemData and (item_data.skill_item_type == SkillItemData.SkillItemType.SKILL or item_data.skill_item_type == SkillItemData.SkillItemType.ELEMENT)):
-					#print("Invalid item for input_slot_2")
+					print("Invalid item for input_slot_2")
 					return
 			elif hovered_item == skill_forge_ui.output_slot and data.slots[target_index] != null:
-				#print("Output slot is already occupied")
+				print("Output slot is already occupied")
 				return
 
 		if is_equipment_slot:
@@ -252,7 +289,6 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 		
 		data.swap_item_by_index(source_index, target_index)
 		
-		# Если перетаскиваем из output_slot, очищаем его в данных
 		if source_index == forge_start + 2:  # output_slot
 			data.slots[source_index] = null
 		
@@ -310,7 +346,12 @@ func get_slot_global_index(slot: InventorySlotUI) -> int:
 
 func update_quick_slot_selection() -> void:
 	for i in quick_slots.size():
-		quick_slots[i].modulate = Color(1, 1, 0, 1) if i == selected_quick_slot else Color(1, 1, 1, 1)
+		EventBus.quick_slots_updated.emit()
+		if i == selected_quick_slot:
+			EventBus.quick_slot_selected.emit(selected_quick_slot)
+			quick_slots[i].modulate = Color(1, 1, 0, 1) 
+		else:
+			quick_slots[i].modulate = Color(1, 1, 1, 1)
 
 func get_selected_quick_slot() -> int:
 	return selected_quick_slot

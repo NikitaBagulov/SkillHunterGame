@@ -14,6 +14,7 @@ func _process(delta):
 
 func enter() -> void:
 	player.update_animation("idle")
+	PlayerManager.play_audio(AudioStream.new())
 	pass
 	
 func exit() -> void:

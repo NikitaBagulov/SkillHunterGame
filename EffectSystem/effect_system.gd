@@ -6,6 +6,7 @@ var active_effects: Dictionary = {}
 
 # Применение эффекта к сущности
 func apply_effect(entity: Node, effect: EffectResource) -> void:
+	print(entity, effect)
 	if not entity or not effect or entity.is_queued_for_deletion():
 		#print("ERROR: Attempted to apply effect with invalid or freed entity or effect")
 		return
@@ -40,10 +41,9 @@ func apply_effect(entity: Node, effect: EffectResource) -> void:
 		add_child(timer)
 		timer.start()
 	
-	
 	# Применяем эффект
 	effect.apply_effect(entity)
-	
+	active_effects[entity][effect_name] = {"effect": effect, "timer": timer}
 	# Ограничиваем количество стаков
 	if effect.stackable and effects.size() > effect.max_stacks:
 		_remove_oldest_effect(entity)
@@ -73,7 +73,7 @@ func _process(delta: float) -> void:
 	for entity in entities:
 		if not is_instance_valid(entity) or entity.is_queued_for_deletion():
 			#print("Entity (freed or queued for deletion) detected, removing all effects")
-			#_clear_entity_effects(entity)
+			_clear_entity_effects(entity)
 			continue
 		for effect_name in active_effects[entity]:
 			var effect_data = active_effects[entity][effect_name]

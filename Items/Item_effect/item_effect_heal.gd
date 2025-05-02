@@ -8,4 +8,8 @@ extends ItemEffect
 func _init():
 	use_description = "Heals for %s HP" % heal_amount
 	# Создаем RegenerationEffect с заданными параметрами
-	effect_resource = RegenerationEffect.new(heal_amount, duration if duration > 0 else -1.0)
+
+
+func use(target: Node = PlayerManager.player) -> void:
+	target.health.heal(heal_amount)
+	

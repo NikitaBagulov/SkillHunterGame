@@ -11,6 +11,7 @@ class_name BiomeSettings extends Node
 
 @export var object_resources: Array[ObjectResource]
 @export var structure_resources: Array[StructureResource]
+@export var boss_scenes: Array[PackedScene]
 
 var terrain_to_biome = {}
 

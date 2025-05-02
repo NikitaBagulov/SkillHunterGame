@@ -804,3 +804,6 @@ hframes = 6
 libraries = {
 &"": SubResource("AnimationLibrary_v1ubl")
 }
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -4)

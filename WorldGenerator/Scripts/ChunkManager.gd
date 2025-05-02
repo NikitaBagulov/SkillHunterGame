@@ -19,7 +19,6 @@ var world_generator: WorldGenerator
 var ground_layer: TileMapLayer
 var settings = {}
 var biomes = []
-var is_paused: bool = false
 var visible_chunks = {}
 
 var player_direction: Vector2 = Vector2.ZERO
@@ -51,8 +50,8 @@ func initialize(wg: WorldGenerator, gl: TileMapLayer, gen_settings: Dictionary, 
 	ground_layer = gl
 	settings = gen_settings
 	biomes = biome_settings.biomes
+	print(biomes)
 	biomes.sort_custom(func(a, b): return a[2] < b[2])
-	is_paused = not wg.visible
 
 func find_biome(noise_value: float) -> int:
 	var left = 0
@@ -72,26 +71,11 @@ func update_player_direction(current_chunk: Vector2i):
 		player_direction = Vector2((current_chunk - last_player_chunk)).normalized()
 		last_player_chunk = current_chunk
 
-func calculate_priority(chunk_pos: Vector2i, player_chunk: Vector2i) -> float:
-	var direction_to_chunk = Vector2((chunk_pos - player_chunk)).normalized()
-	return player_direction.dot(direction_to_chunk)
-
 func calculate_distance(chunk_pos: Vector2i, player_chunk: Vector2i) -> int:
 	return abs(chunk_pos.x - player_chunk.x) + abs(chunk_pos.y - player_chunk.y)
 
-func pause_loading():
-	is_paused = true
-	chunk_queue.clear()
-	#print("ChunkManager: Paused loading")
-
-func resume_loading():
-	is_paused = false
-	#print("ChunkManager: Resumed loading")
-
 func update_chunks(player_chunk: Vector2i):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	update_player_direction(player_chunk)
 	var render_distance = settings["render_distance"]
@@ -132,7 +116,7 @@ func update_chunks(player_chunk: Vector2i):
 	
 func load_next_chunk():
 	var start_time = Time.get_ticks_usec()
-	if is_paused or chunk_queue.is_empty():
+	if chunk_queue.is_empty():
 		return
 	var chunk_pos = chunk_queue.pop_front()
 	generate_chunk(chunk_pos)
@@ -143,8 +127,6 @@ func load_next_chunk():
 
 func generate_chunk(chunk_pos: Vector2i) -> void:
 	var start_time_total = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var chunk_size = settings["chunk_size"]
 	var cells_by_terrain = {}
@@ -161,6 +143,11 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 	
 	apply_chunk(chunk_pos, cells_by_terrain)
 	
+	# Спавн объектов после генерации чанка
+	var min_pos = chunk_pos * chunk_size
+	var max_pos = min_pos + Vector2i(chunk_size.x - 1, chunk_size.y - 1)
+	world_generator.object_spawner.generate_objects_in_area(min_pos, max_pos, false)
+	world_generator.object_spawner.spawn_structures_in_area(min_pos, max_pos)
 	var total_duration = (Time.get_ticks_usec() - start_time_total) / 1000.0
 	profiling_data["generate_chunk"]["total"] += total_duration
 	profiling_data["generate_chunk"]["count"] += 1
@@ -181,8 +168,6 @@ func set_cells(tm: TileMapLayer, coords: Array, type: int) -> bool:
 
 func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var all_cells = []
 	for terrain_index in cells_by_terrain.keys():
@@ -190,7 +175,7 @@ func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 			all_cells.append_array(cells_by_terrain[terrain_index])
 	
 	# Один вызов set_cells для всех ячеек
-	set_cells(ground_layer, all_cells, TileCategory.EMPTY) # Сначала очищаем
+	#set_cells(ground_layer, all_cells, TileCategory.EMPTY) # Сначала очищаем
 	for terrain_index in cells_by_terrain.keys():
 		if cells_by_terrain[terrain_index].size() > 0:
 			set_cells(ground_layer, cells_by_terrain[terrain_index], terrain_index)
@@ -206,8 +191,6 @@ func apply_chunk(chunk_pos: Vector2i, cells_by_terrain: Dictionary):
 
 func update_chunk_borders(chunk_pos: Vector2i):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var chunk_size = settings["chunk_size"]
 	var border_cells = {}
@@ -232,8 +215,6 @@ func update_chunk_borders(chunk_pos: Vector2i):
 
 func clear_chunk(chunk_pos: Vector2i):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
@@ -260,8 +241,6 @@ func clear_chunk(chunk_pos: Vector2i):
 
 func cache_chunk(chunk_pos: Vector2i):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var chunk_size = settings["chunk_size"]
 	var start_pos = chunk_pos * chunk_size
@@ -302,8 +281,6 @@ func cache_chunk(chunk_pos: Vector2i):
 
 func restore_chunk(chunk_pos: Vector2i):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var cells_by_terrain = cached_chunks[chunk_pos][CACHE_CELLS]
 	var object_data = cached_chunks[chunk_pos][CACHE_OBJECTS]
@@ -377,8 +354,6 @@ func get_neighbor_border_positions(chunk_pos: Vector2i, chunk_size: Vector2i) ->
 
 func update_border_cell(pos: Vector2i, border_cells: Dictionary):
 	var start_time = Time.get_ticks_usec()
-	if is_paused:
-		return
 	
 	var noise_value = world_generator.noise_manager.get_cached_noise(pos)
 	var selected_terrain = 0

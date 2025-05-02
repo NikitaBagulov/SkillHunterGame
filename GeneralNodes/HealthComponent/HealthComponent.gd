@@ -7,7 +7,7 @@ var hit_box: HitBox = null
 var stats: Stats = PlayerManager.PLAYER_STATS
 
 # --- Настройки регенерации ---
-const REGENERATION_INTERVAL: float = 1.0  # Интервал регенерации (в секундах)
+const REGENERATION_INTERVAL: float = 5.0  # Интервал регенерации (в секундах)
 
 # --- Инициализация ---
 func _ready() -> void:
@@ -42,7 +42,8 @@ func take_damage(hurt_box: HurtBox) -> void:
 	player.player_damaged.emit(hurt_box)
 	
 	if stats.hp <= 0:
-		stats.hp = stats.max_hp  # Временная механика
+		PlayerManager.PLAYER_STATS.player_died.emit()
+		#stats.hp = stats.max_hp
 
 func heal(amount: int) -> void:
 	stats.heal(amount)
