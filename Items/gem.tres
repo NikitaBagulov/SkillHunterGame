@@ -14,5 +14,5 @@ item_id = ""
 name = "Кристалл"
 description = "Очень дорогой!"
 texture = SubResource("AtlasTexture_0mk44")
-cost = 1
+cost = 340
 effects = Array[ExtResource("1_8bxfm")]([])

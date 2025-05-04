@@ -245,7 +245,7 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 
 		if target_is_equipment:
 			var target_slot_type = hovered_item.slot_type
-			var source_item_type = source_data.item_data.type
+			var source_item_type = source_data.item_data.type if source_data.item_data is EquipableItemData else null
 
 			print("Target slot type:", target_slot_type)
 			print("Source item type:", source_item_type)

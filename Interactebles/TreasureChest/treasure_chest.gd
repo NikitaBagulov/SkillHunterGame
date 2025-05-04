@@ -24,11 +24,12 @@ func player_interact() -> void:
 	if is_open:
 		return
 	
-	is_open = true
+	
 	#animation_player.play("open_chest")  # Анимация открытия сундука
 	#await animation_player.animation_finished  # Ждём завершения анимации открытия
 	#
-	if not loot_table.is_empty():
+	if not loot_table.is_empty() and !is_open:
+		is_open = true
 		var dropped_items = _drop_items_from_loot_table()
 		if dropped_items.size() > 0:
 			for item in dropped_items:
@@ -45,7 +46,7 @@ func player_interact() -> void:
 				# Добавляем предмет в инвентарь игрока
 				PlayerManager.INVENTORY_DATA.add_item(item.item_data, randi_range(item.min_quantity, item.max_quantity))
 	animation_player.play("opened")
-	is_open = true
+	PlayerManager.interact_pressed.disconnect(player_interact)
 # Пример функции для получения предметов из таблицы лута
 func _drop_items_from_loot_table() -> Array:
 	var selected_items = _select_item_from_loot_table()

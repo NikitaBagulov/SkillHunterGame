@@ -22,5 +22,5 @@ item_id = ""
 name = "Деревянный шлем"
 description = "Минимум защиты"
 texture = SubResource("AtlasTexture_14r4c")
-cost = 2
+cost = 30
 effects = Array[ExtResource("1_ii14h")]([])

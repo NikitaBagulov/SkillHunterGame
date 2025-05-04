@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EquipableItemData" load_steps=7 format=3 uid="uid://0l2pnav7sljt"]
+[gd_resource type="Resource" script_class="EquipableItemData" load_steps=8 format=3 uid="uid://0l2pnav7sljt"]
 
 [ext_resource type="Script" uid="uid://cy67a2mbvn3of" path="res://Items/Item_effect/item_effect.gd" id="1_wg5lt"]
 [ext_resource type="Script" uid="uid://dg5bm1eej0e4h" path="res://Items/Scripts/equipable_item_modifier.gd" id="2_q86x6"]
@@ -8,7 +8,13 @@
 [sub_resource type="Resource" id="Resource_75pnw"]
 script = ExtResource("2_q86x6")
 type = 0
-value = 8
+value = 10
+
+[sub_resource type="Resource" id="Resource_lowlo"]
+script = ExtResource("2_q86x6")
+type = 3
+value = 5
+metadata/_custom_type_script = "uid://dg5bm1eej0e4h"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14r4c"]
 atlas = ExtResource("4_05aau")
@@ -17,10 +23,10 @@ region = Rect2(224, 80, 16, 16)
 [resource]
 script = ExtResource("3_4r6re")
 type = 1
-modifiers = Array[ExtResource("2_q86x6")]([SubResource("Resource_75pnw")])
+modifiers = Array[ExtResource("2_q86x6")]([SubResource("Resource_75pnw"), SubResource("Resource_lowlo")])
 item_id = ""
-name = "Палка"
-description = "В детстве всегда мечтал найти такую!"
+name = "Бронзовая броня"
+description = "Сильно и мощно"
 texture = SubResource("AtlasTexture_14r4c")
-cost = 10
+cost = 200
 effects = Array[ExtResource("1_wg5lt")]([])

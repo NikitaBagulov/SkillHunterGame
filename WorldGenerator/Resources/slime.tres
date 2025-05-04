@@ -11,5 +11,5 @@ probability = 0.04
 density_noise_scale = 0.1
 min_distance = 50.0
 offset_range = 8.0
-max_objects_per_area = 5
+max_objects_per_area = 1
 is_enemy = true

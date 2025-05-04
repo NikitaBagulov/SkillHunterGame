@@ -723,12 +723,13 @@ _data = {
 }
 
 [node name="AirFox" type="CharacterBody2D"]
+y_sort_enabled = true
 collision_layer = 256
 collision_mask = 16
 script = ExtResource("1_law1d")
 enemy_id = "slime"
 HP = 10
-experience_drop = 2
+experience_drop = 10
 two_directions_only = true
 
 [node name="HurtBox" parent="." instance=ExtResource("2_aln71")]

@@ -48,8 +48,6 @@ func is_valid_spawn_position(pos: Vector2i) -> bool:
 	var noise_value = world_generator.noise_manager.get_cached_noise(pos)
 	var terrain_index = world_generator.chunk_manager.find_biome(noise_value)
 	var biome_name = biome_settings.terrain_to_biome.get(terrain_index, "")
-	if biome_name == "water":
-		return false
 	return is_away_from_biome_border(pos, terrain_index)
 
 func is_away_from_biome_border(pos: Vector2i, terrain_index: int) -> bool:
@@ -166,24 +164,78 @@ func spawn_structures_in_area(min_pos: Vector2i, max_pos: Vector2i) -> void:
 			var noise_value = world_generator.noise_manager.get_cached_noise(pos)
 			var terrain_index = world_generator.chunk_manager.find_biome(noise_value)
 			var biome_name = biome_settings.terrain_to_biome.get(terrain_index, "")
-			if biome_name == "water" or not is_away_from_biome_border(pos, terrain_index):
-				continue
 			
 			for structure_resource in biome_settings.structure_resources:
-				if structure_resource.biome != biome_name:
+				var dominant_biome = get_dominant_biome(pos, structure_resource.size)
+				if structure_resource.biome != dominant_biome:
+					print("Initial biome check failed at %s: structure expects %s, area dominant %s" % [pos, structure_resource.biome, dominant_biome])
 					continue
 				if randf() < structure_resource.probability:
-					var valid_position = find_valid_structure_position(structure_resource, pos, biome_name)
+					var valid_position = find_valid_structure_position(structure_resource, pos, dominant_biome)
 					if valid_position != Vector2i.ZERO:
 						var instance = create_structure_instance(structure_resource, valid_position)
+						if instance:
+							print("Spawning structure at %s in biome %s" % [valid_position, biome_name])
+							call_deferred("add_instance_to_node", instance)
 
-						call_deferred("add_instance_to_node", instance)
+func get_dominant_biome(pos: Vector2i, size: Vector2i) -> String:
+	var biome_counts = {}
+	for x in range(size.x):
+		for y in range(size.y):
+			var check_pos = pos + Vector2i(x, y)
+			var tile_data = ground_layer.get_cell_tile_data(check_pos)
+			if tile_data:
+				var terrain_index = tile_data.terrain
+				var biome_name = biome_settings.terrain_to_biome.get(terrain_index, "")
+				biome_counts[biome_name] = biome_counts.get(biome_name, 0) + 1
+	var max_biome = ""
+	var max_count = 0
+	for biome_name in biome_counts.keys():
+		if biome_counts[biome_name] > max_count:
+			max_count = biome_counts[biome_name]
+			max_biome = biome_name
+	print("Dominant biome at %s (size %s): %s, counts: %s" % [pos, size, max_biome, biome_counts])
+	return max_biome
 
-func find_valid_structure_position(structure_resource: StructureResource, pos: Vector2i, dominant_biome: String) -> Vector2i:
+func find_valid_structure_position(structure_resource: StructureResource, pos: Vector2i, _dominant_biome: String) -> Vector2i:
 	var structure_size = structure_resource.size
-	if is_structure_position_valid(pos, structure_size, dominant_biome):
-		return pos
-	return Vector2i.ZERO
+	var biome_counts = {}
+	var total_tiles = structure_size.x * structure_size.y
+	var threshold = 0.8  # Требуется 80% тайлов в одном биоме
+	
+	# Собираем биомы для всех тайлов
+	for x in range(structure_size.x):
+		for y in range(structure_size.y):
+			var check_pos = pos + Vector2i(x, y)
+			var tile_data = ground_layer.get_cell_tile_data(check_pos)
+			if not tile_data:
+				print("No tile data at %s" % check_pos)
+				return Vector2i.ZERO
+			var terrain_index = tile_data.terrain
+			if not biome_settings.terrain_to_biome.has(terrain_index):
+				print("Unknown terrain index %d at %s" % [terrain_index, check_pos])
+				return Vector2i.ZERO
+			var biome_name = biome_settings.terrain_to_biome[terrain_index]
+			biome_counts[biome_name] = biome_counts.get(biome_name, 0) + 1
+	
+	# Определяем доминантный биом
+	var dominant_biome = ""
+	var max_count = 0
+	for biome_name in biome_counts.keys():
+		if biome_counts[biome_name] > max_count:
+			max_count = biome_counts[biome_name]
+			dominant_biome = biome_name
+
+	if float(max_count) / total_tiles < threshold:
+		print("No dominant biome at %s: %s" % [pos, biome_counts])
+		return Vector2i.ZERO
+
+	if structure_resource.biome != dominant_biome:
+		print("Structure biome mismatch at %s: expected %s, got %s" % [pos, structure_resource.biome, dominant_biome])
+		return Vector2i.ZERO
+	
+	print("Valid structure position at %s, dominant biome: %s" % [pos, dominant_biome])
+	return pos
 
 func is_structure_position_valid(pos: Vector2i, structure_size: Vector2i, dominant_biome: String) -> bool:
 	for x in range(structure_size.x):
@@ -205,9 +257,19 @@ func create_structure_instance(structure_resource: StructureResource, pos: Vecto
 		return null
 	
 	var tile_center = ground_layer.map_to_local(pos)
-	var structure_instance = structure_resource.scenes[randi() % structure_resource.scenes.size()].instantiate()
-
-	return structure_instance
+	var scene_path = structure_resource.scenes[0].resource_path
+	var instance = null
+	
+	# Проверяем пул объектов
+	if object_pool.has(scene_path) and not object_pool[scene_path].is_empty():
+		instance = object_pool[scene_path].pop_back()
+		instance.global_position = tile_center
+	else:
+		var random_scene = structure_resource.scenes[randi() % structure_resource.scenes.size()]
+		instance = random_scene.instantiate()
+		instance.global_position = tile_center
+	
+	return instance
 
 func recycle_object(obj: Node2D) -> void:
 	var scene_path = obj.scene_file_path
@@ -229,14 +291,15 @@ func spawn_boss() -> bool:
 	
 	var boss_scene = biome_settings.boss_scenes[randi() % biome_settings.boss_scenes.size()]
 	var instance = boss_scene.instantiate()
+	instance.player = PlayerManager.player
 	instance.global_position = ground_layer.map_to_local(pos)
 	objects_node.add_child(instance)
 	return true
 
 func find_boss_spawn_position() -> Vector2i:
 	var world_radius = world_generator.generation_settings.get("world_radius", 1000)
-	var attempts = 200
-	var spawn_radius = world_radius * 0.7
+	var attempts = 100
+	var spawn_radius = world_radius * 0.1
 	var center = Vector2i.ZERO
 	
 	var noise_scale = 0.05
@@ -252,10 +315,10 @@ func find_boss_spawn_position() -> Vector2i:
 		
 		var boss_noise = world_generator.noise_manager.get_density_noise(pos * noise_scale)
 		
-		if (is_valid_spawn_position(pos) && 
-			boss_noise > min_noise_value):
-			if is_position_clear(pos):
-				return pos
+		#if (is_valid_spawn_position(pos) && 
+			#boss_noise > min_noise_value):
+			#if is_position_clear(pos):
+		return pos
 	
 	return Vector2i.ZERO
 

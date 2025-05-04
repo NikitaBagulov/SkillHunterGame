@@ -22,5 +22,5 @@ item_id = ""
 name = "Деревянная броня"
 description = "Дешево и сердито"
 texture = SubResource("AtlasTexture_14r4c")
-cost = 3
+cost = 40
 effects = Array[ExtResource("1_ywmpo")]([])

@@ -54,17 +54,14 @@ func initialize(wg: WorldGenerator, gl: TileMapLayer, gen_settings: Dictionary, 
 	biomes.sort_custom(func(a, b): return a[2] < b[2])
 
 func find_biome(noise_value: float) -> int:
-	var left = 0
-	var right = biomes.size() - 1
-	while left <= right:
-		var mid = (left + right) / 2
-		if noise_value >= biomes[mid][2] and noise_value <= biomes[mid][3]:
-			return biomes[mid][0]
-		elif noise_value < biomes[mid][2]:
-			right = mid - 1
-		else:
-			left = mid + 1
-	return 0 # Резервный террейн
+	for biome in biomes:
+		var min_noise = biome[2]
+		var max_noise = biome[3]
+		if noise_value >= min_noise and noise_value < max_noise:  # Используем < вместо <= для избежания перекрытий
+			var terrain_index = biome[0]
+			var biome_name = biome[1]
+			return terrain_index
+	return 0  # Резервный террейн
 
 func update_player_direction(current_chunk: Vector2i):
 	if last_player_chunk != current_chunk:
@@ -147,7 +144,6 @@ func generate_chunk(chunk_pos: Vector2i) -> void:
 	var min_pos = chunk_pos * chunk_size
 	var max_pos = min_pos + Vector2i(chunk_size.x - 1, chunk_size.y - 1)
 	world_generator.object_spawner.generate_objects_in_area(min_pos, max_pos, false)
-	world_generator.object_spawner.spawn_structures_in_area(min_pos, max_pos)
 	var total_duration = (Time.get_ticks_usec() - start_time_total) / 1000.0
 	profiling_data["generate_chunk"]["total"] += total_duration
 	profiling_data["generate_chunk"]["count"] += 1
@@ -158,8 +154,8 @@ func set_cells(tm: TileMapLayer, coords: Array, type: int) -> bool:
 		return false
 	
 	var result = BetterTerrain.set_cells(tm, coords, type)
-	if result and type != TileCategory.EMPTY:
-		BetterTerrain.update_terrain_cells(tm, coords, true)
+	#if result and type != TileCategory.EMPTY:
+		#BetterTerrain.update_terrain_cells(tm, coords, true)
 	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["set_cells"]["total"] += duration
@@ -231,8 +227,10 @@ func clear_chunk(chunk_pos: Vector2i):
 				var scene_path = obj.scene_file_path
 				if not object_pool.has(scene_path):
 					object_pool[scene_path] = []
-				object_pool[scene_path].append(obj)
-				obj.get_parent().remove_child(obj)
+				if obj not in object_pool[scene_path]:  # Проверяем, чтобы не дублировать
+					object_pool[scene_path].append(obj)
+					obj.get_parent().remove_child(obj)
+					obj.set_process(false)  # Отключаем обработку
 		chunk_objects.erase(chunk_pos)
 	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
@@ -253,7 +251,7 @@ func cache_chunk(chunk_pos: Vector2i):
 		for y in range(chunk_size.y):
 			var pos = start_pos + Vector2i(x, y)
 			var noise_value = world_generator.noise_manager.get_cached_noise(pos)
-			var selected_terrain = 0  # Биом по умолчанию
+			var selected_terrain = 0
 			for biome in biomes:
 				if noise_value >= biome[2] and noise_value <= biome[3]:
 					selected_terrain = biome[0]
@@ -267,14 +265,18 @@ func cache_chunk(chunk_pos: Vector2i):
 				var scene_path = obj.scene_file_path
 				var position = obj.global_position
 				object_data.append(ObjectData.new(scene_path, position))
+				# Помещаем объект в пул
 				if not object_pool.has(scene_path):
 					object_pool[scene_path] = []
-				object_pool[scene_path].append(obj)
-				obj.get_parent().remove_child(obj)
+				if obj not in object_pool[scene_path]:  # Проверяем, чтобы не дублировать
+					object_pool[scene_path].append(obj)
+					obj.get_parent().remove_child(obj)
+					obj.set_process(false)  # Отключаем обработку для экономии ресурсов
 		chunk_objects.erase(chunk_pos)
 
 	cached_chunks[chunk_pos] = [cells_by_terrain, Time.get_ticks_msec() / 1000.0, object_data]
 	clear_chunk(chunk_pos)
+	
 	var duration = (Time.get_ticks_usec() - start_time) / 1000.0
 	profiling_data["cache_chunk"]["total"] += duration
 	profiling_data["cache_chunk"]["count"] += 1
@@ -291,15 +293,26 @@ func restore_chunk(chunk_pos: Vector2i):
 	for data in object_data:
 		var scene_path = data.scene_path
 		var instance = null
+		# Проверяем пул и берём объект, если он есть
 		if object_pool.has(scene_path) and not object_pool[scene_path].is_empty():
-			instance = object_pool[scene_path].pop_back()
-			instance.global_position = data.position
-		else:
+			for obj in object_pool[scene_path]:
+				if is_instance_valid(obj):
+					instance = obj
+					object_pool[scene_path].erase(obj)  # Удаляем из пула
+					break
+		# Создаём новый объект только если пул пуст
+		if not instance:
 			var scene = load(scene_path)
 			if scene:
 				instance = scene.instantiate()
-				instance.global_position = data.position
+				# Сразу добавляем новый объект в пул для будущего переиспользования
+				if not object_pool.has(scene_path):
+					object_pool[scene_path] = []
+				object_pool[scene_path].append(instance)
+		
 		if instance:
+			instance.global_position = data.position
+			instance.set_process(true)  # Включаем обработку
 			world_generator.objects_node.add_child(instance)
 			chunk_objects[chunk_pos].append(instance)
 	
@@ -424,7 +437,16 @@ func print_profiling_stats():
 				var stage_avg = stage_data["total"] / max(stage_data["count"], 1)
 				print("  Stage: %s, Avg Time: %.3f ms, Calls: %d" % [stage_name, stage_avg, stage_data["count"]])
 
+func clean_object_pool():
+	for scene_path in object_pool.keys():
+		var valid_objects = []
+		for obj in object_pool[scene_path]:
+			if is_instance_valid(obj):
+				valid_objects.append(obj)
+		object_pool[scene_path] = valid_objects
+
 # Вызывать периодически для вывода статистики (например, каждые 10 секунд)
 func _process(delta):
-	if Time.get_ticks_msec() % 10000 < delta * 1000: # Каждые 10 секунд
+	if Time.get_ticks_msec() % 30000 < delta * 1000: # Каждые 10 секунд
+		clean_object_pool()
 		print_profiling_stats()

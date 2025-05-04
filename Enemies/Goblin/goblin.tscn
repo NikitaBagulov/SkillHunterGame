@@ -698,13 +698,17 @@ _data = {
 }
 
 [node name="Goblin" type="CharacterBody2D"]
+y_sort_enabled = true
 scale = Vector2(0.8, 0.8)
 collision_layer = 256
 collision_mask = 16
 script = ExtResource("1_a1ea2")
 enemy_id = "goblin"
+HP = 25
+experience_drop = 15
 
 [node name="HurtBox" parent="." instance=ExtResource("2_yuf7p")]
+damage = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2(0, -5)

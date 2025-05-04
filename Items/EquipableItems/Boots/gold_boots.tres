@@ -8,27 +8,27 @@
 [sub_resource type="Resource" id="Resource_lx4gi"]
 script = ExtResource("2_smyvk")
 type = 3
-value = 2
+value = 20
 metadata/_custom_type_script = "uid://dg5bm1eej0e4h"
 
 [sub_resource type="Resource" id="Resource_0q51j"]
 script = ExtResource("2_smyvk")
 type = 0
-value = 2
+value = 6
 metadata/_custom_type_script = "uid://dg5bm1eej0e4h"
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nf3h1"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1yir4"]
 atlas = ExtResource("4_lsy4p")
-region = Rect2(32, 96, 16, 16)
+region = Rect2(96, 96, 16, 16)
 
 [resource]
 script = ExtResource("3_agevb")
 type = 3
 modifiers = Array[ExtResource("2_smyvk")]([SubResource("Resource_lx4gi"), SubResource("Resource_0q51j")])
 item_id = ""
-name = "Деревянные ботинки"
+name = "Золотые сапоги"
 description = ""
-texture = SubResource("AtlasTexture_nf3h1")
-cost = 0
+texture = SubResource("AtlasTexture_1yir4")
+cost = 300
 effects = Array[ExtResource("1_1yir4")]([])
 metadata/_custom_type_script = "uid://dx2pmvoupgcfy"

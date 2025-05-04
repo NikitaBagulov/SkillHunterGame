@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://b30usors3yquv"]
+
+[ext_resource type="Texture2D" uid="uid://k6dmfhj3e1ii" path="res://WorldGenerator/Assets/Outdoor decoration/Oak_Tree.png" id="1_xec7p"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_piwax"]
+radius = 8.06226
+
+[node name="Stone" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -21)
+texture = ExtResource("1_xec7p")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenEnabler2D" parent="."]
+position = Vector2(-0.500001, -22.5)
+scale = Vector2(2.15, 3.25)
+enable_node_path = NodePath("../Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, -3)
+shape = SubResource("CircleShape2D_piwax")

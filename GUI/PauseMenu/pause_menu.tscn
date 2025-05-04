@@ -50,3 +50,5 @@ offset_right = 38.0
 offset_bottom = 96.0
 grow_horizontal = 2
 text = "[ paused ]"
+
+[connection signal="pressed" from="VBoxContainer/ButtonExit" to="." method="_on_button_exit_pressed"]

@@ -125,7 +125,7 @@ func deserialize(serialized_data: Dictionary) -> bool:
 	
 	var version = serialized_data.get("version", "0.0.0")
 	data.clear()
-	data = {"player": {}, "inventory": {}, "settings": {}, "world": {}, "quests": {}}
+	data = {"player": {}, "inventory": {}, "settings": {}, "quests": {}}
 	
 	var categories = serialized_data.get("categories", {})
 	for category in categories.keys():

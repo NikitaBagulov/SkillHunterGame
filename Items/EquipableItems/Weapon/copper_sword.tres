@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_75pnw"]
 script = ExtResource("2_vjmns")
 type = 1
-value = 7
+value = 8
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14r4c"]
 atlas = ExtResource("4_6dxro")
@@ -19,8 +19,8 @@ script = ExtResource("3_driaa")
 type = 4
 modifiers = Array[ExtResource("2_vjmns")]([SubResource("Resource_75pnw")])
 item_id = ""
-name = "Палка"
-description = "В детстве всегда мечтал найти такую!"
+name = "Бронзовый меч"
+description = "Острый, как нож"
 texture = SubResource("AtlasTexture_14r4c")
-cost = 6
+cost = 250
 effects = Array[ExtResource("1_5tcss")]([])

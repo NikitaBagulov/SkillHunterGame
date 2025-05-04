@@ -94,3 +94,8 @@ func hide_pause_menu() -> void:
 	for layer_item in stored_states.keys():
 		layer_item.visible = stored_states[layer_item]
 	stored_states.clear()  # Очищаем для следующего использования
+
+
+func _on_button_exit_pressed() -> void:
+	get_tree().quit()
+	pass # Replace with function body.

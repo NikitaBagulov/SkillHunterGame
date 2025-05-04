@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cbjs6rm6yvcye"]
+[gd_scene load_steps=32 format=3 uid="uid://cbjs6rm6yvcye"]
 
 [ext_resource type="Script" uid="uid://bu5n1yhksnoqp" path="res://WorldGenerator/Scripts/World.gd" id="1_2fcgd"]
 [ext_resource type="Texture2D" uid="uid://de5covq7pbx4b" path="res://WorldGenerator/Assets/Tilesets/Spring - simplified.png" id="2_m5ojv"]
@@ -19,7 +19,6 @@
 [ext_resource type="PackedScene" uid="uid://inuw4d7wf5gx" path="res://Enemies/Fox/earth_fox.tscn" id="14_0bo2q"]
 [ext_resource type="PackedScene" uid="uid://b4n6ens3wukdd" path="res://WorldGenerator/Objects/Stone1.tscn" id="15_0bo2q"]
 [ext_resource type="PackedScene" uid="uid://bsocuabd31vio" path="res://WorldGenerator/Objects/Stone2.tscn" id="16_32y8v"]
-[ext_resource type="PackedScene" uid="uid://b30usors3yquv" path="res://WorldGenerator/Objects/Tree.tscn" id="17_32y8v"]
 [ext_resource type="PackedScene" uid="uid://com0xblx33ruv" path="res://Bosses/Demon/Demon.tscn" id="17_hor4p"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g4edv"]
@@ -951,11 +950,11 @@ metadata/_custom_type_script = "uid://bnbb5uxugvnn8"
 
 [sub_resource type="Resource" id="Resource_8lm7d"]
 script = ExtResource("8_p75be")
-scenes = Array[PackedScene]([ExtResource("15_0bo2q"), ExtResource("16_32y8v"), ExtResource("17_32y8v")])
+scenes = Array[PackedScene]([ExtResource("15_0bo2q"), ExtResource("16_32y8v")])
 biome = "Grass"
-probability = 0.03
+probability = 0.01
 density_noise_scale = 0.1
-min_distance = 32.0
+min_distance = 64.0
 offset_range = 8.0
 max_objects_per_area = 1
 is_enemy = false
@@ -963,13 +962,13 @@ metadata/_custom_type_script = "uid://bnbb5uxugvnn8"
 
 [sub_resource type="Resource" id="Resource_58y74"]
 script = ExtResource("8_p75be")
-scenes = Array[PackedScene]([ExtResource("15_0bo2q"), ExtResource("16_32y8v"), ExtResource("17_32y8v")])
+scenes = Array[PackedScene]([ExtResource("15_0bo2q"), ExtResource("16_32y8v")])
 biome = "Forest"
-probability = 0.08
+probability = 0.01
 density_noise_scale = 0.1
 min_distance = 16.0
 offset_range = 8.0
-max_objects_per_area = 2
+max_objects_per_area = 1
 is_enemy = false
 metadata/_custom_type_script = "uid://bnbb5uxugvnn8"
 
@@ -978,14 +977,14 @@ script = ExtResource("10_x6w1v")
 scenes = Array[PackedScene]([ExtResource("11_khbli")])
 biome = "Forest"
 probability = 0.01
-size = Vector2i(5, 5)
+size = Vector2i(2, 2)
 
 [sub_resource type="Resource" id="Resource_hor4p"]
 script = ExtResource("10_x6w1v")
 scenes = Array[PackedScene]([ExtResource("11_khbli")])
 biome = "Water"
 probability = 0.01
-size = Vector2i(5, 5)
+size = Vector2i(2, 2)
 metadata/_custom_type_script = "uid://be65es5mdmstx"
 
 [node name="World" type="Node2D"]
@@ -995,9 +994,9 @@ generation_settings = {
 "chunk_cache_time": 120.0,
 "chunk_load_interval": 0.05,
 "chunk_size": Vector2i(8, 6),
-"density_noise_frequency": 0.005,
+"density_noise_frequency": 0.05,
 "noise_frequency": 0.005,
-"noise_octaves": 5,
+"noise_octaves": 4,
 "noise_offset": Vector2(0, 0),
 "noise_seed": 0,
 "noise_type": 4,

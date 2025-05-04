@@ -188,7 +188,7 @@ max_distance = 300.0
 bus = &"SFX"
 
 [node name="HurtBox" parent="." instance=ExtResource("3_7m5iv")]
-damage = 5
+damage = 25
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 shape = SubResource("CircleShape2D_uc5hg")

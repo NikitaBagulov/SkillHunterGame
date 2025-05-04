@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://2jhrki0am1ms"]
+[gd_scene load_steps=11 format=3 uid="uid://2jhrki0am1ms"]
 
 [ext_resource type="Script" uid="uid://lm2sgi5v5dp8" path="res://WorldGenerator/Structures/camp.gd" id="1_4l1x1"]
 [ext_resource type="Texture2D" uid="uid://4spgu8d3agtf" path="res://WorldGenerator/Assets/Outdoor decoration/Outdoor_Decor_Free.png" id="1_pmenx"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://d2bmdtlycqduw" path="res://Interactebles/TreasureChest/LootItemResources/barrage_swarm.tres" id="5_mm6c3"]
 [ext_resource type="Resource" uid="uid://cahq40wxy11c8" path="res://Interactebles/TreasureChest/LootItemResources/copper_sword.tres" id="6_4g7i8"]
 [ext_resource type="Resource" uid="uid://ch5k2ceen3xya" path="res://Interactebles/TreasureChest/LootItemResources/potion.tres" id="7_bue56"]
+[ext_resource type="Resource" uid="uid://11vqfacjhsx2" path="res://Interactebles/TreasureChest/LootItemResources/gem.tres" id="8_mm6c3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7bf0"]
 size = Vector2(22, 6)
@@ -17,7 +18,7 @@ script = ExtResource("1_4l1x1")
 
 [node name="TreasureChest" parent="." instance=ExtResource("2_6f08h")]
 position = Vector2(28, -8)
-loot_table = Array[ExtResource("3_4l1x1")]([ExtResource("4_x4hyk"), ExtResource("5_mm6c3"), ExtResource("6_4g7i8"), ExtResource("7_bue56")])
+loot_table = Array[ExtResource("3_4l1x1")]([ExtResource("4_x4hyk"), ExtResource("5_mm6c3"), ExtResource("6_4g7i8"), ExtResource("7_bue56"), ExtResource("8_mm6c3")])
 
 [node name="Wood" type="StaticBody2D" parent="."]
 light_mask = 0

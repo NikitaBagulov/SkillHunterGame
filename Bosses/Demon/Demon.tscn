@@ -189,6 +189,8 @@ collision_mask = 16
 script = ExtResource("1_p528m")
 boss_id = "demon"
 boss_name = "Тень Кузницы"
+HP = 1000
+experience_drop = 1000
 boss_death_sound = ExtResource("2_can40")
 
 [node name="HitBox" parent="." instance=ExtResource("2_rut0u")]
@@ -221,7 +223,7 @@ metadata/_custom_type_script = "uid://ce1dtysyy0s8k"
 script = ExtResource("5_pssxw")
 min_duration = 1.0
 max_duration = 2.0
-move_speed = 50.0
+move_speed = 200.0
 direction_change_interval = 3.0
 next_states = [NodePath("../BossExplosionState"), NodePath("../BossExplosionState"), NodePath("../BossShootState"), NodePath("../BossHealState"), NodePath("../BossExplosionState"), NodePath("../BossExplosionState"), NodePath("../BossShootState")]
 metadata/_custom_type_script = "uid://oeq4ggj8ooo1"

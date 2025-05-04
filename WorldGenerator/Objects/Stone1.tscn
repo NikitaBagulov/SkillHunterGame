@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4n6ens3wukdd"]
+[gd_scene load_steps=4 format=3 uid="uid://b4n6ens3wukdd"]
 
 [ext_resource type="Texture2D" uid="uid://4spgu8d3agtf" path="res://WorldGenerator/Assets/Outdoor decoration/Outdoor_Decor_Free.png" id="1_ts46s"]
 
@@ -6,10 +6,20 @@
 atlas = ExtResource("1_ts46s")
 region = Rect2(16, 32, 16, 16)
 
-[node name="Stone" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_85qk4"]
+radius = 3.0
+
+[node name="Stone" type="StaticBody2D"]
+y_sort_enabled = true
+collision_layer = 16
+collision_mask = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("AtlasTexture_c4v10")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenEnabler2D" parent="."]
 enable_node_path = NodePath("../Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_85qk4")
