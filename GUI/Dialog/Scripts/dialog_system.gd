@@ -77,6 +77,7 @@ func hide_dialog() -> void:
 	dialog_ui.visible = false
 	choise_options.visible = false
 	texture_rect.visible = false
+	Hud.visible = true
 	dialog_ui.process_mode = Node.PROCESS_MODE_DISABLED
 	get_tree().paused = false
 	finished.emit()

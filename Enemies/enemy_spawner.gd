@@ -1,36 +1,38 @@
 extends Area2D
 class_name EnemySpawner
 
-# --- Настройки ---
-## Биом, связанный со спавнером
+# --- Settings ---
+## Biome associated with the spawner
 @export var biome: String = ""
-## Список сцен врагов для спавна
+## List of enemy scenes to spawn
 @export var enemy_scenes: Array[PackedScene] = []
-## Максимальное количество врагов
+## Maximum number of enemies
 @export var max_enemies: int = 3
-## Радиус области спавна
+## Radius of the spawn area
 @export var spawn_radius: float = 50.0
-## Время возрождения врагов (в секундах)
+## Respawn time for enemies (in seconds)
 @export var respawn_time: float = 10.0
+## Difficulty multiplier affecting enemy stats
+@export var difficulty: float = 1.0
 
-# --- Переменные ---
-## Список текущих spawned врагов
+# --- Variables ---
+## List of currently spawned enemies
 var spawned_enemies: Array[Node] = []
-## Активность спавнера
+## Spawner activity status
 var is_active: bool = false
-## Таймер возрождения
+## Respawn timer
 var respawn_timer: SceneTreeTimer = null
-## Контейнер для spawned врагов
+## Container for spawned enemies
 @onready var spawn_container = get_parent()
 
-# --- Инициализация ---
+# --- Initialization ---
 func _ready() -> void:
 	_setup_collision_shape()
-	# Подключаем сигналы обнаружения зон
+	# Connect area detection signals
 	area_entered.connect(_on_area_entered)
 	area_exited.connect(_on_area_exited)
 
-## Настраивает форму столкновения для области спавна
+## Sets up the collision shape for the spawn area
 func _setup_collision_shape() -> void:
 	var shape = CircleShape2D.new()
 	shape.radius = spawn_radius
@@ -38,29 +40,29 @@ func _setup_collision_shape() -> void:
 	collision.shape = shape
 	add_child(collision)
 
-# --- Очистка ---
+# --- Cleanup ---
 func _exit_tree() -> void:
-	# Очищаем таймер и дочерние узлы при выходе из дерева
+	# Clear timer and child nodes on tree exit
 	respawn_timer = null
 	for child in get_children():
 		child.queue_free()
 
-# --- Обработчики событий ---
-## Активирует спавнер при входе игрока
+# --- Event Handlers ---
+## Activates spawner when player enters
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("player_spawn_zone"):
 		is_active = true
 		if spawned_enemies.is_empty():
 			call_deferred("spawn_enemies")
 
-## Деактивирует спавнер и удаляет врагов при выходе игрока
+## Deactivates spawner and removes enemies when player exits
 func _on_area_exited(area: Area2D) -> void:
 	if area.is_in_group("player_spawn_zone"):
 		is_active = false
 		_clear_enemies()
 
-# --- Управление врагами ---
-## Создает и размещает врагов в зоне спавна
+# --- Enemy Management ---
+## Creates and places enemies in the spawn area
 func spawn_enemies() -> void:
 	if not is_active or spawned_enemies.size() >= max_enemies:
 		return
@@ -72,7 +74,7 @@ func spawn_enemies() -> void:
 			spawned_enemies.append(enemy)
 			enemy.connect("tree_exited", _on_enemy_died.bind(enemy), CONNECT_REFERENCE_COUNTED)
 
-## Создает экземпляр врага с учетом дистанции
+## Creates an enemy instance with distance considerations
 func _create_enemy_instance() -> Node:
 	if enemy_scenes.is_empty():
 		return null
@@ -89,18 +91,19 @@ func _create_enemy_instance() -> Node:
 	var scene = enemy_scenes[randi() % enemy_scenes.size()]
 	var instance = scene.instantiate()
 	instance.global_position = spawn_pos
+	instance.difficulty = difficulty
 	
 	if instance.has_method("set_target"):
 		instance.set_target(PlayerManager.get_player())
 	return instance
 
-## Обрабатывает смерть врага и запускает таймер возрождения
+## Handles enemy death and starts respawn timer
 func _on_enemy_died(enemy: Node) -> void:
 	spawned_enemies.erase(enemy)
 	if is_active and spawned_enemies.is_empty():
 		_start_respawn_timer()
 
-## Очищает всех врагов из списка и сцены
+## Clears all enemies from the list and scene
 func _clear_enemies() -> void:
 	for enemy in spawned_enemies.duplicate():
 		if is_instance_valid(enemy):
@@ -109,7 +112,7 @@ func _clear_enemies() -> void:
 			enemy.queue_free()
 	spawned_enemies.clear()
 
-## Запускает таймер для возрождения врагов
+## Starts timer for enemy respawn
 func _start_respawn_timer() -> void:
 	respawn_timer = get_tree().create_timer(respawn_time)
 	await respawn_timer.timeout

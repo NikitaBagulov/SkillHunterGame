@@ -2,13 +2,9 @@ class_name WorldGenerator extends Node2D
 
 @onready var ground_layer = $GroundedLayer
 @onready var biome_settings: BiomeSettings = $BiomeSettings
-
 @onready var loading_screen: LoadingScreen = $LoadingScreen
 
-
 var tile_set
-
-
 @export var generation_settings = {
 	"chunk_size": Vector2i(8, 8),
 	"render_distance": 4,
@@ -47,25 +43,18 @@ func _ready():
 	objects_node.y_sort_enabled = true
 	add_child(objects_node)
 	
-	# Инициализация компонентов
 	noise_manager.initialize(generation_settings)
 	chunk_manager.initialize(self, ground_layer, generation_settings, biome_settings)
 	object_spawner.initialize(self, objects_node, ground_layer, biome_settings)
 	player_spawner.initialize(self)
 	
-	# Инициализация таймеров
 	initialize_timers()
-	
-	# Отмечаем инициализацию завершённой
 	is_initialized = true
 	
-	# Откладываем запуск мира
 	if visible:
 		start_world_deferred()
 	else:
 		stop_world()
-	
-	#print("WorldGenerator: Initialized, visible: ", visible)
 
 func initialize_timers():
 	if not update_timer:
@@ -79,12 +68,9 @@ func initialize_timers():
 		load_timer.wait_time = generation_settings["chunk_load_interval"]
 		load_timer.connect("timeout", Callable(chunk_manager, "load_next_chunk"))
 		add_child(load_timer)
-	
-	#print("WorldGenerator: Timers initialized")
 
 func start_world_deferred():
 	start_world()
-	#print("WorldGenerator: Start world deferred")
 
 func start_world():
 	if not is_initialized:
@@ -99,7 +85,6 @@ func start_world():
 	if load_timer.is_stopped():
 		load_timer.start()
 	
-	# Показываем экран загрузки перед генерацией
 	loading_screen.show_loading()
 	start_initial_chunks()
 	
@@ -150,15 +135,13 @@ func start_initial_chunks():
 		loading_screen.set_progress(progress)
 		await get_tree().process_frame
 	
-	# Спавн объектов в видимой области
-	var chunk_size = generation_settings["chunk_size"]
-	var min_pos = Vector2i(-render_distance * chunk_size.x, -render_distance * chunk_size.y)
-	var max_pos = Vector2i(render_distance * chunk_size.x, render_distance * chunk_size.y)
-	object_spawner.generate_objects_in_area(min_pos, max_pos, false)  # Обычные объекты
-	object_spawner.generate_objects_in_area(min_pos, max_pos, true)   # Спавнеры врагов
+	# Спавн объектов для видимых чанков
+	#for chunk_pos in chunk_manager.visible_chunks.keys():
+		#if chunk_manager.loaded_chunks.has(chunk_pos):
+			#chunk_manager.spawn_objects_in_chunk(chunk_pos)
 	
 	loading_screen.set_progress(100.0)
-	print("WorldGenerator: Initial chunks loaded")
+	print("WorldGenerator: Initial chunks loaded and objects spawned")
 
 func check_player_position():
 	if not visible:
@@ -175,6 +158,10 @@ func check_player_position():
 		last_player_chunk = player_chunk
 		chunk_manager.update_chunks(player_chunk)
 		chunk_manager.pregenerate_chunks(player_chunk, generation_settings["render_distance"] + 2)
+		# Спавн объектов для новых видимых чанков
+		#for chunk_pos in chunk_manager.visible_chunks.keys():
+			#if chunk_manager.loaded_chunks.has(chunk_pos) and not chunk_manager.chunk_objects.has(chunk_pos):
+				#chunk_manager.spawn_objects_in_chunk(chunk_pos)
 	
 	if ground_layer is LevelTileMap:
 		ground_layer.update_bounds()
@@ -192,7 +179,6 @@ func update_objects_visibility():
 func spawn_return_portal():
 	for child in objects_node.get_children():
 		if child is Portal and child.portal_id == "world_to_hub_1":
-			#print("WorldGenerator: Removing existing portal with ID 'world_to_hub_1' at ", child.global_position)
 			child.queue_free()
 	var portal_scene = preload("res://GeneralNodes/Portal/Portal.tscn")
 	var portal = portal_scene.instantiate()
@@ -203,7 +189,7 @@ func spawn_return_portal():
 		return
 	
 	portal.target_scene = hub_scene
-	portal.spawn_position =  Vector2(250, 250)
+	portal.spawn_position = Vector2(250, 250)
 	portal.is_hub_to_world = false
 	portal.portal_id = "world_to_hub_1"
 	portal.global_position = Vector2(0, 0)
@@ -213,4 +199,3 @@ func spawn_return_portal():
 		return
 	
 	objects_node.call_deferred("add_child", portal)
-	#print("WorldGenerator: Spawned return portal at ", portal.global_position, " with target scene: ", hub_scene.resource_path)

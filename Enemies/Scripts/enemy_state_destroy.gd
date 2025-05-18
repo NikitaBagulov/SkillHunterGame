@@ -48,7 +48,8 @@ func process(delta: float) -> EnemyState:
 # --- Обработчики событий ---
 ## Реакция на уничтожение врага
 func _on_enemy_destroyed(hurt_box: HurtBox) -> void:
-	_damage_position = hurt_box.global_position
+	if hurt_box != null:
+		_damage_position = hurt_box.global_position
 	state_machine.change_state(self)
 
 ## Завершение анимации и удаление врага

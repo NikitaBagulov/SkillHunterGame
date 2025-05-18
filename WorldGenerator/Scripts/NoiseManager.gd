@@ -5,6 +5,9 @@ var density_noise = FastNoiseLite.new()
 var noise_cache = {}
 var settings = {}
 
+var global_min_noise = INF
+var global_max_noise = -INF
+
 func initialize(gen_settings: Dictionary):
 	settings = gen_settings
 	noise.noise_type = settings["noise_type"]
@@ -28,11 +31,21 @@ func get_cached_noise(pos: Vector2i) -> float:
 func get_chunk_noise(chunk_pos: Vector2i, chunk_size: Vector2i) -> Dictionary:
 	var noise_values = {}
 	var start_pos = chunk_pos * chunk_size
+	var min_noise = INF
+	var max_noise = -INF
 	
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			var pos = start_pos + Vector2i(x, y)
-			noise_values[pos] = get_cached_noise(pos)
+			var noise_val = get_cached_noise(pos)
+			noise_values[pos] = noise_val
+			min_noise = min(min_noise, noise_val)
+			max_noise = max(max_noise, noise_val)
+	
+	global_min_noise = min(global_min_noise, min_noise)
+	global_max_noise = max(global_max_noise, max_noise)
+	print("Chunk ", chunk_pos, " noise range: [", min_noise, ", ", max_noise, "]")
+	print("Global noise range: [", global_min_noise, ", ", global_max_noise, "]")
 	
 	return noise_values
 

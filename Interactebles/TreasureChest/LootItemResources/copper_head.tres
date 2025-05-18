@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LootItemResource" load_steps=3 format=3 uid="uid://cn5gopj0sn26n"]
+
+[ext_resource type="Resource" uid="uid://da21qwgtgfiqh" path="res://Items/EquipableItems/Head/cooper_head.tres" id="1_yeywh"]
+[ext_resource type="Script" uid="uid://c5fuh5tgork7q" path="res://Interactebles/TreasureChest/loot_resource.gd" id="2_j1apk"]
+
+[resource]
+script = ExtResource("2_j1apk")
+item_data = ExtResource("1_yeywh")
+chance = 0.2
+min_quantity = 1
+max_quantity = 1
+metadata/_custom_type_script = "uid://c5fuh5tgork7q"

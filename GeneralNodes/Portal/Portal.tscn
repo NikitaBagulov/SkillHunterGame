@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://duxowqns5jvyw"]
+[gd_scene load_steps=7 format=3 uid="uid://duxowqns5jvyw"]
 
 [ext_resource type="Script" uid="uid://dmfts521dbori" path="res://GeneralNodes/Portal/portal.gd" id="1_kvxcf"]
 [ext_resource type="Texture2D" uid="uid://dds4tvovgcltl" path="res://Assets/Background/Tilesets/TilesetNatures.png" id="2_p36jf"]
+[ext_resource type="Texture2D" uid="uid://crkew6pdof7xt" path="res://Enemies/Slime/Shadow.png" id="3_3dbue"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2et5i"]
 size = Vector2(16, 5)
@@ -50,3 +51,11 @@ orbit_velocity_min = 0.01
 orbit_velocity_max = 1.0
 radial_accel_min = -100.0
 radial_accel_max = -100.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(0.201527, 0.201527, 0.201527, 0.541176)
+z_index = -1
+y_sort_enabled = true
+position = Vector2(-0.5, 0)
+scale = Vector2(1.34375, 1)
+texture = ExtResource("3_3dbue")

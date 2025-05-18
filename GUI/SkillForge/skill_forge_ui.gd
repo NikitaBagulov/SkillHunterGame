@@ -185,7 +185,7 @@ func attach_skill_to_weapon(weapon: EquipableItemData, skill_book: SkillItemData
 	var new_weapon = weapon.duplicate()
 	new_weapon.skill = skill_book.skill.duplicate()
 	new_weapon.name = weapon.name + " с " + skill_book.skill.name
-	new_weapon.description = weapon.description + "\nНавык: " + skill_book.skill.get_description()
+	new_weapon.description = weapon.description
 	
 	return {
 		"success": true,

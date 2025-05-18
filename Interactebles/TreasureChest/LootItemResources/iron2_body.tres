@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LootItemResource" load_steps=3 format=3 uid="uid://vv1sxlccjift"]
+
+[ext_resource type="Resource" uid="uid://blr1m7ntjhob8" path="res://Items/EquipableItems/Body/iron2_body.tres" id="1_tj7fy"]
+[ext_resource type="Script" uid="uid://c5fuh5tgork7q" path="res://Interactebles/TreasureChest/loot_resource.gd" id="2_5ndct"]
+
+[resource]
+script = ExtResource("2_5ndct")
+item_data = ExtResource("1_tj7fy")
+chance = 0.1
+min_quantity = 1
+max_quantity = 1
+metadata/_custom_type_script = "uid://c5fuh5tgork7q"

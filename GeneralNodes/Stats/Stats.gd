@@ -71,7 +71,7 @@ var max_hp: int = base_max_hp :
 
 
 
-@export var base_move_speed: float = 100.0 :
+@export var base_move_speed: float = 500.0 :
 	get:
 		return base_move_speed
 	set(value):

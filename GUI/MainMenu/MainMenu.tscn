@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://j8fseby86tic"]
+[gd_scene load_steps=9 format=3 uid="uid://j8fseby86tic"]
 
 [ext_resource type="Script" uid="uid://df6j7b5advmla" path="res://GUI/MainMenu/main_menu.gd" id="1_ywh7r"]
 [ext_resource type="AudioStream" uid="uid://bncdp007wbctq" path="res://Sounds/Chill RPG theme (RPG).wav" id="2_t6o3j"]
+[ext_resource type="Texture2D" uid="uid://dqyuqvxcupvad" path="res://Assets/Background/Green mountain/Clouds#1.png" id="3_63s1x"]
+[ext_resource type="Texture2D" uid="uid://bgvd4sqw8vic5" path="res://Assets/Background/Green mountain/Bckg.png" id="3_vtl5k"]
+[ext_resource type="Texture2D" uid="uid://cqfw84enxslxx" path="res://Assets/Background/Green mountain/Clouds.png" id="4_vtl5k"]
+[ext_resource type="Texture2D" uid="uid://dk2ynilin7pks" path="res://Assets/Background/Green mountain/Green_Field.png" id="5_f5hqq"]
+[ext_resource type="Texture2D" uid="uid://dcou7ud0u80ss" path="res://Assets/Background/Green mountain/Green_mountain.png" id="6_3j3ri"]
+[ext_resource type="Texture2D" uid="uid://ce0p2h6rwj63v" path="res://Assets/Background/Green mountain/Tree.png" id="7_k3hbj"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -13,14 +19,80 @@ grow_vertical = 2
 script = ExtResource("1_ywh7r")
 music = ExtResource("2_t6o3j")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+[node name="ParallaxLayer6" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(50, 0)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="ParallaxLayer6"]
+texture_repeat = 3
+position = Vector2(319.75, 177.5)
+scale = Vector2(1.33438, 1.30515)
+texture = ExtResource("3_vtl5k")
+
+[node name="ParallaxLayer" type="Parallax2D" parent="."]
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(50, 0)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D3" type="Sprite2D" parent="ParallaxLayer"]
+position = Vector2(322, 184)
+scale = Vector2(1.33333, 1.33456)
+texture = ExtResource("3_63s1x")
+
+[node name="ParallaxLayer2" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 0.5)
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(100, 0)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D4" type="Sprite2D" parent="ParallaxLayer2"]
+position = Vector2(321, 221)
+scale = Vector2(1.33333, 1.33456)
+texture = ExtResource("4_vtl5k")
+
+[node name="ParallaxLayer3" type="Parallax2D" parent="."]
+scroll_scale = Vector2(-0.1, -0.1)
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(-100, 0)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D5" type="Sprite2D" parent="ParallaxLayer3"]
+texture_repeat = 3
+position = Vector2(321, 372)
+scale = Vector2(1.33333, 1.33456)
+texture = ExtResource("5_f5hqq")
+
+[node name="ParallaxLayer4" type="Parallax2D" parent="."]
+scroll_scale = Vector2(-0.1, -0.1)
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(-100, 0)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D5" type="Sprite2D" parent="ParallaxLayer4"]
+texture_repeat = 3
+position = Vector2(320, 253)
+scale = Vector2(1.33333, 1.33456)
+texture = ExtResource("6_3j3ri")
+
+[node name="ParallaxLayer5" type="Parallax2D" parent="."]
+scroll_scale = Vector2(-0.1, -0.1)
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(20, 0)
+repeat_times = 3
+ignore_camera_scroll = true
+
+[node name="Sprite2D5" type="Sprite2D" parent="ParallaxLayer5"]
+texture_repeat = 3
+position = Vector2(321, 362)
+scale = Vector2(1.33333, 1.33456)
+texture = ExtResource("7_k3hbj")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -48,13 +120,33 @@ alignment = 1
 [node name="StartButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
-text = "Начать
-
+text = "
 "
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/StartButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Начать"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ExitButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
-text = "Выйти
-
+text = "
 "
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/ExitButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Выйти"
+horizontal_alignment = 1
+vertical_alignment = 1

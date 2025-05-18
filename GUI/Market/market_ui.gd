@@ -1,4 +1,3 @@
-# MarketUI.gd
 class_name MarketUI extends Control
 
 const INVENTORY_SLOT = preload("res://GUI/Inventory/inventory_slot_ui.tscn")
@@ -14,13 +13,7 @@ signal close_requested
 @onready var transaction_button: Button = %TransactionButton
 @onready var close_button: Button = %CloseButton
 
-@onready var tooltip_panel: PopupPanel = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TooltipPanel
-@onready var title: Label = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TooltipPanel/VBoxContainer/Title
-@onready var description: Label = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TooltipPanel/VBoxContainer/Description
-
-@onready var cost: Label = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/TooltipPanel/VBoxContainer/Cost
-
-
+var tooltip: PopupMenu
 
 var inventory_slots_ui: Array[InventorySlotUI] = []
 var market_slots_ui: Array[InventorySlotUI] = []
@@ -29,6 +22,7 @@ var selected_market_slot: InventorySlotUI
 
 func _ready() -> void:
 	initialize_slots()
+	initialize_tooltip()
 	transaction_button.pressed.connect(_on_transaction_pressed)
 	close_button.pressed.connect(_on_close_pressed)
 	inventory_data.data_changed.connect(update_inventory)
@@ -44,7 +38,7 @@ func initialize_slots() -> void:
 		slot.mouse_entered.connect(_on_slot_mouse_entered.bind(slot))
 		slot.mouse_exited.connect(_on_slot_mouse_exited.bind(slot))
 
-	# Инициализация слотов магазина (предположим, 8 слотов)
+	# Инициализация слотов магазина (предположим, 20 слотов)
 	for i in 20:
 		var slot = MARKET_SLOT.instantiate()
 		market_container.add_child(slot)
@@ -52,6 +46,10 @@ func initialize_slots() -> void:
 		slot.button_up.connect(_on_market_slot_clicked.bind(slot))
 		slot.mouse_entered.connect(_on_slot_mouse_entered.bind(slot))
 		slot.mouse_exited.connect(_on_slot_mouse_exited.bind(slot))
+
+func initialize_tooltip() -> void:
+	tooltip = PopupMenu.new()
+	add_child(tooltip)
 
 func set_market_items(items: Array[ItemData]) -> void:
 	for i in market_slots_ui.size():
@@ -111,40 +109,35 @@ func update_transaction_button() -> void:
 func _on_slot_mouse_entered(slot: Control) -> void:
 	if slot is InventorySlotUI and slot.slot_data:
 		_show_tooltip(slot.slot_data.item_data, slot.global_position)
-	elif slot is InventorySlotUI and slot.slot_data:
-		_show_tooltip(slot.slot_data.item_data, slot.global_position)
 
 func _on_slot_mouse_exited(slot: Control) -> void:
 	_hide_tooltip()
 
 func _show_tooltip(item: ItemData, pos: Vector2) -> void:
-	title.text = item.name
-	description.text = item.description
-	cost.text = "Cost: %d" % item.cost
+	tooltip.clear()
+	tooltip.add_item(item.name, -1)
+	tooltip.add_separator()
+	var description_lines = item.description.split("\n") if item.description else [""]
+	for line in description_lines:
+		tooltip.add_item(line, -1)
+	tooltip.add_separator()
+	tooltip.add_item("Цена: %d" % item.cost, -1)
 	
-	# Show the popup
-	tooltip_panel.popup()
-	
-	# Wait for size calculation
-	await get_tree().process_frame
-	
-	# Calculate position in global coordinates
 	var viewport_size = get_viewport_rect().size
-	var tooltip_size = tooltip_panel.size
+	var estimated_size = Vector2(200, 20 * (description_lines.size() + 4)) # Estimate: name, separator, description lines, separator, cost
 	var new_pos = pos + Vector2(30, 30)
 	
 	# Adjust if tooltip would go off-screen
-	if new_pos.x + tooltip_size.x > viewport_size.x:
-		new_pos.x = pos.x - tooltip_size.x - 10  # Place to the left of the slot
-	if new_pos.y + tooltip_size.y > viewport_size.y:
-		new_pos.y = pos.y - tooltip_size.y - 10  # Place above the slot
+	if new_pos.x + estimated_size.x > viewport_size.x:
+		new_pos.x = pos.x - estimated_size.x - 10
+	if new_pos.y + estimated_size.y > viewport_size.y:
+		new_pos.y = pos.y - estimated_size.y - 10
 	
 	# Ensure tooltip doesn't go off the left or top edge
 	new_pos.x = max(0, new_pos.x)
 	new_pos.y = max(0, new_pos.y)
 	
-	# Convert to local coordinates relative to MarketUI (root of the UI)
-	tooltip_panel.position = new_pos - global_position
+	tooltip.popup(Rect2(new_pos, Vector2.ZERO))
 
 func _hide_tooltip() -> void:
-	tooltip_panel.hide()
+	tooltip.hide()

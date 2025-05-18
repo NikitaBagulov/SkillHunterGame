@@ -1,6 +1,6 @@
 class_name InventoryUI extends Control
 
-const INVENTORY_SLOT = preload("res://GUI/Inventory/inventory_slot_ui.tscn")
+const INVENTORYSlotUI = preload("res://GUI/Inventory/inventory_slot_ui.tscn")
 
 var focus_index: int = 0
 var hovered_item: InventorySlotUI
@@ -36,6 +36,7 @@ var equip_colors = {
 }
 
 var inventory_slots_ui: Array[InventorySlotUI] = []
+var tooltip: PopupMenu
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -51,6 +52,83 @@ func _ready() -> void:
 		skill_forge_ui.ready_completed.connect(update_forge_slots)
 	
 	SaveManager.load_completed.connect(_on_load_completed)
+
+func show_tooltip(slot: InventorySlotUI, offset: Vector2 = Vector2(20, 0)) -> void:
+	if slot.slot_data and slot.slot_data.item_data:
+		# Create a new PopupMenu
+		tooltip = PopupMenu.new()
+		add_child(tooltip)
+		
+		var item_name = slot.slot_data.item_data.name
+		var description = slot.slot_data.item_data.description if slot.slot_data.item_data.description else "..."
+		
+		if slot.slot_data.item_data is EquipableItemData and slot.slot_data.item_data.skill:
+			description += "\nНавык: " + slot.slot_data.item_data.skill.name
+		
+		tooltip.add_item(item_name, -1)
+		tooltip.add_separator()
+		var lines = description.split("\n")
+		for line in lines:
+			tooltip.add_item(line, -1)
+		
+		var slot_global_pos = slot.global_position
+		var viewport_size = get_viewport_rect().size
+		
+		# Estimate text size based on font
+		var font = tooltip.get_theme_font("font") if tooltip.get_theme_font("font") else get_theme_default_font()
+		var font_size = tooltip.get_theme_font_size("font_size") if tooltip.get_theme_font_size("font_size") else 16
+		var max_width = 0.0
+		var line_height = font.get_height(font_size)
+		
+		# Combine item_name with lines for width calculation
+		var all_lines = PackedStringArray([item_name]) + lines
+		for line in all_lines:
+			var text_width = font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+			max_width = max(max_width, text_width)
+		
+		# Add padding and separator height
+		var estimated_size = Vector2(max_width + 20, line_height * (lines.size() + 2) + 10)
+		
+		# Try positioning to the right of the slot
+		var new_pos = slot_global_pos + offset + Vector2(slot.size.x, 0)
+		var is_right_side = true
+		
+		# Adjust if it goes off the right edge
+		if new_pos.x + estimated_size.x > viewport_size.x:
+			# Try positioning to the left
+			new_pos.x = slot_global_pos.x - estimated_size.x - offset.x
+			is_right_side = false
+			# Check if it goes off the left edge
+			if new_pos.x < 0:
+				# Revert to right side and rely on clamping
+				new_pos.x = slot_global_pos.x + slot.size.x + offset.x
+				is_right_side = true
+		
+		# Align top of tooltip with top of slot by default
+		new_pos.y = slot_global_pos.y
+		
+		# Adjust vertical position if on the left side to avoid overlap
+		if not is_right_side:
+			# Check if tooltip goes off the bottom
+			if new_pos.y + estimated_size.y > viewport_size.y:
+				# Align bottom of tooltip with bottom of slot
+				new_pos.y = slot_global_pos.y + slot.size.y - estimated_size.y
+			# Check if tooltip goes off the top after adjustment
+			if new_pos.y < 0:
+				# Align top with viewport top
+				new_pos.y = 0
+		
+		# Clamp to viewport
+		new_pos.x = clamp(new_pos.x, 0, viewport_size.x - estimated_size.x)
+		new_pos.y = clamp(new_pos.y, 0, viewport_size.y - estimated_size.y)
+		
+		tooltip.popup(Rect2(new_pos, Vector2.ZERO))
+
+
+func hide_tooltip() -> void:
+	if tooltip:
+		tooltip.queue_free()
+		tooltip = null
 
 func connect_inventory_signals() -> void:
 	if data.is_connected("changed", on_inventory_changed):
@@ -306,9 +384,11 @@ func _on_item_drop(item: InventorySlotUI) -> void:
 
 func _on_item_mouse_entered(item: InventorySlotUI) -> void:
 	hovered_item = item
+	show_tooltip(item)
 
 func _on_item_mouse_exited() -> void:
 	hovered_item = null
+	hide_tooltip()
 
 func get_slot_global_index(slot: InventorySlotUI) -> int:
 	var inv_index = inventory_slots_ui.find(slot)

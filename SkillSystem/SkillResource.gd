@@ -86,7 +86,7 @@ func apply_elemental_effect(player: Player) -> void:
 func get_description() -> String:
 	var desc = description
 	if element != Element.NONE:
-		desc += " (Element: " + Element.keys()[element] + ")"
+		desc += " (Элемент: " + Element.keys()[element] + ")"
 	if type == SkillType.ACTIVE and key_binding != KeyBinding.NONE:
-		desc += " (Key: " + KeyBinding.keys()[key_binding] + ")"
-	return desc + " [Level " + str(level) + "]"
+		desc += " (Клавиша: " + KeyBinding.keys()[key_binding] + ")"
+	return desc + " [Уровень " + str(level) + "]"

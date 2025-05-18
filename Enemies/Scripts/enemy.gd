@@ -1,61 +1,60 @@
 extends CharacterBody2D
 class_name Enemy
 
-# --- Сигналы ---
-## Сигнал изменения направления движения
+# --- Signals ---
 signal direction_changed(new_direction: Vector2)
-## Сигнал получения урона врагом
 signal enemy_damaged(hurt_box: HurtBox)
-## Сигнал уничтожения врага
 signal enemy_destroyed(hurt_box: HurtBox)
 
-# --- Константы ---
-## Возможные кардинальные направления движения
+# --- Constants ---
 const DIRECTIONS: Array[Vector2] = [Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT, Vector2.UP]
 
-# --- Настройки ---
-## ID врага
+# --- Settings ---
 @export var enemy_id: String
-## Здоровье врага
 @export var HP: int = 5
-## Количество опыта за уничтожение врага
+@export var speed: float = 100.0
 @export var experience_drop: int = 5
-## Использовать только два направления (налево и направо)
 @export var two_directions_only: bool = false
+@export var difficulty: float = 1.0  # Difficulty multiplier for stats
 
 var max_hp: int = HP
+var base_speed: float = speed
+var base_damage: int = 1  # Base damage for hurt_box
 
-# --- Переменные ---
-## Текущее кардинальное направление
+# --- Variables ---
 var cardinal_direction: Vector2 = Vector2.DOWN
-## Вектор движения
 var direction: Vector2 = Vector2.ZERO
-## Ссылка на игрока
 var player: Player = null
-## Флаг неуязвимости
 var invulnerable: bool = false
 
-# --- Ссылки на узлы ---
+# --- Node References ---
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hit_box: HitBox = $HitBox
+@onready var hurt_box: HurtBox = $HurtBox
 @onready var state_machine: EnemyStateMachine = $EnemyStateMachine
 
-# --- Инициализация ---
+# --- Initialization ---
 func _ready() -> void:
+	apply_difficulty()
 	state_machine.initialize(self)
 	player = PlayerManager.player
 	hit_box.Damaged.connect(_take_damage)
-	# Устанавливаем начальное направление в зависимости от two_directions_only
 	cardinal_direction = Vector2.RIGHT if two_directions_only else Vector2.DOWN
 	add_to_group("enemies")
 
-# --- Обработка физики ---
+func apply_difficulty() -> void:
+	HP = int(HP * difficulty)
+	max_hp = HP
+	speed = base_speed * difficulty
+	if hurt_box:
+		hurt_box.damage = int(base_damage * difficulty)
+
+# --- Physics Processing ---
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
-# --- Управление движением ---
-## Устанавливает новое направление движения
+# --- Movement Control ---
 func set_direction(new_direction: Vector2) -> bool:
 	direction = new_direction
 	if direction == Vector2.ZERO:
@@ -64,10 +63,8 @@ func set_direction(new_direction: Vector2) -> bool:
 	var new_cardinal: Vector2
 	
 	if two_directions_only:
-		# Только два направления: налево или направо
 		new_cardinal = Vector2.RIGHT if direction.x >= 0 else Vector2.LEFT
 	else:
-		# Полные четыре направления
 		var direction_id: int = int(round(direction).angle() / TAU * DIRECTIONS.size())
 		new_cardinal = DIRECTIONS[direction_id]
 	
@@ -79,18 +76,14 @@ func set_direction(new_direction: Vector2) -> bool:
 	sprite.scale.x = -1 if cardinal_direction == Vector2.LEFT else 1
 	return true
 
-# --- Управление анимацией ---
-## Воспроизводит анимацию в зависимости от состояния и направления
+# --- Animation Control ---
 func update_animation(state: String) -> void:
 	animation_player.play(state + "_" + _get_animation_direction())
 
-## Возвращает строковое представление направления для анимации
 func _get_animation_direction() -> String:
 	if two_directions_only:
-		# Только боковые анимации для двух направлений
 		return "side"
 	else:
-		# Полные анимации для четырех направлений
 		match cardinal_direction:
 			Vector2.DOWN: return "down"
 			Vector2.UP: return "up"
@@ -101,12 +94,10 @@ func _get_animation_direction() -> String:
 func change_health(amount: int) -> void:
 	HP = clamp(HP + amount, 0, max_hp)
 	if HP <= 0:
-		#print("Boss destroyed, experience: ", experience_drop)
 		enemy_destroyed.emit(null)
 		queue_free()
 
-# --- Обработка урона ---
-## Применяет урон к врагу и вызывает соответствующие сигналы
+# --- Damage Handling ---
 func _take_damage(hurt_box: HurtBox) -> void:
 	if invulnerable:
 		return
@@ -115,21 +106,14 @@ func _take_damage(hurt_box: HurtBox) -> void:
 	if HP > 0:
 		enemy_damaged.emit(hurt_box)
 	else:
-		#print("Enemy destroyed, experience: ", experience_drop)
 		enemy_destroyed.emit(hurt_box)
 
-
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
-	print("in camera")
 	sprite.visible = true
-	#self.set_physics_process(true) 
 	state_machine.set_physics_process(true)
 	state_machine.set_process(true)
 
-
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	print("not in camera")
 	sprite.visible = false
-	#self.set_physics_process(false) 
 	state_machine.set_physics_process(false)
 	state_machine.set_process(false)

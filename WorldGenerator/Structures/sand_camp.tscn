@@ -1,0 +1,85 @@
+[gd_scene load_steps=16 format=3 uid="uid://j1ufor03r7ph"]
+
+[ext_resource type="Script" uid="uid://lm2sgi5v5dp8" path="res://WorldGenerator/Structures/camp.gd" id="1_ehw0r"]
+[ext_resource type="PackedScene" uid="uid://c8hv2oxtho7xx" path="res://Interactebles/TreasureChest/TreasureChest.tscn" id="2_6kv2l"]
+[ext_resource type="Script" uid="uid://c5fuh5tgork7q" path="res://Interactebles/TreasureChest/loot_resource.gd" id="3_atjta"]
+[ext_resource type="Resource" uid="uid://cwag0bqx3jrgt" path="res://Interactebles/TreasureChest/LootItemResources/dash.tres" id="4_hootd"]
+[ext_resource type="Resource" uid="uid://d2bmdtlycqduw" path="res://Interactebles/TreasureChest/LootItemResources/barrage_swarm.tres" id="5_ekqx5"]
+[ext_resource type="Resource" uid="uid://cahq40wxy11c8" path="res://Interactebles/TreasureChest/LootItemResources/copper_sword.tres" id="6_w8xls"]
+[ext_resource type="Resource" uid="uid://ch5k2ceen3xya" path="res://Interactebles/TreasureChest/LootItemResources/potion.tres" id="7_ptcum"]
+[ext_resource type="Resource" uid="uid://11vqfacjhsx2" path="res://Interactebles/TreasureChest/LootItemResources/gem.tres" id="8_b62dc"]
+[ext_resource type="Texture2D" uid="uid://c4i0562km1ji3" path="res://WorldGenerator/Assets/Tilesets/TilesetDesert.png" id="9_ehw0r"]
+[ext_resource type="Resource" uid="uid://vv1sxlccjift" path="res://Interactebles/TreasureChest/LootItemResources/iron2_body.tres" id="10_atjta"]
+[ext_resource type="Resource" uid="uid://cn5gopj0sn26n" path="res://Interactebles/TreasureChest/LootItemResources/copper_head.tres" id="11_hootd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehw0r"]
+atlas = ExtResource("9_ehw0r")
+region = Rect2(304, 176, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6kv2l"]
+atlas = ExtResource("9_ehw0r")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7bf0"]
+size = Vector2(20, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_atjta"]
+atlas = ExtResource("9_ehw0r")
+
+[node name="SandCamp" type="Node2D"]
+script = ExtResource("1_ehw0r")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(14, 19)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_ehw0r")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(38, -12)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_ehw0r")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(-13, 14)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_ehw0r")
+
+[node name="TreasureChest" parent="." instance=ExtResource("2_6kv2l")]
+position = Vector2(12, -4)
+loot_table = Array[ExtResource("3_atjta")]([ExtResource("4_hootd"), ExtResource("5_ekqx5"), ExtResource("6_w8xls"), ExtResource("7_ptcum"), ExtResource("8_b62dc"), ExtResource("10_atjta"), ExtResource("11_hootd")])
+
+[node name="Wood" type="StaticBody2D" parent="."]
+light_mask = 0
+position = Vector2(-16, -26)
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Wood"]
+texture = SubResource("AtlasTexture_6kv2l")
+region_enabled = true
+region_rect = Rect2(128, 160, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wood"]
+position = Vector2(-1, 7)
+shape = SubResource("RectangleShape2D_w7bf0")
+
+[node name="Wood2" type="StaticBody2D" parent="."]
+position = Vector2(47, 20)
+collision_layer = 16
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Wood2"]
+texture = SubResource("AtlasTexture_atjta")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(160, 160, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wood2"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_w7bf0")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(29.5, 0.5)
+scale = Vector2(8.05, 5.45)
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

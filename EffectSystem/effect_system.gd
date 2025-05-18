@@ -72,8 +72,9 @@ func _process(delta: float) -> void:
 	var entities = active_effects.keys()
 	for entity in entities:
 		if not is_instance_valid(entity) or entity.is_queued_for_deletion():
+			if entity != null:
 			#print("Entity (freed or queued for deletion) detected, removing all effects")
-			_clear_entity_effects(entity)
+				_clear_entity_effects(entity)
 			continue
 		for effect_name in active_effects[entity]:
 			var effect_data = active_effects[entity][effect_name]
